@@ -7,7 +7,7 @@ module.exports = {
     '!src/**/*.spec.{js,ts}',
     '!src/index.js',
   ],
-  coverageThresholds: {
+  coverageThreshold: {
     global: {
       branches: 70,
       functions: 70,
@@ -17,7 +17,13 @@ module.exports = {
   },
   testMatch: [
     '**/__tests__/**/*.[jt]s?(x)',
+    '**/tests/unit/**/*.[jt]s?(x)',
     '**/?(*.)+(spec|test).[jt]s?(x)',
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/tests/e2e/',
+    '/tests/accessibility/',
   ],
   moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'node'],
   verbose: true,
