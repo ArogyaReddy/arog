@@ -26,6 +26,10 @@
             --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --gradient-6: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            --gradient-7: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
+            --gradient-8: linear-gradient(135deg, #8EC5FC 0%, #E0C3FC 100%);
+            --gradient-9: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             --glass: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
         }
@@ -232,12 +236,14 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 15, 35, 0.98);
+            backdrop-filter: blur(20px);
             padding: 20px 40px;
             z-index: 1000;
             transform: translateY(-100%);
             transition: transform 0.3s;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--glass-border);
         }
         
         .nav.visible {
@@ -270,11 +276,16 @@
             color: white;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 8px;
         }
         
         .nav-links a:hover {
             color: var(--primary);
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
         }
         
         /* 5W Cards Section */
@@ -313,14 +324,20 @@
 
         .five-w-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
             margin-top: 60px;
+        }
+
+        @media (min-width: 1200px) {
+            .five-w-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         .flip-card {
             perspective: 1000px;
-            height: 400px;
+            height: 450px;
             cursor: pointer;
         }
 
@@ -343,13 +360,14 @@
             height: 100%;
             backface-visibility: hidden;
             border-radius: 24px;
-            padding: 40px;
+            padding: 30px 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
         }
 
         .flip-card-front {
@@ -364,15 +382,15 @@
         }
 
         .flip-card-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 64px;
+            margin-bottom: 15px;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
 
         .flip-card-question {
-            font-size: 48px;
+            font-size: 40px;
             font-weight: 900;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -386,26 +404,45 @@
         }
 
         .flip-card-back h3 {
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .flip-card-back p {
-            font-size: 18px;
-            line-height: 1.6;
+            font-size: 15px;
+            line-height: 1.5;
             opacity: 0.95;
+            margin-bottom: 10px;
         }
 
         .flip-card-back ul {
             list-style: none;
-            margin-top: 20px;
+            margin-top: 10px;
             text-align: left;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .flip-card-back ul::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .flip-card-back ul::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .flip-card-back ul::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
         }
 
         .flip-card-back li {
-            padding: 8px 0;
-            font-size: 16px;
+            padding: 6px 0;
+            font-size: 14px;
             opacity: 0.9;
         }
 
@@ -434,6 +471,22 @@
 
         .flip-card:nth-child(5) .flip-card-back {
             background: var(--gradient-5);
+        }
+
+        .flip-card:nth-child(6) .flip-card-back {
+            background: var(--gradient-6);
+        }
+
+        .flip-card:nth-child(7) .flip-card-back {
+            background: var(--gradient-7);
+        }
+
+        .flip-card:nth-child(8) .flip-card-back {
+            background: var(--gradient-8);
+        }
+
+        .flip-card:nth-child(9) .flip-card-back {
+            background: var(--gradient-9);
         }
 
         /* Chapter Sections */
@@ -851,12 +904,12 @@
         </div>
     </section>
 
-    <!-- The 5 Fundamental Questions -->
-    <section class="five-w-section">
+    <!-- The 9 Fundamental Questions -->
+    <section id="five-w" class="five-w-section">
         <div class="five-w-container">
             <div class="five-w-intro fade-in">
-                <h2>Before We Begin...</h2>
-                <p>Let's answer the fundamental questions. Hover over each card to discover the answers.</p>
+                <h2>The 9 Essential Questions</h2>
+                <p>Master AROG by understanding these fundamental questions. Hover over each card to discover the answers.</p>
             </div>
 
             <div class="five-w-grid">
@@ -970,6 +1023,98 @@
                                 <li>DevOps professionals</li>
                                 <li>Solo developers</li>
                                 <li>Anyone who values quality!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- When Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">⏰</div>
+                            <h3 class="flip-card-question">WHEN?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>When Does It Run?</h3>
+                            <p>AROG automates at <strong>every critical moment</strong>:</p>
+                            <ul>
+                                <li>On every git push</li>
+                                <li>On pull request creation</li>
+                                <li>On merge to main branch</li>
+                                <li>Daily security scans (2 AM UTC)</li>
+                                <li>On deployment triggers</li>
+                                <li>24/7 continuous monitoring</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Whom Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">🤝</div>
+                            <h3 class="flip-card-question">WHOM?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Whom Does It Help?</h3>
+                            <p>AROG benefits <strong>your entire team</strong>:</p>
+                            <ul>
+                                <li>Developers - Faster feedback</li>
+                                <li>QA Engineers - Automated testing</li>
+                                <li>Project Managers - Quality metrics</li>
+                                <li>Stakeholders - Confidence in releases</li>
+                                <li>End Users - Better quality products</li>
+                                <li>Future You - Maintainable code!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Which Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">🎯</div>
+                            <h3 class="flip-card-question">WHICH?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Which Technologies?</h3>
+                            <p>AROG uses <strong>industry-leading tools</strong>:</p>
+                            <ul>
+                                <li>Playwright for E2E testing</li>
+                                <li>Jest for unit testing</li>
+                                <li>ESLint for code quality</li>
+                                <li>GitHub Actions for CI/CD</li>
+                                <li>Lighthouse for performance</li>
+                                <li>TypeScript & Webpack builds</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Whose Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">👑</div>
+                            <h3 class="flip-card-question">WHOSE?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Whose Responsibility?</h3>
+                            <p><strong>Everyone's, yet no one's!</strong></p>
+                            <ul>
+                                <li>Code ownership - Distributed</li>
+                                <li>Quality checks - Automated</li>
+                                <li>Deployments - Robotic</li>
+                                <li>Security scans - Scheduled</li>
+                                <li>Test maintenance - Shared</li>
+                                <li>You focus on features! 🚀</li>
                             </ul>
                         </div>
                     </div>
