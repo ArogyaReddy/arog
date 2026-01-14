@@ -14,19 +14,32 @@
         :root {
             --primary: #667eea;
             --secondary: #764ba2;
-            --dark: #1a1a2e;
+            --accent: #f093fb;
+            --dark: #0f0f23;
+            --dark-card: #1a1a2e;
             --light: #f8f9ff;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
             background: var(--dark);
+            background-image: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
             color: white;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         /* Hero Section - Movie Opening */
@@ -35,7 +48,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             position: relative;
             overflow: hidden;
         }
@@ -43,11 +56,29 @@
         .hero::before {
             content: '';
             position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(67, 233, 123, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.2) 0%, transparent 70%);
+            animation: meshFloat 15s ease-in-out infinite;
+        }
+
+        @keyframes meshFloat {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: gridScroll 20s linear infinite;
+            opacity: 0.5;
         }
         
         @keyframes gridScroll {
@@ -57,7 +88,7 @@
         
         .hero-content {
             text-align: center;
-            z-index: 2;
+            z-index: 10;
             padding: 40px;
             max-width: 1200px;
         }
@@ -124,14 +155,33 @@
         }
         
         .cta-btn-primary {
-            background: white;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
             color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
         
         .cta-btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.2);
         }
         
         .cta-btn-secondary {
@@ -152,7 +202,18 @@
             transform: translateX(-50%);
             animation: bounce 2s infinite;
             cursor: pointer;
-            z-index: 3;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .scroll-indicator:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-50%) scale(1.1);
         }
         
         @keyframes bounce {
@@ -216,11 +277,171 @@
             color: var(--primary);
         }
         
+        /* 5W Cards Section */
+        .five-w-section {
+            padding: 100px 40px;
+            background: linear-gradient(180deg, var(--dark) 0%, var(--dark-card) 50%, var(--dark) 100%);
+        }
+
+        .five-w-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .five-w-intro {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .five-w-intro h2 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .five-w-intro p {
+            font-size: 22px;
+            opacity: 0.8;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .five-w-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .flip-card {
+            perspective: 1000px;
+            height: 400px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .flip-card-front {
+            background: var(--dark-card);
+            border: 1px solid var(--glass-border);
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+            transform: rotateY(180deg);
+            backdrop-filter: blur(10px);
+        }
+
+        .flip-card-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .flip-card-question {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .flip-card-hint {
+            font-size: 16px;
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .flip-card-back h3 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .flip-card-back p {
+            font-size: 18px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .flip-card-back ul {
+            list-style: none;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .flip-card-back li {
+            padding: 8px 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .flip-card-back li:before {
+            content: '✓';
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        /* Gradient overlays for each card */
+        .flip-card:nth-child(1) .flip-card-back {
+            background: var(--gradient-1);
+        }
+
+        .flip-card:nth-child(2) .flip-card-back {
+            background: var(--gradient-2);
+        }
+
+        .flip-card:nth-child(3) .flip-card-back {
+            background: var(--gradient-3);
+        }
+
+        .flip-card:nth-child(4) .flip-card-back {
+            background: var(--gradient-4);
+        }
+
+        .flip-card:nth-child(5) .flip-card-back {
+            background: var(--gradient-5);
+        }
+
         /* Chapter Sections */
         .chapter {
             min-height: 100vh;
-            padding: 100px 40px;
+            padding: 120px 40px;
             position: relative;
+            background: linear-gradient(180deg, transparent 0%, rgba(102, 126, 234, 0.02) 50%, transparent 100%);
         }
         
         .chapter-container {
@@ -263,19 +484,21 @@
         }
         
         .feature-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
             padding: 40px;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
         .feature-card:hover {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.12);
             border-color: var(--primary);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
         }
         
         .feature-icon {
@@ -297,12 +520,15 @@
         
         /* Code Examples */
         .code-example {
-            background: #2d2d2d;
-            border-radius: 15px;
+            background: rgba(45, 45, 45, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 30px;
             margin: 30px 0;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
         
         .code-header {
@@ -375,6 +601,7 @@
             bottom: 0;
             width: 3px;
             background: linear-gradient(180deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
         }
         
         .timeline-item {
@@ -392,13 +619,30 @@
             background: var(--primary);
             border: 4px solid var(--dark);
             border-radius: 50%;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.8), 0 0 40px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(102, 126, 234, 0.8); }
+            50% { transform: scale(1.1); box-shadow: 0 0 30px rgba(102, 126, 234, 1); }
         }
         
         .timeline-content {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 30px;
+            border: 1px solid var(--glass-border);
             border-left: 3px solid var(--primary);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-content:hover {
+            transform: translateX(10px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 48px rgba(102, 126, 234, 0.3);
         }
         
         .timeline-title {
@@ -424,9 +668,18 @@
         .stat-card {
             text-align: center;
             padding: 40px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 16px 48px rgba(102, 126, 234, 0.3);
+            border-color: var(--primary);
         }
         
         .stat-number {
@@ -595,6 +848,133 @@
         </div>
         <div class="scroll-indicator" onclick="document.getElementById('start').scrollIntoView({behavior: 'smooth'})">
             <span>⬇</span>
+        </div>
+    </section>
+
+    <!-- The 5 Fundamental Questions -->
+    <section class="five-w-section">
+        <div class="five-w-container">
+            <div class="five-w-intro fade-in">
+                <h2>Before We Begin...</h2>
+                <p>Let's answer the fundamental questions. Hover over each card to discover the answers.</p>
+            </div>
+
+            <div class="five-w-grid">
+                <!-- What Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">🤔</div>
+                            <h3 class="flip-card-question">WHAT?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>What is AROG?</h3>
+                            <p>AROG is an <strong>Autonomous Robot for Organization Growth</strong> - a complete automation framework that handles:</p>
+                            <ul>
+                                <li>End-to-end testing (Playwright)</li>
+                                <li>Code quality checks (ESLint)</li>
+                                <li>Security scanning</li>
+                                <li>Performance monitoring</li>
+                                <li>Accessibility testing</li>
+                                <li>Automated deployments</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Why Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">💡</div>
+                            <h3 class="flip-card-question">WHY?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Why Use AROG?</h3>
+                            <p>Because manual testing and deployment is <strong>slow, error-prone, and boring</strong>. AROG gives you:</p>
+                            <ul>
+                                <li>Zero configuration setup</li>
+                                <li>100% automated workflows</li>
+                                <li>Instant quality feedback</li>
+                                <li>Team-wide consistency</li>
+                                <li>More time for coding</li>
+                                <li>Professional-grade automation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">⚙️</div>
+                            <h3 class="flip-card-question">HOW?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>How Does It Work?</h3>
+                            <p>AROG uses <strong>GitHub Actions</strong> to run automated workflows on every code change:</p>
+                            <ul>
+                                <li>Push code to GitHub</li>
+                                <li>Workflows trigger automatically</li>
+                                <li>Tests run in parallel</li>
+                                <li>Reports generated instantly</li>
+                                <li>Deployments happen on merge</li>
+                                <li>All without manual intervention</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Where Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">📍</div>
+                            <h3 class="flip-card-question">WHERE?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Where to Use It?</h3>
+                            <p>AROG runs <strong>anywhere GitHub Actions runs</strong>:</p>
+                            <ul>
+                                <li>GitHub cloud runners (free tier)</li>
+                                <li>Your private repositories</li>
+                                <li>Organization accounts</li>
+                                <li>Public open-source projects</li>
+                                <li>Multi-environment deployments</li>
+                                <li>Any modern web project</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Who Card -->
+                <div class="flip-card fade-in">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <div class="flip-card-icon">👥</div>
+                            <h3 class="flip-card-question">WHO?</h3>
+                            <p class="flip-card-hint">Hover to reveal...</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <h3>Who Is It For?</h3>
+                            <p>AROG is perfect for:</p>
+                            <ul>
+                                <li>Frontend developers</li>
+                                <li>Full-stack engineers</li>
+                                <li>QA automation teams</li>
+                                <li>DevOps professionals</li>
+                                <li>Solo developers</li>
+                                <li>Anyone who values quality!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
