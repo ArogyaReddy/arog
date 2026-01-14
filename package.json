@@ -1,8 +1,20 @@
 {
-  "name": "arog-automation-framework",
+  "name": "@arogyareddy/arog",
   "version": "1.0.0",
   "description": "AROG - Autonomous Robot for Organization Growth. Complete automation framework with AI agents, workflows, and testing.",
-  "main": "index.js",
+  "main": "src/index.js",
+  "bin": {
+    "arog": "./bin/arog.js"
+  },
+  "files": [
+    "src",
+    "bin",
+    "scripts",
+    ".github/workflows",
+    "docs/arog-bible.html",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "jest --coverage",
     "test:watch": "jest --watch",
@@ -36,8 +48,11 @@
     "ci-cd",
     "arog"
   ],
-  "author": "Your Organization",
+  "author": "ArogyaReddy",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@axe-core/playwright": "^4.8.3",
     "@babel/core": "^7.23.7",
@@ -61,6 +76,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/YourOrg/AROG.git"
-  }
+    "url": "https://github.com/ArogyaReddy/arog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ArogyaReddy/arog/issues"
+  },
+  "homepage": "https://github.com/ArogyaReddy/arog#readme"
 }

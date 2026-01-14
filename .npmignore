@@ -1,0 +1,47 @@
+# Test files
+tests/
+coverage/
+*.test.js
+*.spec.js
+
+# Documentation (except README)
+docs/*.md
+ORGANIZATION-SETUP.md
+COMPLETE-SYSTEM-GUIDE.md
+TEST-AUTOMATION-GUIDE.md
+
+# Development files
+.git/
+.github/
+.vscode/
+node_modules/
+.DS_Store
+*.log
+
+# Build artifacts
+dist/
+build/
+*.tsbuildinfo
+
+# Config files not needed in package
+.eslintrc.js
+.prettierrc
+jest.config.js
+playwright.config.js
+tsconfig.json
+webpack.config.js
+lighthouserc.json
+
+# Images and media
+images/
+*.png
+*.jpg
+*.gif
+
+# Other
+.env
+.env.*
+myprds/
+workarea/
+bots/
+awesome-copilot-main/

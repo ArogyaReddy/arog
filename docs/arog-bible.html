@@ -879,6 +879,8 @@
                 <li><a href="#automation">Automation</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#workflows">Workflows</a></li>
+                <li><a href="#installation">📦 Install</a></li>
+                <li><a href="#organization">🏢 Org Setup</a></li>
                 <li><a href="#deploy">Deploy</a></li>
             </ul>
         </div>
@@ -1584,10 +1586,586 @@ npm run build
         </div>
     </section>
 
-    <!-- Chapter 6: Deployment -->
-    <section id="deploy" class="chapter">
+    <!-- Chapter 6: Installation Guide -->
+    <section id="installation" class="chapter">
         <div class="chapter-container">
             <div class="chapter-number fade-in">Chapter 6</div>
+            <h2 class="chapter-title fade-in">📦 Installing AROG in Your Project</h2>
+            <p class="chapter-intro fade-in">
+                Three simple ways to add AROG to any project. Choose your method and be ready in 5 minutes.
+            </p>
+
+            <!-- Installation Method Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin: 60px 0;">
+                
+                <!-- Method 1: NPM Package -->
+                <div class="feature-card fade-in" style="background: linear-gradient(135deg, rgba(67, 233, 123, 0.1), rgba(56, 249, 215, 0.1));">
+                    <div class="feature-icon">📦</div>
+                    <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 15px;">NPM Package</h3>
+                    <p style="opacity: 0.8; margin-bottom: 20px; font-size: 14px;">Coming Soon - Easiest method</p>
+                    <div class="code-example" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                        <pre style="font-size: 13px; line-height: 1.6; color: #a8edea;"><span style="color: #10b981;"># Install AROG</span>
+npm install @arogyareddy/arog --save-dev
+
+<span style="color: #10b981;"># Run setup wizard</span>
+npx arog setup
+
+<span style="color: #10b981;"># Verify installation</span>
+npx arog health-check</pre>
+                    </div>
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 8px; border-left: 3px solid #10b981;">
+                        <strong style="color: #10b981;">Benefits:</strong> Automatic updates, global CLI, version control
+                    </div>
+                </div>
+
+                <!-- Method 2: Git Submodule -->
+                <div class="feature-card fade-in" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));">
+                    <div class="feature-icon">🔗</div>
+                    <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 15px;">Git Submodule</h3>
+                    <p style="opacity: 0.8; margin-bottom: 20px; font-size: 14px;">✅ Available Now - Best for teams</p>
+                    <div class="code-example" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                        <pre style="font-size: 13px; line-height: 1.6; color: #a8edea;"><span style="color: #667eea;"># Add AROG to your project</span>
+git submodule add \\
+  https://github.com/ArogyaReddy/arog.git .arog
+
+<span style="color: #667eea;"># Install dependencies</span>
+cd .arog && npm install && cd ..
+
+<span style="color: #667eea;"># Add scripts to package.json</span>
+npm pkg set scripts.arog:health=\\
+  "node .arog/scripts/health-check.js"
+
+<span style="color: #667eea;"># Test it works</span>
+npm run arog:health</pre>
+                    </div>
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid #667eea;">
+                        <strong style="color: #667eea;">Benefits:</strong> Free, version-controlled, team-friendly
+                    </div>
+                </div>
+
+                <!-- Method 3: Clone Directly -->
+                <div class="feature-card fade-in" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));">
+                    <div class="feature-icon">📥</div>
+                    <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 15px;">Clone Directly</h3>
+                    <p style="opacity: 0.8; margin-bottom: 20px; font-size: 14px;">Quick & Simple</p>
+                    <div class="code-example" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 20px; margin: 15px 0;">
+                        <pre style="font-size: 13px; line-height: 1.6; color: #a8edea;"><span style="color: #f093fb;"># Clone into your project</span>
+git clone \\
+  https://github.com/ArogyaReddy/arog.git .arog
+
+<span style="color: #f093fb;"># Install dependencies</span>
+cd .arog && npm install && cd ..
+
+<span style="color: #f093fb;"># Add to your package.json scripts</span>
+npm pkg set scripts.arog:test=\\
+  "npm run --prefix .arog test"</pre>
+                    </div>
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(240, 147, 251, 0.1); border-radius: 8px; border-left: 3px solid #f093fb;">
+                        <strong style="color: #f093fb;">Benefits:</strong> Simple, no submodule complexity
+                    </div>
+                </div>
+            </div>
+
+            <!-- After Installation Steps -->
+            <div class="code-example fade-in" style="margin: 60px 0;">
+                <div class="code-header">
+                    <span class="code-label">✅ After Installation - 4 Quick Steps</span>
+                </div>
+                <div class="code-content">
+<pre><span class="code-comment"># 1. Run Health Check</span>
+npm run arog:health
+<span class="code-keyword">✅</span> Verifies: Node.js, npm, Git, AROG files, dependencies
+
+<span class="code-comment"># 2. Run Your First Test</span>
+npm run arog:test
+<span class="code-keyword">✅</span> Validates: Test suite, E2E tests, accessibility
+
+<span class="code-comment"># 3. Open AROG Bible</span>
+<span class="code-comment"># macOS:</span> open .arog/docs/arog-bible.html
+<span class="code-comment"># Linux:</span> xdg-open .arog/docs/arog-bible.html
+<span class="code-comment"># Windows:</span> start .arog\\docs\\arog-bible.html
+
+<span class="code-comment"># 4. Set up GitHub Actions (automatic)</span>
+git add .github/workflows/arog.yml
+git commit -m "Add AROG automation"
+git push
+<span class="code-keyword">✅</span> CI/CD pipeline activated!</pre>
+                </div>
+            </div>
+
+            <!-- Team Setup Guide -->
+            <div style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1)); padding: 40px; border-radius: 20px; margin: 60px 0;" class="fade-in">
+                <h3 style="font-size: 32px; font-weight: 800; margin-bottom: 25px; background: linear-gradient(135deg, #4facfe, #00f2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    👥 Team Member Onboarding
+                </h3>
+                <p style="font-size: 18px; opacity: 0.9; margin-bottom: 30px; line-height: 1.6;">
+                    When team members join your project, they get AROG automatically:
+                </p>
+                <div class="code-example" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 25px;">
+<pre style="font-size: 14px; line-height: 1.8;"><span style="color: #4facfe;"># For Git Submodule method:</span>
+git clone --recurse-submodules https://github.com/YOUR-ORG/project.git
+cd project
+cd .arog && npm install && cd ..
+npm run arog:health
+
+<span style="color: #10b981;">✅ That's it! Zero configuration needed.</span>
+<span style="color: #10b981;">✅ All automation works immediately.</span>
+<span style="color: #10b981;">✅ Same AROG version as everyone else.</span></pre>
+                </div>
+            </div>
+
+            <!-- Available Commands Reference -->
+            <h3 style="font-size: 36px; font-weight: 900; margin: 80px 0 40px; text-align: center; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" class="fade-in">
+                🛠️ Available Commands
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin: 40px 0;">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">❤️</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Health Check</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 13px; margin: 10px 0;">npm run arog:health</code>
+                    <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Verify system requirements</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🧪</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Run Tests</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 13px; margin: 10px 0;">npm run arog:test</code>
+                    <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Execute full test suite</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">✨</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Code Quality</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 13px; margin: 10px 0;">npm run arog:lint</code>
+                    <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Check code quality</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔒</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Security Scan</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 13px; margin: 10px 0;">npm run arog:security</code>
+                    <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Find vulnerabilities</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⚙️</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Setup Wizard</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 13px; margin: 10px 0;">npx arog setup</code>
+                    <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Initialize in project</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">✅</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px;">Full Validation</h4>
+                    <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 13px; margin: 10px 0;">npx arog validate</code>
+                    <p style="font-size: 14px; opacity: 0.8; margin-top: 10px;">Complete system check</p>
+                </div>
+            </div>
+
+            <!-- Integration Examples -->
+            <h3 style="font-size: 36px; font-weight: 900; margin: 80px 0 40px; text-align: center; background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" class="fade-in">
+                🎯 Integration Examples
+            </h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin: 40px 0;">
+                <!-- React Project -->
+                <div class="fade-in" style="background: linear-gradient(135deg, rgba(97, 218, 251, 0.1), rgba(125, 86, 253, 0.1)); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: #61dafb;">⚛️ React Project</h4>
+                    <div class="code-example" style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px;">
+<pre style="font-size: 13px; line-height: 1.7; color: #a8edea;">{
+  "scripts": {
+    "dev": "react-scripts start",
+    "test": <span style="color: #43e97b;">"arog test"</span>,
+    "lint": <span style="color: #43e97b;">"arog lint"</span>,
+    "prebuild": <span style="color: #43e97b;">"arog validate"</span>
+  }
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Node.js API -->
+                <div class="fade-in" style="background: linear-gradient(135deg, rgba(67, 233, 123, 0.1), rgba(56, 249, 215, 0.1)); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: #43e97b;">🟢 Node.js API</h4>
+                    <div class="code-example" style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px;">
+<pre style="font-size: 13px; line-height: 1.7; color: #a8edea;">{
+  "scripts": {
+    "start": "node server.js",
+    "test": <span style="color: #43e97b;">"arog test"</span>,
+    "prestart": <span style="color: #43e97b;">"arog health-check"</span>,
+    "predeploy": <span style="color: #43e97b;">"arog validate"</span>
+  }
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Full-Stack App -->
+                <div class="fade-in" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1)); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; color: #f093fb;">🚀 Full-Stack App</h4>
+                    <div class="code-example" style="background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px;">
+<pre style="font-size: 13px; line-height: 1.7; color: #a8edea;">{
+  "scripts": {
+    "dev": "concurrently ...",
+    "test": <span style="color: #f093fb;">"arog test"</span>,
+    "test:e2e": <span style="color: #f093fb;">"arog test:e2e"</span>,
+    "lint": <span style="color: #f093fb;">"arog lint"</span>,
+    "security": <span style="color: #f093fb;">"arog security"</span>,
+    "validate": <span style="color: #f093fb;">"arog validate"</span>,
+    "predeploy": <span style="color: #f093fb;">"arog validate"</span>
+  }
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1)); padding: 40px; border-radius: 20px; margin: 60px 0; border: 2px solid rgba(245, 158, 11, 0.2);" class="fade-in">
+                <h3 style="font-size: 32px; font-weight: 800; margin-bottom: 30px; color: #f59e0b;">
+                    🔧 Troubleshooting
+                </h3>
+                <div style="display: grid; gap: 20px;">
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #fbbf24;">❌ AROG command not found</h4>
+                        <pre style="font-size: 13px; line-height: 1.6; opacity: 0.9;"><span style="color: #10b981;"># Make sure AROG is installed</span>
+npm install @arogyareddy/arog --save-dev
+
+<span style="color: #10b981;"># OR use npx</span>
+npx arog health-check</pre>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #fbbf24;">❌ Submodule not initialized</h4>
+                        <pre style="font-size: 13px; line-height: 1.6; opacity: 0.9;"><span style="color: #10b981;"># Initialize submodules</span>
+git submodule update --init --recursive
+cd .arog && npm install</pre>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: #fbbf24;">❌ Permission denied</h4>
+                        <pre style="font-size: 13px; line-height: 1.6; opacity: 0.9;"><span style="color: #10b981;"># Make scripts executable</span>
+chmod +x .arog/bin/arog.js
+chmod +x .arog/scripts/*.js</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps CTA -->
+            <div style="text-align: center; margin: 80px 0; padding: 60px 40px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15)); border-radius: 24px; border: 2px solid rgba(102, 126, 234, 0.3);" class="fade-in">
+                <h3 style="font-size: 42px; font-weight: 900; margin-bottom: 25px; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    🎉 Installation Complete!
+                </h3>
+                <p style="font-size: 20px; opacity: 0.9; margin-bottom: 40px; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                    AROG is installed and ready. Now let's deploy it across your entire organization...
+                </p>
+                <a href="#organization" style="display: inline-block; padding: 18px 48px; background: var(--gradient-1); color: white; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 18px; transition: all 0.3s; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 15px 40px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 10px 30px rgba(102, 126, 234, 0.3)'">
+                    Continue to Organization Setup →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 7: Organization-Wide Deployment -->
+    <section id="organization" class="chapter">
+        <div class="chapter-container">
+            <div class="chapter-number fade-in">Chapter 7</div>
+            <h2 class="chapter-title fade-in">🏢 Deploy AROG Across Your Organization</h2>
+            <p class="chapter-intro fade-in">
+                Share AROG with your entire team. Four powerful methods to choose from. 
+                Pick the one that fits your organization's size and needs.
+            </p>
+
+            <!-- 4 Distribution Methods -->
+            <h3 style="font-size: 36px; font-weight: 900; margin: 80px 0 40px; text-align: center; background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" class="fade-in">
+                📦 Choose Your Distribution Method
+            </h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 60px 0;">
+                
+                <!-- Method 1: NPM Package -->
+                <div class="fade-in" style="position: relative; background: linear-gradient(135deg, rgba(67, 233, 123, 0.1), rgba(56, 249, 215, 0.1)); padding: 35px; border-radius: 20px; border: 2px solid rgba(67, 233, 123, 0.3); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='rgba(67, 233, 123, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(67, 233, 123, 0.3)'">
+                    <div style="position: absolute; top: 20px; right: 20px; background: #10b981; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;">RECOMMENDED</div>
+                    <div style="font-size: 56px; margin-bottom: 20px;">📦</div>
+                    <h4 style="font-size: 26px; font-weight: 800; margin-bottom: 15px; color: #10b981;">NPM Package</h4>
+                    <p style="opacity: 0.9; margin-bottom: 20px; line-height: 1.6;">Publish AROG as an npm package. Teams install with one command.</p>
+                    <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin: 20px 0;">
+<pre style="font-size: 13px; line-height: 1.7; color: #a8edea;"><span style="color: #10b981;"># In any project:</span>
+npm install @your-org/arog --save-dev
+
+<span style="color: #10b981;"># Use immediately:</span>
+npx arog health-check
+npx arog test</pre>
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
+                        <strong style="color: #10b981;">✅ Best for:</strong><br>
+                        <span style="opacity: 0.9; font-size: 14px;">All team sizes • Automatic updates • Version control</span>
+                    </div>
+                </div>
+
+                <!-- Method 2: Git Submodule -->
+                <div class="fade-in" style="position: relative; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 35px; border-radius: 20px; border: 2px solid rgba(102, 126, 234, 0.3); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='rgba(102, 126, 234, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(102, 126, 234, 0.3)'">
+                    <div style="position: absolute; top: 20px; right: 20px; background: #667eea; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;">FREE & SIMPLE</div>
+                    <div style="font-size: 56px; margin-bottom: 20px;">🔗</div>
+                    <h4 style="font-size: 26px; font-weight: 800; margin-bottom: 15px; color: #667eea;">Git Submodule</h4>
+                    <p style="opacity: 0.9; margin-bottom: 20px; line-height: 1.6;">Keep AROG in sync across all repositories. Free and version-controlled.</p>
+                    <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin: 20px 0;">
+<pre style="font-size: 13px; line-height: 1.7; color: #a8edea;"><span style="color: #667eea;"># Add to any project:</span>
+git submodule add \\
+  https://github.com/ArogyaReddy/arog.git .arog
+
+<span style="color: #667eea;"># Team clones with:</span>
+git clone --recurse-submodules &lt;repo&gt;</pre>
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                        <strong style="color: #667eea;">✅ Best for:</strong><br>
+                        <span style="opacity: 0.9; font-size: 14px;">Small-medium teams • Open source • No cost</span>
+                    </div>
+                </div>
+
+                <!-- Method 3: GitHub Template -->
+                <div class="fade-in" style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1)); padding: 35px; border-radius: 20px; border: 2px solid rgba(79, 172, 254, 0.3); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='rgba(79, 172, 254, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(79, 172, 254, 0.3)'">
+                    <div style="font-size: 56px; margin-bottom: 20px;">🎯</div>
+                    <h4 style="font-size: 26px; font-weight: 800; margin-bottom: 15px; color: #4facfe;">GitHub Template</h4>
+                    <p style="opacity: 0.9; margin-bottom: 20px; line-height: 1.6;">Start new projects with AROG pre-installed. One-click setup.</p>
+                    <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin: 20px 0;">
+<pre style="font-size: 13px; line-height: 1.7; color: #a8edea;"><span style="color: #4facfe;"># Create from template:</span>
+gh repo create my-project \\
+  --template ArogyaReddy/arog
+
+<span style="color: #4facfe;"># Or use GitHub UI</span>
+"Use this template" button</pre>
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(79, 172, 254, 0.1); border-radius: 10px;">
+                        <strong style="color: #4facfe;">✅ Best for:</strong><br>
+                        <span style="opacity: 0.9; font-size: 14px;">New projects • Quick starts • Standardization</span>
+                    </div>
+                </div>
+
+                <!-- Method 4: Shared GitHub Actions -->
+                <div class="fade-in" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1)); padding: 35px; border-radius: 20px; border: 2px solid rgba(240, 147, 251, 0.3); transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.borderColor='rgba(240, 147, 251, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(240, 147, 251, 0.3)'">
+                    <div style="font-size: 56px; margin-bottom: 20px;">⚙️</div>
+                    <h4 style="font-size: 26px; font-weight: 800; margin-bottom: 15px; color: #f093fb;">Shared Workflows</h4>
+                    <p style="opacity: 0.9; margin-bottom: 20px; line-height: 1.6;">Centralize CI/CD workflows. Update once, apply everywhere.</p>
+                    <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; margin: 20px 0;">
+<pre style="font-size: 13px; line-height: 1.7; color: #a8edea;"><span style="color: #f093fb;"># In .github/workflows/ci.yml:</span>
+jobs:
+  arog:
+    uses: ArogyaReddy/arog/
+      .github/workflows/test.yml@main</pre>
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(240, 147, 251, 0.1); border-radius: 10px;">
+                        <strong style="color: #f093fb;">✅ Best for:</strong><br>
+                        <span style="opacity: 0.9; font-size: 14px;">Large enterprises • Centralized control • Compliance</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <h3 style="font-size: 36px; font-weight: 900; margin: 100px 0 40px; text-align: center; background: var(--gradient-4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" class="fade-in">
+                📊 Which Method Should You Choose?
+            </h3>
+
+            <div class="fade-in" style="background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; margin: 40px 0;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid rgba(255,255,255,0.2);">
+                            <th style="padding: 15px; text-align: left; font-size: 16px; font-weight: 700;">Method</th>
+                            <th style="padding: 15px; text-align: center; font-size: 16px; font-weight: 700;">Setup Time</th>
+                            <th style="padding: 15px; text-align: center; font-size: 16px; font-weight: 700;">Cost</th>
+                            <th style="padding: 15px; text-align: center; font-size: 16px; font-weight: 700;">Updates</th>
+                            <th style="padding: 15px; text-align: center; font-size: 16px; font-weight: 700;">Team Size</th>
+                            <th style="padding: 15px; text-align: center; font-size: 16px; font-weight: 700;">Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 15px;"><strong style="color: #10b981;">NPM Package</strong></td>
+                            <td style="padding: 15px; text-align: center;">2 min</td>
+                            <td style="padding: 15px; text-align: center;">Free</td>
+                            <td style="padding: 15px; text-align: center;"><span style="color: #10b981;">Automatic</span></td>
+                            <td style="padding: 15px; text-align: center;">Any</td>
+                            <td style="padding: 15px; text-align: center;">⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 15px;"><strong style="color: #667eea;">Git Submodule</strong></td>
+                            <td style="padding: 15px; text-align: center;">5 min</td>
+                            <td style="padding: 15px; text-align: center;">Free</td>
+                            <td style="padding: 15px; text-align: center;"><span style="color: #f59e0b;">Manual</span></td>
+                            <td style="padding: 15px; text-align: center;">2-50</td>
+                            <td style="padding: 15px; text-align: center;">⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 15px;"><strong style="color: #4facfe;">GitHub Template</strong></td>
+                            <td style="padding: 15px; text-align: center;">1 min</td>
+                            <td style="padding: 15px; text-align: center;">Free</td>
+                            <td style="padding: 15px; text-align: center;"><span style="color: #f59e0b;">Manual</span></td>
+                            <td style="padding: 15px; text-align: center;">Any</td>
+                            <td style="padding: 15px; text-align: center;">⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px;"><strong style="color: #f093fb;">Shared Actions</strong></td>
+                            <td style="padding: 15px; text-align: center;">10 min</td>
+                            <td style="padding: 15px; text-align: center;">Free</td>
+                            <td style="padding: 15px; text-align: center;"><span style="color: #10b981;">Centralized</span></td>
+                            <td style="padding: 15px; text-align: center;">50+</td>
+                            <td style="padding: 15px; text-align: center;">⭐⭐⭐⭐</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recommended Setup by Team Size -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin: 80px 0;">
+                <div class="feature-card fade-in" style="background: linear-gradient(135deg, rgba(250, 112, 154, 0.1), rgba(254, 225, 64, 0.1));">
+                    <div class="feature-icon" style="font-size: 48px;">👥</div>
+                    <h4 style="font-size: 20px; font-weight: 800; margin: 15px 0;">Small Teams (2-10)</h4>
+                    <p style="opacity: 0.9; margin-bottom: 15px; font-size: 14px;">Start simple, grow later</p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <strong style="color: #667eea;">→ Use Git Submodule</strong><br>
+                        <span style="opacity: 0.8; font-size: 13px;">Free, simple, version-controlled</span>
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in" style="background: linear-gradient(135deg, rgba(168, 237, 234, 0.1), rgba(254, 214, 227, 0.1));">
+                    <div class="feature-icon" style="font-size: 48px;">👥👥</div>
+                    <h4 style="font-size: 20px; font-weight: 800; margin: 15px 0;">Medium Teams (10-50)</h4>
+                    <p style="opacity: 0.9; margin-bottom: 15px; font-size: 14px;">Balance ease and control</p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <strong style="color: #10b981;">→ Use NPM Package</strong><br>
+                        <span style="opacity: 0.8; font-size: 13px;">Easy updates, automatic versions</span>
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in" style="background: linear-gradient(135deg, rgba(255, 154, 86, 0.1), rgba(255, 106, 136, 0.1));">
+                    <div class="feature-icon" style="font-size: 48px;">🏢</div>
+                    <h4 style="font-size: 20px; font-weight: 800; margin: 15px 0;">Large Orgs (50+)</h4>
+                    <p style="opacity: 0.9; margin-bottom: 15px; font-size: 14px;">Enterprise-grade control</p>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <strong style="color: #f093fb;">→ Use NPM + Actions</strong><br>
+                        <span style="opacity: 0.8; font-size: 13px;">Centralized, scalable, compliant</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-World Examples -->
+            <h3 style="font-size: 36px; font-weight: 900; margin: 100px 0 40px; text-align: center; background: var(--gradient-5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" class="fade-in">
+                🌟 Real-World Deployment Examples
+            </h3>
+
+            <!-- Example 1: Startup -->
+            <div class="fade-in" style="background: linear-gradient(135deg, rgba(67, 233, 123, 0.05), rgba(56, 249, 215, 0.05)); padding: 40px; border-radius: 20px; margin: 40px 0; border: 2px solid rgba(67, 233, 123, 0.2);">
+                <h4 style="font-size: 28px; font-weight: 800; margin-bottom: 25px; color: #10b981;">🚀 Startup with 5 Repositories</h4>
+                <p style="opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">Add AROG to all projects using Git Submodule. Same version everywhere.</p>
+                <div class="code-example" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 25px;">
+<pre style="font-size: 14px; line-height: 1.8;"><span style="color: #10b981;"># Project: web-app</span>
+cd web-app
+git submodule add https://github.com/ArogyaReddy/arog.git .arog
+
+<span style="color: #10b981;"># Project: mobile-api</span>
+cd ../mobile-api
+git submodule add https://github.com/ArogyaReddy/arog.git .arog
+
+<span style="color: #10b981;"># Project: admin-dashboard</span>
+cd ../admin-dashboard
+git submodule add https://github.com/ArogyaReddy/arog.git .arog
+
+<span style="color: #10b981;"># Project: analytics-service</span>
+cd ../analytics-service
+git submodule add https://github.com/ArogyaReddy/arog.git .arog
+
+<span style="color: #10b981;"># Project: auth-service</span>
+cd ../auth-service
+git submodule add https://github.com/ArogyaReddy/arog.git .arog
+
+<span style="color: #43e97b;">✅ All 5 projects now have the same AROG version!</span>
+<span style="color: #43e97b;">✅ Update all at once when needed</span></pre>
+                </div>
+            </div>
+
+            <!-- Example 2: Enterprise -->
+            <div class="fade-in" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)); padding: 40px; border-radius: 20px; margin: 40px 0; border: 2px solid rgba(102, 126, 234, 0.2);">
+                <h4 style="font-size: 28px; font-weight: 800; margin-bottom: 25px; color: #667eea;">🏢 Enterprise with Custom Requirements</h4>
+                <p style="opacity: 0.9; margin-bottom: 25px; line-height: 1.6;">Fork AROG, customize for your organization, share via private npm.</p>
+                <div class="code-example" style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 25px;">
+<pre style="font-size: 14px; line-height: 1.8;"><span style="color: #667eea;"># 1. Fork to private org</span>
+git clone https://github.com/YOUR-ORG/arog.git
+cd arog
+
+<span style="color: #667eea;"># 2. Add enterprise agents</span>
+mkdir bots/agents/enterprise
+cp my-custom-agent.md bots/agents/enterprise/
+
+<span style="color: #667eea;"># 3. Add company-specific workflows</span>
+cp company-deploy.yml bots/workflows/
+
+<span style="color: #667eea;"># 4. Add compliance checks</span>
+cp compliance-check.js scripts/
+
+<span style="color: #667eea;"># 5. Publish to private npm</span>
+npm publish --access restricted
+
+<span style="color: #667eea;"># 6. Use in all company projects:</span>
+npm install @your-org/arog --save-dev
+
+<span style="color: #667eea;">✅ Customized for your organization</span>
+<span style="color: #667eea;">✅ All teams use the same standards</span></pre>
+                </div>
+            </div>
+
+            <!-- Team Onboarding -->
+            <div style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1)); padding: 50px; border-radius: 24px; margin: 80px 0; border: 3px solid rgba(79, 172, 254, 0.3);" class="fade-in">
+                <h3 style="font-size: 36px; font-weight: 900; margin-bottom: 30px; text-align: center; color: #4facfe;">
+                    👨‍💻 Team Member Onboarding
+                </h3>
+                <p style="font-size: 18px; opacity: 0.9; text-align: center; margin-bottom: 40px; line-height: 1.6; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    When new team members join, they get AROG automatically. Zero configuration needed.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 40px;">
+                    <div style="background: rgba(0,0,0,0.2); padding: 25px; border-radius: 16px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">1️⃣</div>
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #4facfe;">Clone with Submodules</h4>
+                        <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 12px; margin-top: 15px;">git clone --recurse-submodules &lt;repo&gt;</code>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.2); padding: 25px; border-radius: 16px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">2️⃣</div>
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #4facfe;">Install Dependencies</h4>
+                        <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 12px; margin-top: 15px;">cd .arog && npm install</code>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.2); padding: 25px; border-radius: 16px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">3️⃣</div>
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #4facfe;">Verify Setup</h4>
+                        <code style="display: block; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; font-size: 12px; margin-top: 15px;">npm run arog:health</code>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.2); padding: 25px; border-radius: 16px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">✅</div>
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #10b981;">Ready to Code!</h4>
+                        <p style="opacity: 0.8; font-size: 13px; margin-top: 15px;">All automation works<br>No configuration needed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final CTA -->
+            <div style="text-align: center; margin: 100px 0; padding: 70px 50px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15)); border-radius: 28px; border: 3px solid rgba(102, 126, 234, 0.4);" class="fade-in">
+                <h3 style="font-size: 48px; font-weight: 900; margin-bottom: 30px; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    🎯 Organization Setup Complete!
+                </h3>
+                <p style="font-size: 22px; opacity: 0.95; margin-bottom: 45px; max-width: 750px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+                    AROG is ready to deploy across your entire organization. Choose your method and start automating!
+                </p>
+                <a href="#deploy" style="display: inline-block; padding: 20px 60px; background: var(--gradient-1); color: white; text-decoration: none; border-radius: 50px; font-weight: 800; font-size: 20px; transition: all 0.3s; box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 20px 50px rgba(102, 126, 234, 0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 15px 40px rgba(102, 126, 234, 0.4)'">
+                    Ready to Share with Your Team →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 8: Deployment -->
+    <section id="deploy" class="chapter">
+        <div class="chapter-container">
+            <div class="chapter-number fade-in">Chapter 8</div>
             <h2 class="chapter-title fade-in">Share AROG with Your Team</h2>
             <p class="chapter-intro fade-in">
                 AROG is ready to share. Your team needs zero configuration. 
