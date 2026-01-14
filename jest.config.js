@@ -7,6 +7,7 @@ module.exports = {
     '!src/**/*.spec.{js,ts}',
     '!src/index.js',
   ],
+  coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'clover'],
   coverageThreshold: {
     global: {
       branches: 70,
