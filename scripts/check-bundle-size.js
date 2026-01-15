@@ -18,13 +18,16 @@ function formatSize(bytes) {
 function checkBundleSize() {
   const bundlePath = path.join(__dirname, '..', 'dist', 'bundle.js');
   
+  console.log('\n📦 @arog is checking bundle size...\n');
+  
   if (!fs.existsSync(bundlePath)) {
     console.log('⚠️  Bundle file not found. Run build first: npm run build');
+    console.log('\n🤖 @arog bundle check skipped.\n');
     return;
   }
   
   const size = getFileSize(bundlePath);
-  console.log(`\n📦 Bundle Size Check\n`);
+  console.log(`Bundle Size Analysis:\n`);
   console.log(`File: ${bundlePath}`);
   console.log(`Size: ${formatSize(size)}`);
   console.log(`Limit: ${formatSize(MAX_SIZE)}`);
@@ -42,6 +45,8 @@ function checkBundleSize() {
   } else {
     console.log(`✅ Bundle size is within limits`);
   }
+  
+  console.log('\n🤖 @arog bundle check complete.\n');
 }
 
 checkBundleSize();

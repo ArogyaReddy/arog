@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-console.log('🤖 AROG System Health Check\n');
+console.log('\n🔍 @arog is performing System Health Check...\n');
 
 const checks = [
   { name: 'Node.js Version', check: () => process.version, expected: 'v18+' },
@@ -28,4 +28,5 @@ checks.forEach(({ name, check, expected }) => {
 });
 
 console.log(`\n${allPassed ? '✅ All checks passed!' : '❌ Some checks failed'}`);
+console.log('\n🤖 @arog health check complete.\n');
 process.exit(allPassed ? 0 : 1);

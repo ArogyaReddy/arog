@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-console.log('🔍 AROG System Validation\n');
+console.log('\n✅ @arog is validating your system...\n');
 
 const fs = require('fs');
 
@@ -43,10 +43,12 @@ console.log('✅ Security Scanning');
 console.log('✅ Performance Monitoring');
 
 if (allValid) {
-  console.log('\n🎉 AROG system is fully configured and ready to use!');
+  console.log('\n🎉 @arog validation complete - System is fully configured!');
   console.log('\n📚 View documentation: npm run docs:serve');
-  console.log('🤖 Chat with AROG: @arog in VS Code');
+  console.log('🤖 Chat with @arog: Use @arog in VS Code Copilot Chat');
+  console.log('\n🤖 @arog is now actively monitoring and automating.\n');
 } else {
-  console.log('\n❌ Some files are missing. Run: npm run arog:setup');
+  console.log('\n❌ @arog found missing files. Run: npm run arog:setup');
+  console.log('\n🤖 @arog validation incomplete.\n');
   process.exit(1);
 }

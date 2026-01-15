@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-console.log('🚀 AROG Setup Script\n');
+console.log('\n⚙️  @arog is setting up your project...\n');
 
 const steps = [
   {
@@ -49,8 +49,9 @@ steps.forEach((step, index) => {
   }
 });
 
-console.log('\n\n🎉 AROG Setup Complete!\n');
+console.log('\n\n🎉 @arog Setup Complete!\n');
 console.log('Next steps:');
 console.log('  1. Run tests: npm test');
 console.log('  2. Start docs server: npm run docs:serve');
-console.log('  3. Chat with @arog in VS Code\n');
+console.log('  3. Chat with @arog in VS Code');
+console.log('\n🤖 @arog is now protecting your codebase 24/7.\n');
