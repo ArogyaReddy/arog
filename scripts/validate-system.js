@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-console.log('\n✅ @arog is validating your system...\n');
+import fs from 'fs';
 
-const fs = require('fs');
+console.log('\n✅ @arog is validating your system...\n');
 
 const requiredFiles = [
   'package.json',
