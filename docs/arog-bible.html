@@ -866,13 +866,45 @@
             .timeline-dot { left: 7px; }
             .nav-links { display: none; }
         }
+
+        /* Chapter 9: @arog Agent Capability Cards */
+        .capability-card-detailed {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .capability-card-detailed:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .capability-card-detailed h4 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .capability-card-detailed ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        .capability-card-detailed li {
+            padding: 5px 0 5px 25px;
+            position: relative;
+        }
+        .capability-card-detailed li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
     </style>
 </head>
 <body>
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav-content">
-            <div class="nav-logo">🤖 AROG</div>
+            <a href="#" class="nav-logo" style="text-decoration: none; color: inherit;">🤖 AROG</a>
             <ul class="nav-links">
                 <li><a href="#start">Quick Start</a></li>
                 <li><a href="#features">Features</a></li>
@@ -881,7 +913,7 @@
                 <li><a href="#workflows">Workflows</a></li>
                 <li><a href="#installation">📦 Install</a></li>
                 <li><a href="#organization">🏢 Org Setup</a></li>
-                <li><a href="#chapter-9">🤖 @arog Agent</a></li>
+                <li><a href="#arogAgent">🤖 @arog Agent</a></li>
                 <li><a href="#deploy">Deploy</a></li>
             </ul>
         </div>
@@ -2486,13 +2518,13 @@ npm run arog:validate
     </script>
 
     <!-- Chapter 9: @arog - Your Complete Autonomous Agent -->
-    <section id="chapter-9" class="chapter">
-        <div class="chapter-header">
-            <h2>Chapter 9: @arog - Your Complete Autonomous Agent</h2>
-            <p class="chapter-subtitle">ONE @arog = EVERYTHING in Your Repository, Project & Organization</p>
-        </div>
-
-        <div class="chapter-content">
+    <section id="arogAgent" class="chapter">
+        <div class="chapter-container">
+            <div class="chapter-number fade-in">Chapter 9</div>
+            <h2 class="chapter-title fade-in">@arog - Your Complete Autonomous Agent</h2>
+            <p class="chapter-intro fade-in">
+                ONE @arog = EVERYTHING in Your Repository, Project & Organization
+            </p>
             <div class="concept-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 60px 40px; border-radius: 30px; margin-bottom: 40px;">
                 <h3 style="font-size: 3.5em; margin-bottom: 20px; color: white;">@arog</h3>
                 <p style="font-size: 2.5em; font-weight: bold; margin-bottom: 20px; color: #ffd700;">ONE @arog = EVERYTHING</p>
@@ -2521,7 +2553,8 @@ npm run arog:validate
 
             <h3 style="color: #667eea; margin: 40px 0 20px 0; font-size: 2em;">🚀 What @arog Can Do</h3>
 
-            <div class="grid-2">
+            <!-- <div class="grid-2"> -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin: 40px 0;">
                 <!-- Code Development -->
                 <div class="capability-card-detailed">
                     <div style="font-size: 3em; margin-bottom: 15px;">💻</div>
@@ -2763,39 +2796,6 @@ npm run arog:validate
                 </div>
             </div>
 
-            <style>
-                .capability-card-detailed {
-                    background: white;
-                    border-radius: 15px;
-                    padding: 30px;
-                    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                    transition: transform 0.3s ease;
-                }
-                .capability-card-detailed:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-                }
-                .capability-card-detailed h4 {
-                    color: #667eea;
-                    font-size: 1.5em;
-                    margin-bottom: 15px;
-                }
-                .capability-card-detailed ul {
-                    list-style: none;
-                    padding: 0;
-                    margin: 15px 0;
-                }
-                .capability-card-detailed li {
-                    padding: 5px 0 5px 25px;
-                    position: relative;
-                }
-                .capability-card-detailed li:before {
-                    content: "✅";
-                    position: absolute;
-                    left: 0;
-                }
-            </style>
-
             <div class="info-box" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; margin: 60px 0;">
                 <h3 style="color: white; font-size: 2em;">💡 Real-World @arog Workflows</h3>
                 
@@ -2946,6 +2946,26 @@ npm run arog:validate
                 <a href="#chapter-8" class="nav-btn">← Previous: Advanced Customization</a>
                 <a href="#" class="nav-btn">Back to Top ↑</a>
             </div>
+        </div>
+    </section>
+
+    <!-- Quick Access Links -->
+    <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 20px; text-align: center; margin-top: 60px;">
+        <h2 style="font-size: 2.5em; margin-bottom: 20px; color: white;">📚 AROG Documentation</h2>
+        <p style="font-size: 1.2em; margin-bottom: 30px; color: rgba(255,255,255,0.95);">Explore all AROG resources and guides</p>
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <a href="index.html" style="background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-size: 1.2em; font-weight: bold; display: inline-block; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                🏠 Home
+            </a>
+            <a href="setup-guide.html" style="background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-size: 1.2em; font-weight: bold; display: inline-block; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                📖 Setup Guide
+            </a>
+            <a href="configuration.html" style="background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-size: 1.2em; font-weight: bold; display: inline-block; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                ⚙️ Configuration
+            </a>
+            <a href="api-reference.html" style="background: white; color: #667eea; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-size: 1.2em; font-weight: bold; display: inline-block; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                📚 API Reference
+            </a>
         </div>
     </section>
 </body>
