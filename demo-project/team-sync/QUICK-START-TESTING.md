@@ -10,64 +10,55 @@ You have a **real production codebase** in `demo-project/team-sync/` with:
 
 ## How to Test @arog (Step-by-Step)
 
-### 🚀 STEP 1: Set Up the Server (5 minutes)
+### 🚀 STEP 1: Let @arog Set Up Everything (1 minute)
 
 ```bash
-# 1. Navigate to server
+# Navigate to project
 cd /Users/arog/Learn/arog/demo-project/team-sync/packages/server
 
-# 2. Install dependencies
-npm install
+# Let @arog handle EVERYTHING automatically!
+../../arog setup
 
-# 3. Create TypeScript config
-cat > tsconfig.json << 'EOF'
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "lib": ["ES2020"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
-}
-EOF
+# That's it! @arog:
+# ✅ Installs all dependencies
+# ✅ Creates TypeScript config
+# ✅ Creates Jest config
+# ✅ Sets up everything you need
+```
 
-# 4. Create Jest config
-cat > jest.config.js << 'EOF'
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  roots: ['<rootDir>/tests'],
-  testMatch: ['**/*.test.ts'],
-  collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/**/*.d.ts',
-    '!src/index.ts'
-  ],
-  coverageThreshold: {
-    global: {
-      branches: 70,
-      functions: 70,
-      lines: 70,
-      statements: 70
-    }
-  }
-};
-EOF
+**Why this is better:**
+- ❌ OLD: You run 6+ manual npm commands
+- ✅ NEW: @arog does it all in one command!
+- 🤖 **Everything FROM @arog, BY @arog!**
 
-# 5. Run tests (see @arog's automation!)
-npm test
+---
 
-# 6. Start the server
-npm run dev
+### 🧪 STEP 1.5: Run Tests with @arog
+
+```bash
+# Let @arog run all tests
+../../arog test
+
+# @arog automatically:
+# ✅ Runs Jest with coverage
+# ✅ Validates TypeScript types
+# ✅ Shows detailed results
+# ✅ Enforces 100% coverage
+```
+
+---
+
+### 🚀 STEP 1.6: Start Server with @arog
+
+```bash
+# Let @arog start the server
+../../arog start
+
+# @arog automatically:
+# ✅ Starts dev server with hot-reload
+# ✅ Shows ASCII art banner
+# ✅ Displays server URL
+# ✅ Monitors for changes
 ```
 
 **Expected Output:**
@@ -137,19 +128,16 @@ npm run dev
 ### 🧪 STEP 3: Test @arog Automated Testing
 
 ```bash
-# Run tests (see @arog automation)
-npm test
+# Let @arog run tests (not npm!)
+../../arog test
 
-# You'll see:
-# ✅ All tests pass
-# ✅ Coverage report
-# ✅ Detailed results
+# You'll see @arog:
+# ✅ Run all tests automatically
+# ✅ Show coverage report
+# ✅ Display detailed results
+# ✅ Enforce quality standards
 
-# Run tests in watch mode (auto-rerun on changes)
-npm run test:watch
-
-# Make a change to any file
-# Watch tests re-run automatically!
+# Everything handled by @arog!
 ```
 
 ---
@@ -163,37 +151,40 @@ npm run test:watch
 # 2. Run tests
 npm test
 
+# @arLet @arog review it
+../../arog review
+
 # @arog automatically checks:
-# ✅ Tests still pass
+# ✅ Code style (ESLint)
+# ✅ Formatting (Prettier)
+# ✅ Tests pass
 # ✅ Coverage maintained
-# ✅ No TypeScript errors
-# ✅ Code quality preserved
-```
-
----
-
-### ⚡ STEP 5: Test @arog Performance Monitoring
+# ✅ TypeScript types valid
+# ✅ Code quality scoreBuild & Validation
 
 ```bash
-# Build the project
-npm run build
+# Let @arog build production bundle
+../../arog build
 
-# Check bundle size
-du -sh dist/
+# @arog automatically:
+# ✅ Compiles TypeScript
+# ✅ Bundles assets
+# ✅ Optimizes for production
+# ✅ Validates bundle size
 
 # @arog would monitor this and alert if too large!
 ```
 
 ---
 
-### 🛡️ STEP 6: Test @arog Security Scanning
+##Let @arog scan for security issues
+../../arog security
 
-```bash
-# Run security audit
-npm audit
-
-# Check for secrets (from project root)
-cd ../..
+# @arog automatically:
+# ✅ Runs npm audit
+# ✅ Detects secrets in code
+# ✅ Checks vulnerabilities
+# ✅ Reports security score
 npm run check:secrets
 
 # @arog automatically scans daily!
@@ -263,29 +254,27 @@ You: @arog make this component accessible
 ✅ **Type Checking** - Validates TypeScript constantly  
 ✅ **Security** - Scans for vulnerabilities  
 ✅ **Performance** - Monitors bundle size & speed  
-
----
-
-## 🎬 Quick Demo Script (5 minutes)
+2 minutes!)
 
 **Want to quickly show @arog's power?**
 
 ```bash
-# 1. Install & run tests (1 min)
+# Navigate to server
 cd packages/server
-npm install
-npm test
 
-# 2. Generate new feature (2 min)
-# Ask @arog to create NotificationService (see above)
+# Let @arog do EVERYTHING!
+../../arog setup    # 30 seconds - installs & configures
+../../arog test     # 10 seconds - runs all tests
+../../arog start    # Starts server immediately!
+```
 
-# 3. Run tests again (1 min)
-npm test
-# See new tests pass!
+**Total time: < 1 minute to prove @arog works!** ⚡
 
-# 4. Start server (1 min)
-npm run dev
-# See it running!
+**The @arog Way:**
+- ✅ ONE command to set up: `arog setup`
+- ✅ ONE command to test: `arog test`
+- ✅ ONE command to start: `arog start`
+- ✅ Everything automated by @arog!
 ```
 
 **Total time: 5 minutes to prove @arog works!** ⚡

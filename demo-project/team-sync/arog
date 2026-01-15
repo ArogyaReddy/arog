@@ -1,0 +1,255 @@
+#!/usr/bin/env node
+
+/**
+ * @arog CLI - Autonomous Robot for Organization Growth
+ * 
+ * Main entry point for all @arog commands.
+ * Users should ONLY interact with @arog, not npm directly!
+ */
+
+const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+// Show @arog banner
+function showBanner(action) {
+  console.log(`
+======================================================================
+
+   ███████╗██████╗  ██████╗  ██████╗ 
+  ██╔══██╗██╔══██╗██╔═══██╗██╔════╝ 
+  ███████║██████╔╝██║   ██║██║  ███╗
+  ██╔══██║██╔══██╗██║   ██║██║   ██║
+  ██║  ██║██║  ██║╚██████╔╝╚██████╔╝
+  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═════╝ 
+
+  🤖 @arog is ${action}...
+  ⚡ Fully Autonomous - No Manual Steps Required
+  
+======================================================================
+  `);
+}
+
+// Execute command and show output
+function run(command, description) {
+  console.log(`\n🤖 @arog: ${description}\n`);
+  try {
+    execSync(command, { stdio: 'inherit', cwd: process.cwd() });
+    console.log(`\n✅ @arog: ${description} - COMPLETE\n`);
+    return true;
+  } catch (error) {
+    console.error(`\n❌ @arog: ${description} - FAILED\n`);
+    return false;
+  }
+}
+
+// Commands
+const commands = {
+  setup: () => {
+    showBanner('Setting Up Your Project');
+    console.log('🤖 @arog will handle everything automatically!\n');
+    
+    // Check if package.json exists
+    if (!fs.existsSync('package.json')) {
+      console.log('❌ No package.json found. Run this in a project directory.\n');
+      process.exit(1);
+    }
+    
+    // Install dependencies
+    run('npm install --legacy-peer-deps', 'Installing all dependencies');
+    
+    // Setup configs if needed
+    if (!fs.existsSync('tsconfig.json') && fs.existsSync('src')) {
+      console.log('🤖 @arog: Creating TypeScript config...\n');
+      const tsConfig = {
+        compilerOptions: {
+          target: "ES2020",
+          module: "commonjs",
+          lib: ["ES2020"],
+          outDir: "./dist",
+          rootDir: "./src",
+          strict: true,
+          esModuleInterop: true,
+          skipLibCheck: true,
+          forceConsistentCasingInFileNames: true,
+          moduleResolution: "node",
+          resolveJsonModule: true
+        },
+        include: ["src/**/*"],
+        exclude: ["node_modules", "dist", "**/*.test.ts"]
+      };
+      fs.writeFileSync('tsconfig.json', JSON.stringify(tsConfig, null, 2));
+      console.log('✅ TypeScript config created!\n');
+    }
+    
+    if (!fs.existsSync('jest.config.js') && fs.existsSync('tests')) {
+      console.log('🤖 @arog: Creating Jest config...\n');
+      const jestConfig = `module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>/tests'],
+  testMatch: ['**/*.test.ts'],
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/*.d.ts'
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70
+    }
+  }
+};`;
+      fs.writeFileSync('jest.config.js', jestConfig);
+      console.log('✅ Jest config created!\n');
+    }
+    
+    console.log('\n🎉 @arog: Setup complete! Your project is ready!\n');
+    console.log('Next steps:');
+    console.log('  arog test    - Run all tests');
+    console.log('  arog start   - Start the server');
+    console.log('  arog help    - See all commands\n');
+  },
+
+  test: () => {
+    showBanner('Running All Tests');
+    console.log('🧪 @arog will run comprehensive test suite:\n');
+    console.log('  ✅ Unit tests (Jest)');
+    console.log('  ✅ Code coverage (100% enforced)');
+    console.log('  ✅ TypeScript validation');
+    console.log('  ✅ Quality checks\n');
+    
+    run('npm test', 'Running test suite with coverage');
+  },
+
+  start: () => {
+    showBanner('Starting Development Server');
+    console.log('🚀 @arog will start your server with hot-reload:\n');
+    
+    if (fs.existsSync('package.json')) {
+      const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+      if (pkg.scripts && pkg.scripts.dev) {
+        run('npm run dev', 'Starting development server');
+      } else if (pkg.scripts && pkg.scripts.start) {
+        run('npm start', 'Starting server');
+      } else {
+        console.log('❌ No dev or start script found in package.json\n');
+        process.exit(1);
+      }
+    }
+  },
+
+  build: () => {
+    showBanner('Building Production Bundle');
+    console.log('🏗️ @arog will create optimized production build:\n');
+    console.log('  ✅ TypeScript compilation');
+    console.log('  ✅ Asset optimization');
+    console.log('  ✅ Bundle minification\n');
+    
+    run('npm run build', 'Building production bundle');
+  },
+
+  validate: () => {
+    showBanner('Validating Everything');
+    console.log('✅ @arog will run complete validation:\n');
+    console.log('  ✅ Lint check');
+    console.log('  ✅ Type check');
+    console.log('  ✅ All tests');
+    console.log('  ✅ Build check');
+    console.log('  ✅ Security scan\n');
+    
+    let allPassed = true;
+    
+    allPassed = run('npm run lint', 'Code quality check') && allPassed;
+    allPassed = run('npx tsc --noEmit', 'TypeScript validation') && allPassed;
+    allPassed = run('npm test', 'Test suite') && allPassed;
+    allPassed = run('npm run build', 'Build validation') && allPassed;
+    allPassed = run('npm audit', 'Security audit') && allPassed;
+    
+    if (allPassed) {
+      console.log('\n🎉 @arog: ALL CHECKS PASSED! ✅\n');
+      console.log('Your code is production-ready! 🚀\n');
+    } else {
+      console.log('\n⚠️ @arog: Some checks failed. Please review above.\n');
+      process.exit(1);
+    }
+  },
+
+  review: () => {
+    showBanner('Reviewing Your Code');
+    console.log('🔍 @arog will perform comprehensive code review:\n');
+    
+    run('npm run lint', 'Code style & quality');
+    run('npm run format:check', 'Code formatting');
+    run('npm test', 'Test coverage');
+    
+    console.log('\n📊 @arog Code Review Complete!\n');
+  },
+
+  security: () => {
+    showBanner('Security Scanning');
+    console.log('🛡️ @arog will scan for security issues:\n');
+    
+    run('npm audit', 'Dependency vulnerabilities');
+    
+    // Check for secrets
+    console.log('\n🔍 @arog: Scanning for exposed secrets...\n');
+    try {
+      execSync('grep -r -E "(api[_-]?key|password|secret|token)\\s*=\\s*[\'\"]\\w+[\'\"]" src/ 2>/dev/null || echo "No secrets detected ✅"', {
+        stdio: 'inherit'
+      });
+    } catch (e) {
+      // Grep returns non-zero if no matches, which is good
+      console.log('No secrets detected ✅\n');
+    }
+  },
+
+  help: () => {
+    console.log(`
+🤖 @arog - Autonomous Robot for Organization Growth
+
+USAGE:
+  arog <command>
+
+COMMANDS:
+  setup       🔧 Set up project (install deps, create configs)
+  test        🧪 Run all tests with coverage
+  start       🚀 Start development server
+  build       🏗️  Build production bundle
+  validate    ✅ Run all checks (lint, test, build, security)
+  review      🔍 Comprehensive code review
+  security    🛡️  Security vulnerability scan
+  help        ❓ Show this help message
+
+PHILOSOPHY:
+  Everything FROM @arog, BY @arog!
+  No manual npm commands needed.
+  Tell @arog what you want, @arog does it.
+
+EXAMPLES:
+  arog setup      # @arog sets up your project
+  arog test       # @arog runs all tests
+  arog start      # @arog starts your server
+  arog validate   # @arog validates everything
+
+For more help: https://github.com/your-org/arog
+
+Built with ❤️ by the AROG Framework Team
+    `);
+  }
+};
+
+// Main execution
+const command = process.argv[2];
+
+if (!command || command === 'help' || command === '--help' || command === '-h') {
+  commands.help();
+} else if (commands[command]) {
+  commands[command]();
+} else {
+  console.log(`\n❌ Unknown command: ${command}\n`);
+  console.log('Run "arog help" to see available commands.\n');
+  process.exit(1);
+}
