@@ -28,8 +28,7 @@
     "arog:validate": "echo '\n✅ @arog is validating everything...\n' && npm run lint && npm test && npm run build && npm audit",
     "check:secrets": "echo 'Running secret detection...' && grep -r -E '(api[_-]?key|password|secret|token)\\s*=\\s*['\\\"]\\w+['\\\"]' packages/ || echo 'No secrets detected ✅'",
     "lighthouse": "lhci autorun",
-    "typecheck": "tsc --noEmit",
-    "prepare": "husky install"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "express": "^4.18.2",
