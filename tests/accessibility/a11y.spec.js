@@ -1,5 +1,5 @@
-const { test, expect } = require('@playwright/test');
-const { injectAxe, checkA11y } = require('axe-playwright');
+import { test, expect } from '@playwright/test';
+import { injectAxe, checkA11y } from 'axe-playwright';
 
 test.describe('Accessibility Tests', () => {
   test('homepage should be accessible', async ({ page }) => {
