@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "bin": {
     "arog": "./bin/arog-interactive.js",
-    "arog-cli": "./bin/arog.js"
+    "arog-cli": "./bin/arog.cjs"
   },
   "type": "module",
   "files": [

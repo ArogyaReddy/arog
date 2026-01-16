@@ -126,7 +126,7 @@ program
   .description('Analyze existing project structure and identify gaps')
   .action(() => {
     showArogBanner('Project Analysis');
-    const ProjectAnalyzer = require('../scripts/analyze-project.js');
+    const ProjectAnalyzer = require('../scripts/analyze-project.cjs');
     const analyzer = new ProjectAnalyzer();
     analyzer.analyze();
     analyzer.displayReport();
@@ -138,7 +138,7 @@ program
   .description('Integrate AROG into existing project')
   .action(async () => {
     showArogBanner('AROG Integration');
-    const ArogIntegrator = require('../scripts/integrate-arog.js');
+    const ArogIntegrator = require('../scripts/integrate-arog.cjs');
     const integrator = new ArogIntegrator();
     await integrator.integrate();
   });
@@ -150,7 +150,7 @@ program
   .description('Run all test suites (unit, e2e, performance, security, accessibility)')
   .action(() => {
     showArogBanner('Running All Test Suites');
-    const ArogTestRunner = require('../scripts/run-tests.js');
+    const ArogTestRunner = require('../scripts/run-tests.cjs');
     const runner = new ArogTestRunner();
     runner.runAll();
   });
@@ -162,7 +162,7 @@ program
   .description('Run unit tests')
   .action(() => {
     showArogBanner('Running Unit Tests');
-    const ArogTestRunner = require('../scripts/run-tests.js');
+    const ArogTestRunner = require('../scripts/run-tests.cjs');
     const runner = new ArogTestRunner();
     runner.runUnitTests();
   });
@@ -174,7 +174,7 @@ program
   .description('Run functional/integration tests')
   .action(() => {
     showArogBanner('Running Functional Tests');
-    const ArogTestRunner = require('../scripts/run-tests.js');
+    const ArogTestRunner = require('../scripts/run-tests.cjs');
     const runner = new ArogTestRunner();
     runner.runIntegrationTests();
   });
@@ -186,7 +186,7 @@ program
   .description('Run end-to-end tests')
   .action(() => {
     showArogBanner('Running E2E Tests');
-    const ArogTestRunner = require('../scripts/run-tests.js');
+    const ArogTestRunner = require('../scripts/run-tests.cjs');
     const runner = new ArogTestRunner();
     runner.runE2ETests();
   });
@@ -198,7 +198,7 @@ program
   .description('Run performance tests')
   .action(() => {
     showArogBanner('Running Performance Tests');
-    const ArogTestRunner = require('../scripts/run-tests.js');
+    const ArogTestRunner = require('../scripts/run-tests.cjs');
     const runner = new ArogTestRunner();
     runner.runPerformanceTests();
   });
@@ -210,7 +210,7 @@ program
   .description('Run security vulnerability scans')
   .action(() => {
     showArogBanner('Running Security Tests');
-    const ArogTestRunner = require('../scripts/run-tests.js');
+    const ArogTestRunner = require('../scripts/run-tests.cjs');
     const runner = new ArogTestRunner();
     runner.runSecurityTests();
   });
@@ -222,7 +222,7 @@ program
   .description('Run accessibility (a11y) tests')
   .action(() => {
     showArogBanner('Running Accessibility Tests');
-    const ArogTestRunner = require('../scripts/run-tests.js');
+    const ArogTestRunner = require('../scripts/run-tests.cjs');
     const runner = new ArogTestRunner();
     runner.runAccessibilityTests();
   });
