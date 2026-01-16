@@ -242,7 +242,7 @@ jobs:
           # Slack/Email notification
 
   notify:
-    needs: [post-deployment-verification, rollback]
+    needs: [pre-deployment-validation, post-deployment-verification, rollback]
     if: always()
     runs-on: ubuntu-latest
     
