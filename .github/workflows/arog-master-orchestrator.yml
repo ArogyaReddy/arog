@@ -273,7 +273,7 @@ jobs:
   # ============================================================
   
   generate-reports:
-    needs: [deployment-checks, setup-monitoring]
+    needs: [orchestrator-init, deployment-checks, setup-monitoring]
     if: always()
     runs-on: ubuntu-latest
     
