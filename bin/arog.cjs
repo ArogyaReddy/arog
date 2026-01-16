@@ -227,6 +227,98 @@ program
     runner.runAccessibilityTests();
   });
 
+// Run API Tests Command
+program
+  .command('test-api')
+  .alias('run-api-tests')
+  .description('Run API tests (REST/GraphQL)')
+  .action(() => {
+    showArogBanner('Running API Tests');
+    const { execSync } = require('child_process');
+    try {
+      execSync('npm run test:api', { stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️  API tests not configured yet');
+      process.exit(1);
+    }
+  });
+
+// Run Load Tests Command
+program
+  .command('test-load')
+  .alias('run-load-tests')
+  .description('Run load/stress tests (k6)')
+  .action(() => {
+    showArogBanner('Running Load Tests');
+    const { execSync } = require('child_process');
+    try {
+      execSync('npm run test:load', { stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️  Load tests not configured - install k6');
+      process.exit(1);
+    }
+  });
+
+// Run Visual Regression Tests Command
+program
+  .command('test-visual')
+  .alias('run-visual-tests')
+  .description('Run visual regression tests')
+  .action(() => {
+    showArogBanner('Running Visual Regression Tests');
+    const { execSync } = require('child_process');
+    try {
+      execSync('npm run test:visual', { stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️  Visual tests not configured - install BackstopJS');
+      process.exit(1);
+    }
+  });
+
+// Run Mutation Tests Command
+program
+  .command('test-mutation')
+  .alias('run-mutation-tests')
+  .description('Run mutation tests (test quality)')
+  .action(() => {
+    showArogBanner('Running Mutation Tests');
+    const { execSync } = require('child_process');
+    try {
+      execSync('npm run test:mutation', { stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️  Mutation tests not configured');
+      process.exit(1);
+    }
+  });
+
+// Docker Commands
+program
+  .command('docker-build')
+  .description('Build Docker image')
+  .action(() => {
+    showArogBanner('Building Docker Image');
+    const { execSync } = require('child_process');
+    execSync('npm run docker:build', { stdio: 'inherit' });
+  });
+
+program
+  .command('docker-test')
+  .description('Test Docker container')
+  .action(() => {
+    showArogBanner('Testing Docker Container');
+    const { execSync } = require('child_process');
+    execSync('npm run docker:test', { stdio: 'inherit' });
+  });
+
+program
+  .command('docker-scan')
+  .description('Scan Docker image for vulnerabilities')
+  .action(() => {
+    showArogBanner('Scanning Docker Image');
+    const { execSync } = require('child_process');
+    execSync('npm run docker:scan', { stdio: 'inherit' });
+  });
+
 // Parse arguments
 program.parse(process.argv);
 
