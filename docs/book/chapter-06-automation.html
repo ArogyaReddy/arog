@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6: Automation Workflows | The AROG Book</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --gray: #718096;
+            --accent: #fbbf24;
+            --success: #48bb78;
+            --danger: #f56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .book-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .chapter-indicator {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .toc-link {
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 2rem 4rem;
+        }
+
+        .chapter {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .chapter-number {
+            font-size: 1rem;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-title {
+            font-size: 3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .chapter-subtitle {
+            font-size: 1.3rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin: 3rem 0 1.5rem;
+            padding-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid var(--primary);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        .highlight-box {
+            background: #fbbf2415;
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .workflow-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .workflow-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .workflow-icon {
+            font-size: 2.5rem;
+        }
+
+        .workflow-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .workflow-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .command-box {
+            background: #1a202c;
+            color: #00ff00;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .command-box .prompt {
+            color: #fbbf24;
+        }
+
+        .command-box .output {
+            color: #68d391;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .benefits-list li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin: 2rem 0;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -2.4rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .timeline-content {
+            background: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .timeline-time {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .nav-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-button.prev:before {
+            content: "← ";
+        }
+
+        .nav-button.next:after {
+            content: " →";
+        }
+
+        @media (max-width: 768px) {
+            .workflow-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 100px 1rem 2rem;
+            }
+
+            .chapter {
+                padding: 2rem 1.5rem;
+            }
+
+            .chapter-title {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="book-nav">
+        <div class="book-title">📖 The AROG Book</div>
+        <div class="chapter-indicator">Chapter 6 of 12</div>
+        <a href="index.html" class="toc-link">📚 Table of Contents</a>
+    </nav>
+
+    <div class="container">
+        <article class="chapter">
+            <header class="chapter-header">
+                <div class="chapter-number">Chapter Six</div>
+                <h1 class="chapter-title">Automation Workflows</h1>
+                <p class="chapter-subtitle">22 Workflows, Zero Human Intervention</p>
+            </header>
+
+            <section>
+                <div class="quote-box">
+                    "The best automation is the kind you never think about. It just works, every time, without fail."
+                </div>
+
+                <h2>⚙️ The Automation Gap</h2>
+                
+                <p>It's 3:00 PM on a Friday. Sarah just pushed a critical bug fix to production. Now comes the checklist:</p>
+
+                <div class="highlight-box">
+                    <p><strong>The Manual Gauntlet:</strong></p>
+                    <ul class="benefits-list">
+                        <li>Run linter manually</li>
+                        <li>Run unit tests locally</li>
+                        <li>Run E2E tests (if you remember)</li>
+                        <li>Check code coverage</li>
+                        <li>Build the project</li>
+                        <li>Check bundle size</li>
+                        <li>Run security scan (maybe)</li>
+                        <li>Deploy to staging</li>
+                        <li>Manual smoke tests</li>
+                        <li>Deploy to production</li>
+                        <li>Monitor for issues</li>
+                        <li>Pray nothing breaks over the weekend</li>
+                    </ul>
+                    <p><strong>Reality Check:</strong> She skips half of these because she's human and it's Friday afternoon. Monday brings production incidents.</p>
+                </div>
+
+                <h2>🚀 The AROG Difference</h2>
+
+                <p>Sarah pushes her code. She closes her laptop and leaves for the weekend. Because AROG is already running 22 automated workflows that will:</p>
+
+                <ul class="benefits-list">
+                    <li>Run all tests automatically</li>
+                    <li>Check security vulnerabilities</li>
+                    <li>Validate performance budgets</li>
+                    <li>Build and deploy to staging</li>
+                    <li>Run smoke tests</li>
+                    <li>Deploy to production (if everything passes)</li>
+                    <li>Monitor health and rollback if needed</li>
+                </ul>
+
+                <p><strong>All in under 7 minutes. Without her touching anything.</strong></p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">22</div>
+                        <div class="stat-label">Automated Workflows</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Human Intervention</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">7</div>
+                        <div class="stat-label">Minutes to Production</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Confidence Level</div>
+                    </div>
+                </div>
+
+                <h2>🎯 The Four Workflow Categories</h2>
+
+                <p>AROG organizes its 22 workflows into four categories, each triggered at different points in your development lifecycle:</p>
+
+                <h3>1. On Every Commit (Lightning Fast Feedback)</h3>
+
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">⚡</span>
+                            <div>
+                                <h3 class="workflow-title">Lint & Format</h3>
+                                <span class="workflow-badge">30 SEC</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Every git push</p>
+                        <p><strong>What It Does:</strong> Runs ESLint and Prettier to catch code style issues instantly.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> git push origin feature-branch
+<span class="output">✓ Linting... passed (12s)
+✓ Formatting... passed (8s)
+✓ TypeScript check... passed (10s)</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Catches 70% of code review comments before reviewers even see the code.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🧪</span>
+                            <div>
+                                <h3 class="workflow-title">Unit Tests</h3>
+                                <span class="workflow-badge">45 SEC</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Every git push</p>
+                        <p><strong>What It Does:</strong> Runs 847 unit tests with 100% coverage requirement.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Running unit tests...
+<span class="output">Tests: 847 passed, 847 total
+Coverage: 100% (Lines: 2,431/2,431)
+Time: 34.2s</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Prevents regressions before they reach code review.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🔒</span>
+                            <div>
+                                <h3 class="workflow-title">Security Scan</h3>
+                                <span class="workflow-badge">20 SEC</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Every git push</p>
+                        <p><strong>What It Does:</strong> Scans for known vulnerabilities, exposed secrets, and security anti-patterns.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> npm audit...
+<span class="output">✓ 0 vulnerabilities found
+✓ No secrets detected
+✓ Security patterns validated</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Blocks vulnerable dependencies before they enter your codebase.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">📦</span>
+                            <div>
+                                <h3 class="workflow-title">Build Check</h3>
+                                <span class="workflow-badge">60 SEC</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Every git push</p>
+                        <p><strong>What It Does:</strong> Verifies the project builds successfully.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> npm run build
+<span class="output">✓ Build completed
+✓ Bundle size: 347 KB (under 500 KB limit)
+✓ No build warnings</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Catches build-breaking changes immediately.</p>
+                    </div>
+                </div>
+
+                <h3>2. On Pull Requests (Complete Validation)</h3>
+
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🎭</span>
+                            <div>
+                                <h3 class="workflow-title">E2E Tests</h3>
+                                <span class="workflow-badge">4 MIN</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Pull request opened/updated</p>
+                        <p><strong>What It Does:</strong> Runs full Playwright test suite across 5 browsers.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Running E2E tests...
+<span class="output">Chrome:  ✓ 52 tests passed
+Firefox: ✓ 52 tests passed
+Safari:  ✓ 52 tests passed
+Edge:    ✓ 52 tests passed
+Mobile:  ✓ 52 tests passed</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Ensures features work across all user environments.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">♿</span>
+                            <div>
+                                <h3 class="workflow-title">Accessibility</h3>
+                                <span class="workflow-badge">90 SEC</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Pull request opened/updated</p>
+                        <p><strong>What It Does:</strong> Validates WCAG 2.1 AA compliance using axe-core.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Running accessibility tests...
+<span class="output">✓ WCAG 2.1 AA: Passed
+✓ Color contrast: Passed
+✓ Keyboard navigation: Passed
+✓ Screen reader support: Passed</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Makes your app accessible to all users.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">⚡</span>
+                            <div>
+                                <h3 class="workflow-title">Performance</h3>
+                                <span class="workflow-badge">2 MIN</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Pull request opened/updated</p>
+                        <p><strong>What It Does:</strong> Runs Lighthouse CI to enforce performance budgets.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Running Lighthouse CI...
+<span class="output">Performance: 98/100
+Accessibility: 100/100
+Best Practices: 100/100
+SEO: 100/100
+✓ All budgets met</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Prevents performance regressions.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🔍</span>
+                            <div>
+                                <h3 class="workflow-title">Code Quality</h3>
+                                <span class="workflow-badge">45 SEC</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Pull request opened/updated</p>
+                        <p><strong>What It Does:</strong> Deep code analysis for complexity, duplication, and maintainability.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Analyzing code quality...
+<span class="output">✓ Complexity: Low
+✓ Duplication: 0%
+✓ Maintainability: A
+✓ Test coverage: 100%</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Maintains code health as your project grows.</p>
+                    </div>
+                </div>
+
+                <h3>3. On Merge to Main (Production Pipeline)</h3>
+
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🏗️</span>
+                            <div>
+                                <h3 class="workflow-title">Production Build</h3>
+                                <span class="workflow-badge">90 SEC</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Merge to main branch</p>
+                        <p><strong>What It Does:</strong> Creates optimized production build.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> npm run build:production
+<span class="output">✓ Minified and optimized
+✓ Bundle size: 342 KB
+✓ Source maps generated
+✓ Assets uploaded to CDN</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Ensures production assets are optimized.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🚀</span>
+                            <div>
+                                <h3 class="workflow-title">Deploy Staging</h3>
+                                <span class="workflow-badge">2 MIN</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> After successful build</p>
+                        <p><strong>What It Does:</strong> Deploys to staging environment for final validation.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Deploying to staging...
+<span class="output">✓ Build uploaded
+✓ Database migrated
+✓ Cache cleared
+✓ Staging ready: https://staging.app.com</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Final safety check before production.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">💨</span>
+                            <div>
+                                <h3 class="workflow-title">Smoke Tests</h3>
+                                <span class="workflow-badge">60 SEC</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> After staging deployment</p>
+                        <p><strong>What It Does:</strong> Validates critical paths work in staging.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Running smoke tests...
+<span class="output">✓ Homepage loads
+✓ Login works
+✓ API responsive
+✓ Database connected</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Catches environment-specific issues.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🎉</span>
+                            <div>
+                                <h3 class="workflow-title">Deploy Production</h3>
+                                <span class="workflow-badge">3 MIN</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> After smoke tests pass</p>
+                        <p><strong>What It Does:</strong> Zero-downtime deployment to production.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Deploying to production...
+<span class="output">✓ Blue-green deployment initiated
+✓ Health checks passed
+✓ Traffic switched to new version
+✓ Production live: https://app.com</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Safe, automated production deployments.</p>
+                    </div>
+                </div>
+
+                <h3>4. Scheduled Workflows (Continuous Vigilance)</h3>
+
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🔐</span>
+                            <div>
+                                <h3 class="workflow-title">Daily Security Audit</h3>
+                                <span class="workflow-badge">DAILY</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Every day at 2 AM UTC</p>
+                        <p><strong>What It Does:</strong> Comprehensive security scan of dependencies and code.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Running daily security audit...
+<span class="output">✓ 1,247 dependencies scanned
+✓ 0 new vulnerabilities
+✓ Security posture: Excellent</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> New vulnerabilities are discovered daily.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">📦</span>
+                            <div>
+                                <h3 class="workflow-title">Dependency Updates</h3>
+                                <span class="workflow-badge">WEEKLY</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Every Monday at 9 AM UTC</p>
+                        <p><strong>What It Does:</strong> Checks for and tests dependency updates.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Checking for updates...
+<span class="output">✓ 7 updates available
+✓ All tests pass with updates
+✓ PR created: "chore: update dependencies"</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Keeps your project up-to-date and secure.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">🏥</span>
+                            <div>
+                                <h3 class="workflow-title">Health Check</h3>
+                                <span class="workflow-badge">HOURLY</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Every hour</p>
+                        <p><strong>What It Does:</strong> Monitors production health and alerts on issues.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Health check...
+<span class="output">✓ API: Responding
+✓ Database: Connected
+✓ Cache: Operational
+✓ Disk: 34% used</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Catches production issues proactively.</p>
+                    </div>
+
+                    <div class="workflow-card">
+                        <div class="workflow-header">
+                            <span class="workflow-icon">📊</span>
+                            <div>
+                                <h3 class="workflow-title">Weekly Reports</h3>
+                                <span class="workflow-badge">WEEKLY</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>Trigger:</strong> Every Friday at 5 PM UTC</p>
+                        <p><strong>What It Does:</strong> Generates comprehensive project health report.</p>
+                        
+                        <div class="command-box">
+<span class="prompt">$</span> Generating report...
+<span class="output">✓ 124 commits this week
+✓ 18 PRs merged
+✓ 100% test coverage maintained
+✓ 0 production incidents</span>
+                        </div>
+                        
+                        <p><strong>Why It Matters:</strong> Visibility into project health trends.</p>
+                    </div>
+                </div>
+
+                <h2>📖 Sarah's Journey: A Day in the Life</h2>
+
+                <p>Let's follow Sarah's pull request from commit to production, and watch AROG's 22 workflows orchestrate perfectly:</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-time">9:15 AM - Sarah pushes code</div>
+                            <p><strong>git push origin feature/new-dashboard</strong></p>
+                            <p>AROG immediately triggers: Lint Check → Unit Tests → Security Scan → Build Check</p>
+                            <p>All pass in 2 minutes 47 seconds.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-time">9:18 AM - Sarah creates PR</div>
+                            <p><strong>"Add new analytics dashboard"</strong></p>
+                            <p>AROG triggers the full validation suite: E2E Tests (5 browsers) → Accessibility Tests → Performance Tests → Code Quality Analysis</p>
+                            <p>All pass in 6 minutes 12 seconds.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-time">9:25 AM - PR approved and merged</div>
+                            <p><strong>Two teammates approve. Sarah merges.</strong></p>
+                            <p>AROG immediately starts the production pipeline: Production Build → Deploy to Staging → Smoke Tests</p>
+                            <p>All pass in 4 minutes 23 seconds.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-time">9:30 AM - Production deployment</div>
+                            <p><strong>Blue-green deployment initiated automatically</strong></p>
+                            <p>AROG: Deploys new version → Runs health checks → Switches traffic → Monitors for issues</p>
+                            <p>Deployment complete in 3 minutes 8 seconds.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-time">9:33 AM - Feature live in production</div>
+                            <p><strong>Total time from commit to production: 18 minutes</strong></p>
+                            <p>Sarah didn't run a single command after git push. AROG handled everything.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>🎭 Workflow Orchestration</h2>
+
+                <p>The magic of AROG isn't just that it runs 22 workflows—it's how they work together:</p>
+
+                <div class="highlight-box">
+                    <p><strong>Smart Dependencies</strong></p>
+                    <ul class="benefits-list">
+                        <li><strong>Sequential Where Needed:</strong> Deploy to staging only runs after build succeeds</li>
+                        <li><strong>Parallel Where Possible:</strong> E2E, accessibility, and performance tests run simultaneously</li>
+                        <li><strong>Fail Fast:</strong> If unit tests fail, expensive E2E tests don't run</li>
+                        <li><strong>Auto Rollback:</strong> If health checks fail post-deployment, automatic rollback to previous version</li>
+                        <li><strong>Smart Caching:</strong> Dependencies cached between runs for 3x faster execution</li>
+                        <li><strong>Resource Optimization:</strong> Workflows scale based on PR size and complexity</li>
+                    </ul>
+                </div>
+
+                <h2>💡 The Zero Intervention Philosophy</h2>
+
+                <div class="quote-box">
+                    "If a human has to click a button, the automation failed."
+                </div>
+
+                <p>AROG is designed around a core principle: <strong>zero human intervention</strong>. Every workflow is:</p>
+
+                <ul class="benefits-list">
+                    <li><strong>Fully Automated</strong> - No manual steps required</li>
+                    <li><strong>Self-Healing</strong> - Retries transient failures automatically</li>
+                    <li><strong>Self-Monitoring</strong> - Reports its own health</li>
+                    <li><strong>Self-Documenting</strong> - Generates detailed logs and reports</li>
+                    <li><strong>Self-Optimizing</strong> - Learns from past runs to improve performance</li>
+                </ul>
+
+                <h2>📊 Real-World Impact</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">18 min</div>
+                        <div class="stat-label">Commit to Production</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Bugs Caught Pre-Merge</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Manual Deployments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1,247</div>
+                        <div class="stat-label">Automated Checks/Day</div>
+                    </div>
+                </div>
+
+                <h2>🎯 Customizing Workflows</h2>
+
+                <p>While AROG's 22 workflows work perfectly out of the box, you can customize them for your needs:</p>
+
+                <div class="command-box">
+<span class="prompt">#</span> .github/workflows/custom-validation.yml
+name: Custom Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  custom-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run custom validation
+        run: npm run custom:validate
+      
+      - name: Check API compatibility
+        run: npm run api:check
+      
+      - name: Validate database migrations
+        run: npm run db:validate
+                </div>
+
+                <p>AROG's workflow system is extensible—add your own workflows while keeping all 22 core workflows intact.</p>
+
+                <h2>🚨 What Happens When Something Fails?</h2>
+
+                <p>AROG doesn't just run workflows—it intelligently handles failures:</p>
+
+                <div class="highlight-box">
+                    <p><strong>Failure Handling Strategy</strong></p>
+                    <ul class="benefits-list">
+                        <li><strong>Immediate Notification:</strong> Slack/email alert within seconds</li>
+                        <li><strong>Detailed Logs:</strong> Complete context of what failed and why</li>
+                        <li><strong>Suggested Fixes:</strong> AI-powered suggestions for common failures</li>
+                        <li><strong>Auto-Retry:</strong> Transient failures retried up to 3 times</li>
+                        <li><strong>Auto-Rollback:</strong> Production failures trigger immediate rollback</li>
+                        <li><strong>Incident Creation:</strong> Persistent failures create tracked incidents</li>
+                    </ul>
+                </div>
+
+                <div class="quote-box">
+                    "AROG doesn't just tell you something broke. It tells you what broke, why it broke, how to fix it, and often fixes it automatically."
+                </div>
+
+                <h2>✨ Key Takeaways</h2>
+
+                <div class="highlight-box">
+                    <ul class="benefits-list">
+                        <li><strong>22 Workflows</strong> - Covering every aspect of development and deployment</li>
+                        <li><strong>4 Categories</strong> - On commit, on PR, on merge, and scheduled</li>
+                        <li><strong>Zero Intervention</strong> - Fully automated from commit to production</li>
+                        <li><strong>18 Minutes</strong> - From code push to production deployment</li>
+                        <li><strong>Smart Orchestration</strong> - Workflows run in parallel where possible, sequential where needed</li>
+                        <li><strong>Fail Fast</strong> - Expensive tests don't run if cheap tests fail</li>
+                        <li><strong>Auto-Healing</strong> - Failures are retried automatically</li>
+                        <li><strong>Always Monitoring</strong> - Health checks run continuously</li>
+                    </ul>
+                </div>
+
+                <p>Next, we'll explore how AROG achieves "write once, run everywhere" across GitHub Actions, GitLab CI, Bitbucket Pipelines, and more...</p>
+            </section>
+
+            <nav class="chapter-navigation">
+                <a href="chapter-05-testing.html" class="nav-button prev">The Testing Arsenal</a>
+                <a href="chapter-07-platforms.html" class="nav-button next">Platform Agnostic</a>
+            </nav>
+        </article>
+    </div>
+</body>
+</html>

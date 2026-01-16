@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 9: Agents & Skills | The AROG Book</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --gray: #718096;
+            --accent: #fbbf24;
+            --success: #48bb78;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .book-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .book-title { font-size: 1.1rem; color: var(--primary); font-weight: 700; }
+        .chapter-indicator { font-size: 0.9rem; color: var(--gray); }
+        .toc-link {
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .toc-link:hover { background: var(--secondary); transform: translateY(-2px); }
+        .container { max-width: 900px; margin: 0 auto; padding: 120px 2rem 4rem; }
+        .chapter {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--primary);
+        }
+        .chapter-number {
+            font-size: 1rem;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .chapter-title { font-size: 3rem; color: var(--dark); margin-bottom: 1rem; font-weight: 700; }
+        .chapter-subtitle { font-size: 1.3rem; color: var(--gray); font-style: italic; }
+        h2 { font-size: 2rem; color: var(--dark); margin: 3rem 0 1.5rem; padding-top: 2rem; }
+        h3 { font-size: 1.5rem; color: var(--primary); margin: 2rem 0 1rem; }
+        p { margin-bottom: 1.5rem; font-size: 1.1rem; }
+        .quote-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid var(--primary);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+        .highlight-box {
+            background: #fbbf2415;
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+        .command-box {
+            background: #1a202c;
+            color: #00ff00;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        .benefits-list { list-style: none; margin: 1rem 0; }
+        .benefits-list li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+        .benefits-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .stat-number { font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 1rem; opacity: 0.9; }
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .agent-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        .chapter-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+        .nav-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        .nav-button.prev:before { content: "← "; }
+        .nav-button.next:after { content: " →"; }
+        @media (max-width: 768px) {
+            .agent-grid { grid-template-columns: 1fr; }
+            .container { padding: 100px 1rem 2rem; }
+            .chapter { padding: 2rem 1.5rem; }
+            .chapter-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="book-nav">
+        <div class="book-title">📖 The AROG Book</div>
+        <div class="chapter-indicator">Chapter 9 of 12</div>
+        <a href="index.html" class="toc-link">📚 Table of Contents</a>
+    </nav>
+
+    <div class="container">
+        <article class="chapter">
+            <header class="chapter-header">
+                <div class="chapter-number">Chapter Nine</div>
+                <h1 class="chapter-title">Agents & Skills</h1>
+                <p class="chapter-subtitle">15 Specialists, 9 Capabilities, Infinite Possibilities</p>
+            </header>
+
+            <section>
+                <div class="quote-box">
+                    "A single agent is powerful. A team of specialized agents working together is unstoppable."
+                </div>
+
+                <h2>🤖 Meet the AROG Agent Team</h2>
+                
+                <p>Thursday morning, 9:23 AM. Sarah opens a PR. Within seconds, multiple AROG agents spring into action—each a specialist, each with a specific mission.</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Specialized Agents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">9</div>
+                        <div class="stat-label">Core Skills</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Automated</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Human Input</div>
+                    </div>
+                </div>
+
+                <h2>👥 The 15 Specialized Agents</h2>
+
+                <div class="agent-grid">
+                    <div class="agent-card">
+                        <h3>🔍 @arog-code-reviewer</h3>
+                        <p><strong>Mission:</strong> Review code quality, identify bugs, suggest improvements</p>
+                        <p><strong>Skills Used:</strong> Code analysis, pattern recognition, best practices</p>
+                        <div class="command-box">Analyzing 247 lines of code...
+✓ Code quality: Excellent
+✓ No bugs detected
+✓ 3 optimization suggestions posted</div>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🔒 @arog-security-scanner</h3>
+                        <p><strong>Mission:</strong> Find vulnerabilities, detect exposed secrets, check dependencies</p>
+                        <p><strong>Skills Used:</strong> Security analysis, secret detection, CVE monitoring</p>
+                        <div class="command-box">Scanning for vulnerabilities...
+✓ No critical issues
+✓ No secrets exposed
+✓ All dependencies secure</div>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>⚡ @arog-performance-analyzer</h3>
+                        <p><strong>Mission:</strong> Monitor performance, check bundle sizes, optimize load times</p>
+                        <p><strong>Skills Used:</strong> Performance profiling, bundle analysis, optimization</p>
+                        <div class="command-box">Performance Analysis:
+✓ Bundle size: 287KB (↓ 15KB)
+✓ Load time: 1.8s (↓ 0.3s)
+✓ Lighthouse score: 95/100</div>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🧪 @arog-test-runner</h3>
+                        <p><strong>Mission:</strong> Run all test types, verify coverage, ensure quality</p>
+                        <p><strong>Skills Used:</strong> Test execution, coverage analysis, result reporting</p>
+                        <div class="command-box">Running test suite...
+✓ Unit: 156/156 passed
+✓ E2E: 47/47 passed
+✓ Coverage: 100%</div>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🎯 @arog-accessibility-checker</h3>
+                        <p><strong>Mission:</strong> Ensure WCAG 2.1 AA compliance, check screen reader support</p>
+                        <p><strong>Skills Used:</strong> Accessibility validation, ARIA analysis, contrast checking</p>
+                        <div class="command-box">Accessibility Check:
+✓ WCAG 2.1 AA compliant
+✓ All images have alt text
+✓ Keyboard navigation works</div>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🚀 @arog-deployment-manager</h3>
+                        <p><strong>Mission:</strong> Handle deployments, manage rollbacks, ensure zero downtime</p>
+                        <p><strong>Skills Used:</strong> Deployment orchestration, health monitoring, rollback management</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>📊 @arog-metrics-collector</h3>
+                        <p><strong>Mission:</strong> Gather metrics, track trends, provide insights</p>
+                        <p><strong>Skills Used:</strong> Data collection, trend analysis, reporting</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🏗️ @arog-build-engineer</h3>
+                        <p><strong>Mission:</strong> Build production bundles, optimize assets, verify builds</p>
+                        <p><strong>Skills Used:</strong> Build orchestration, asset optimization, verification</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>📝 @arog-documentation-writer</h3>
+                        <p><strong>Mission:</strong> Generate documentation, update README files, create guides</p>
+                        <p><strong>Skills Used:</strong> Documentation generation, markdown formatting, example creation</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🔄 @arog-dependency-updater</h3>
+                        <p><strong>Mission:</strong> Check for updates, test compatibility, apply safe upgrades</p>
+                        <p><strong>Skills Used:</strong> Dependency management, compatibility testing, update application</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🐛 @arog-bug-hunter</h3>
+                        <p><strong>Mission:</strong> Find bugs, analyze errors, suggest fixes</p>
+                        <p><strong>Skills Used:</strong> Bug detection, error analysis, fix recommendation</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>💰 @arog-cost-optimizer</h3>
+                        <p><strong>Mission:</strong> Optimize AI costs, route to FREE models when possible</p>
+                        <p><strong>Skills Used:</strong> Cost analysis, model routing, optimization</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🎨 @arog-code-formatter</h3>
+                        <p><strong>Mission:</strong> Format code, enforce style guide, maintain consistency</p>
+                        <p><strong>Skills Used:</strong> Code formatting, style enforcement, consistency checking</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>📈 @arog-analytics-agent</h3>
+                        <p><strong>Mission:</strong> Analyze patterns, identify trends, provide recommendations</p>
+                        <p><strong>Skills Used:</strong> Pattern analysis, trend identification, recommendations</p>
+                    </div>
+
+                    <div class="agent-card">
+                        <h3>🌐 @arog-integration-manager</h3>
+                        <p><strong>Mission:</strong> Manage platform integrations, sync configurations, ensure compatibility</p>
+                        <p><strong>Skills Used:</strong> Integration management, sync orchestration, compatibility verification</p>
+                    </div>
+                </div>
+
+                <h2>🛠️ The 9 Core Skills</h2>
+
+                <p>Each agent uses one or more of these fundamental skills:</p>
+
+                <div class="highlight-box">
+                    <h3>1. Code Analysis</h3>
+                    <p>Deep understanding of code structure, patterns, and quality indicators</p>
+
+                    <h3>2. Testing Execution</h3>
+                    <p>Running tests, collecting results, analyzing coverage and failures</p>
+
+                    <h3>3. Security Scanning</h3>
+                    <p>Detecting vulnerabilities, finding secrets, checking dependencies</p>
+
+                    <h3>4. Performance Profiling</h3>
+                    <p>Measuring speed, analyzing bottlenecks, optimizing resources</p>
+
+                    <h3>5. Deployment Orchestration</h3>
+                    <p>Managing releases, handling rollbacks, ensuring zero downtime</p>
+
+                    <h3>6. Documentation Generation</h3>
+                    <p>Creating docs, writing guides, generating examples</p>
+
+                    <h3>7. Metrics Collection</h3>
+                    <p>Gathering data, tracking trends, providing insights</p>
+
+                    <h3>8. Build Management</h3>
+                    <p>Compiling code, bundling assets, optimizing outputs</p>
+
+                    <h3>9. Integration Management</h3>
+                    <p>Connecting platforms, syncing data, ensuring compatibility</p>
+                </div>
+
+                <h2>🎭 How Agents Collaborate</h2>
+
+                <p>When Sarah opens a PR, here's what happens behind the scenes:</p>
+
+                <div class="command-box">PR #247 opened by Sarah at 9:23 AM
+
+[9:23:01] @arog-code-reviewer: Starting code review...
+[9:23:05] @arog-test-runner: Running test suite...
+[9:23:07] @arog-security-scanner: Checking for vulnerabilities...
+[9:23:12] @arog-performance-analyzer: Measuring bundle size...
+[9:23:18] @arog-accessibility-checker: Validating WCAG compliance...
+
+[9:25:43] All agents completed!
+
+Results:
+✓ Code quality: Excellent
+✓ Tests: 203/203 passed  
+✓ Security: No issues
+✓ Performance: 95/100
+✓ Accessibility: WCAG 2.1 AA compliant
+
+Ready to merge! 🎉</div>
+
+                <h2>💡 The @arog Main Agent</h2>
+
+                <p>The @arog agent is the orchestrator. It coordinates all 15 specialized agents, making decisions about which agents to deploy and when.</p>
+
+                <div class="highlight-box">
+                    <p><strong>In VS Code:</strong></p>
+                    <div class="command-box">@arog review this code
+
+→ Deploys: @arog-code-reviewer
+→ Provides: Detailed code review with suggestions</div>
+
+                    <div class="command-box">@arog check security
+
+→ Deploys: @arog-security-scanner
+→ Provides: Vulnerability report and recommendations</div>
+
+                    <div class="command-box">@arog deploy to production
+
+→ Deploys: @arog-deployment-manager
+→ Executes: Full deployment pipeline with validation</div>
+                </div>
+
+                <h2>🎯 Creating Custom Agents</h2>
+
+                <p>You can create your own specialized agents for your team's specific needs:</p>
+
+                <div class="command-box"># .github/agents/my-custom-agent.agent.md
+
+---
+name: my-custom-agent
+description: 'Custom agent for our specific workflow'
+model: 'claude-sonnet-4'
+skills: ['code-analysis', 'testing']
+---
+
+# My Custom Agent
+
+This agent handles our unique requirements...</div>
+
+                <h2>✨ Key Takeaways</h2>
+
+                <ul class="benefits-list">
+                    <li><strong>15 Specialized Agents</strong> - Each with a specific mission and expertise</li>
+                    <li><strong>9 Core Skills</strong> - Fundamental capabilities agents can use</li>
+                    <li><strong>Perfect Coordination</strong> - Agents work together seamlessly</li>
+                    <li><strong>@arog Orchestrator</strong> - Main agent coordinates everything</li>
+                    <li><strong>Customizable</strong> - Create your own agents for specific needs</li>
+                    <li><strong>Always Learning</strong> - Agents improve over time</li>
+                </ul>
+
+                <p>Next, we'll explore how to deploy AROG organization-wide and scale from 1 to 1000+ developers...</p>
+            </section>
+
+            <nav class="chapter-navigation">
+                <a href="chapter-08-deployment.html" class="nav-button prev">Production Deployment</a>
+                <a href="chapter-10-organization.html" class="nav-button next">Organization Adoption</a>
+            </nav>
+        </article>
+    </div>
+</body>
+</html>

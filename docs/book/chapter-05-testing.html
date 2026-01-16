@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: The Testing Arsenal | The AROG Book</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --gray: #718096;
+            --accent: #fbbf24;
+            --success: #48bb78;
+            --danger: #f56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .book-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .chapter-indicator {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .toc-link {
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 2rem 4rem;
+        }
+
+        .chapter {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .chapter-number {
+            font-size: 1rem;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-title {
+            font-size: 3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .chapter-subtitle {
+            font-size: 1.3rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin: 3rem 0 1.5rem;
+            padding-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid var(--primary);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        .highlight-box {
+            background: #fbbf2415;
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .test-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .test-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-icon {
+            font-size: 2.5rem;
+        }
+
+        .test-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .test-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .command-box {
+            background: #1a202c;
+            color: #00ff00;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .command-box .prompt {
+            color: #fbbf24;
+        }
+
+        .command-box .output {
+            color: #68d391;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .benefits-list li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .chapter-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .nav-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-button.prev:before {
+            content: "← ";
+        }
+
+        .nav-button.next:after {
+            content: " →";
+        }
+
+        @media (max-width: 768px) {
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 100px 1rem 2rem;
+            }
+
+            .chapter {
+                padding: 2rem 1.5rem;
+            }
+
+            .chapter-title {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="book-nav">
+        <div class="book-title">📖 The AROG Book</div>
+        <div class="chapter-indicator">Chapter 5 of 12</div>
+        <a href="index.html" class="toc-link">📚 Table of Contents</a>
+    </nav>
+
+    <div class="container">
+        <article class="chapter">
+            <header class="chapter-header">
+                <div class="chapter-number">Chapter Five</div>
+                <h1 class="chapter-title">The Testing Arsenal</h1>
+                <p class="chapter-subtitle">10 Types of Tests, Zero Manual Effort</p>
+            </header>
+
+            <section>
+                <div class="quote-box">
+                    "Good developers test their code. Great developers automate their tests. AROG developers don't think about testing at all—it just happens."
+                </div>
+
+                <h2>🎯 The Testing Nightmare</h2>
+                
+                <p>Tuesday morning, 9:47 AM. Sarah opens Slack to see 23 unread messages in #engineering:</p>
+
+                <p><em>"Production is down! User login broken!"</em></p>
+                <p><em>"How did this pass code review?"</em></p>
+                <p><em>"Didn't anyone test this?"</em></p>
+
+                <p>Sarah checks the PR. Unit tests: ✅ Passed. Code review: ✅ Approved. But...</p>
+
+                <div class="highlight-box">
+                    <p><strong>What the tests DIDN'T catch:</strong></p>
+                    <ul class="benefits-list">
+                        <li>The login form worked in Chrome but broke in Safari</li>
+                        <li>The API endpoint worked but was 10x slower than before</li>
+                        <li>The button worked but screen readers couldn't find it</li>
+                        <li>The feature worked but exposed a security vulnerability</li>
+                        <li>The code worked but the bundle size doubled</li>
+                    </ul>
+                    <p><strong>Why?</strong> Because they only ran unit tests. And unit tests are just 10% of the story.</p>
+                </div>
+
+                <h2>🚀 The Complete Testing Picture</h2>
+
+                <p>AROG doesn't just run tests. It runs <strong>10 different types of tests</strong>, automatically, on every commit:</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Test Types</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Automated</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Manual Work</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Browsers Tested</div>
+                    </div>
+                </div>
+
+                <h2>🧪 The 10 Test Types</h2>
+
+                <div class="test-grid">
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">🧪</span>
+                            <div>
+                                <h3 class="test-title">1. Unit Tests</h3>
+                                <span class="test-badge">ALWAYS ON</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> Individual functions, methods, and components in isolation.</p>
+                        
+                        <p><strong>Technology:</strong> Jest</p>
+                        
+                        <p><strong>When It Runs:</strong> On every commit, every PR, every merge</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm test
+
+<span class="output">PASS</span>  tests/unit/calculator.test.js
+  ✓ adds numbers correctly (2ms)
+  ✓ subtracts numbers correctly (1ms)
+  ✓ handles edge cases (3ms)
+
+<span class="output">Coverage: 100%</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Logic errors in functions</li>
+                            <li>Edge case failures</li>
+                            <li>Regression bugs</li>
+                            <li>Type mismatches</li>
+                        </ul>
+
+                        <p><strong>AROG Magic:</strong> Enforces 100% code coverage. If coverage drops, PR is blocked automatically.</p>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">🔗</span>
+                            <div>
+                                <h3 class="test-title">2. Integration Tests</h3>
+                                <span class="test-badge">AUTO</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> How different parts of your system work together.</p>
+                        
+                        <p><strong>Technology:</strong> Jest + Supertest</p>
+                        
+                        <p><strong>When It Runs:</strong> On PR, before merge</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run test:integration
+
+<span class="output">PASS</span>  Integration Tests
+  ✓ API + Database connection works
+  ✓ Authentication flow complete
+  ✓ File upload + processing works</div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Database connection issues</li>
+                            <li>API integration problems</li>
+                            <li>Service communication failures</li>
+                            <li>Data flow bugs</li>
+                        </ul>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">🎭</span>
+                            <div>
+                                <h3 class="test-title">3. E2E Tests</h3>
+                                <span class="test-badge">5 BROWSERS</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> Real user scenarios from start to finish.</p>
+                        
+                        <p><strong>Technology:</strong> Playwright</p>
+                        
+                        <p><strong>When It Runs:</strong> On every PR</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run test:e2e
+
+<span class="output">✓ Chrome - User can login</span>
+<span class="output">✓ Firefox - User can checkout</span>
+<span class="output">✓ Safari - User can search</span>
+<span class="output">✓ Edge - User can upload</span>
+<span class="output">✓ Mobile - Responsive works</span>
+
+<span class="output">5 browsers tested ✓</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Cross-browser compatibility issues</li>
+                            <li>User flow breakages</li>
+                            <li>UI/UX problems</li>
+                            <li>Mobile responsiveness issues</li>
+                        </ul>
+
+                        <p><strong>AROG Magic:</strong> Tests run in parallel across 5 browsers. Catches that Safari bug before users do!</p>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">🔒</span>
+                            <div>
+                                <h3 class="test-title">4. Security Tests</h3>
+                                <span class="test-badge">CRITICAL</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> Vulnerabilities, exposed secrets, dependency risks.</p>
+                        
+                        <p><strong>Technology:</strong> npm audit + secret scanning</p>
+                        
+                        <p><strong>When It Runs:</strong> On every commit + daily scans</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run security:audit
+
+<span class="output">Scanning dependencies...</span>
+<span class="output">✓ No critical vulnerabilities</span>
+<span class="output">✓ No exposed secrets</span>
+<span class="output">✓ All dependencies up to date</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Known CVE vulnerabilities</li>
+                            <li>Exposed API keys and passwords</li>
+                            <li>Outdated dependencies with security fixes</li>
+                            <li>SQL injection risks</li>
+                        </ul>
+
+                        <p><strong>AROG Magic:</strong> Blocks PRs with critical vulnerabilities. Auto-fixes known issues when possible.</p>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">⚡</span>
+                            <div>
+                                <h3 class="test-title">5. Performance Tests</h3>
+                                <span class="test-badge">BUDGETS</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> Load times, bundle sizes, Core Web Vitals.</p>
+                        
+                        <p><strong>Technology:</strong> Lighthouse CI</p>
+                        
+                        <p><strong>When It Runs:</strong> On every PR</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run test:performance
+
+<span class="output">Performance Score: 95/100 ✓</span>
+<span class="output">First Contentful Paint: 1.2s ✓</span>
+<span class="output">Time to Interactive: 2.1s ✓</span>
+<span class="output">Bundle Size: 287KB ✓ (limit: 500KB)</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Performance regressions</li>
+                            <li>Bundle size bloat</li>
+                            <li>Slow API responses</li>
+                            <li>Render-blocking resources</li>
+                        </ul>
+
+                        <p><strong>AROG Magic:</strong> Performance budgets enforced. PR blocked if bundle exceeds 500KB or load time > 3s.</p>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">🎯</span>
+                            <div>
+                                <h3 class="test-title">6. Accessibility Tests</h3>
+                                <span class="test-badge">WCAG 2.1 AA</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> Screen reader support, keyboard navigation, color contrast.</p>
+                        
+                        <p><strong>Technology:</strong> axe-core</p>
+                        
+                        <p><strong>When It Runs:</strong> On every PR</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run test:a11y
+
+<span class="output">✓ No color contrast issues</span>
+<span class="output">✓ All images have alt text</span>
+<span class="output">✓ Keyboard navigation works</span>
+<span class="output">✓ ARIA labels present</span>
+<span class="output">✓ WCAG 2.1 AA compliant</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Missing alt text on images</li>
+                            <li>Poor color contrast (unreadable text)</li>
+                            <li>Broken keyboard navigation</li>
+                            <li>Missing ARIA labels</li>
+                        </ul>
+
+                        <p><strong>AROG Magic:</strong> Ensures your app is usable by everyone, including users with disabilities. Legal compliance guaranteed!</p>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">📊</span>
+                            <div>
+                                <h3 class="test-title">7. Load Tests</h3>
+                                <span class="test-badge">STRESS</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> How your system handles high traffic.</p>
+                        
+                        <p><strong>Technology:</strong> Artillery / k6</p>
+                        
+                        <p><strong>When It Runs:</strong> Before major deployments</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run test:load
+
+<span class="output">Simulating 10,000 concurrent users...</span>
+<span class="output">✓ Response time: 234ms avg</span>
+<span class="output">✓ Error rate: 0.01%</span>
+<span class="output">✓ System stable under load</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Memory leaks under load</li>
+                            <li>Database connection pool exhaustion</li>
+                            <li>API rate limiting issues</li>
+                            <li>Server crash scenarios</li>
+                        </ul>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">👁️</span>
+                            <div>
+                                <h3 class="test-title">8. Visual Tests</h3>
+                                <span class="test-badge">PIXEL-PERFECT</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> UI changes, visual regressions, layout shifts.</p>
+                        
+                        <p><strong>Technology:</strong> Playwright screenshots + Percy</p>
+                        
+                        <p><strong>When It Runs:</strong> On every PR</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run test:visual
+
+<span class="output">Comparing screenshots...</span>
+<span class="output">✓ Homepage: No changes</span>
+<span class="output">✓ Login page: No changes</span>
+<span class="output">⚠ Dashboard: 2px shift detected</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Unintended CSS changes</li>
+                            <li>Layout shifts (CLS issues)</li>
+                            <li>Broken responsive designs</li>
+                            <li>Font rendering issues</li>
+                        </ul>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">🔌</span>
+                            <div>
+                                <h3 class="test-title">9. API Tests</h3>
+                                <span class="test-badge">REST/GraphQL</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> API endpoints, responses, data validation.</p>
+                        
+                        <p><strong>Technology:</strong> Supertest + Postman</p>
+                        
+                        <p><strong>When It Runs:</strong> On every PR</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run test:api
+
+<span class="output">Testing API endpoints...</span>
+<span class="output">✓ GET /users returns 200</span>
+<span class="output">✓ POST /users validates data</span>
+<span class="output">✓ PUT /users/:id updates correctly</span>
+<span class="output">✓ DELETE /users/:id requires auth</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Broken API endpoints</li>
+                            <li>Invalid response formats</li>
+                            <li>Missing authentication checks</li>
+                            <li>Data validation failures</li>
+                        </ul>
+                    </div>
+
+                    <div class="test-card">
+                        <div class="test-header">
+                            <span class="test-icon">🤝</span>
+                            <div>
+                                <h3 class="test-title">10. Contract Tests</h3>
+                                <span class="test-badge">MICROSERVICES</span>
+                            </div>
+                        </div>
+                        
+                        <p><strong>What It Tests:</strong> Service-to-service communication contracts.</p>
+                        
+                        <p><strong>Technology:</strong> Pact</p>
+                        
+                        <p><strong>When It Runs:</strong> On service updates</p>
+
+                        <div class="command-box"><span class="prompt">$</span> npm run test:contract
+
+<span class="output">Verifying contracts...</span>
+<span class="output">✓ User Service ↔ Auth Service</span>
+<span class="output">✓ Order Service ↔ Payment Service</span>
+<span class="output">✓ All contracts valid</span></div>
+
+                        <p><strong>What It Catches:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Breaking API changes between services</li>
+                            <li>Schema mismatches</li>
+                            <li>Version incompatibilities</li>
+                            <li>Integration failures</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>🎯 The Testing Pipeline</h2>
+
+                <div class="highlight-box">
+                    <h3>What Happens When You Push Code</h3>
+                    
+                    <div class="command-box"><span class="prompt">$</span> git push origin feature/new-login
+
+<span class="output">Pushing to GitHub...</span>
+<span class="output">✓ Code pushed successfully</span>
+
+<span class="output">AROG is now running:</span>
+<span class="output">  [1/10] Unit tests... ✓ PASSED (12s)</span>
+<span class="output">  [2/10] Integration tests... ✓ PASSED (18s)</span>
+<span class="output">  [3/10] E2E tests (5 browsers)... ✓ PASSED (45s)</span>
+<span class="output">  [4/10] Security scan... ✓ PASSED (8s)</span>
+<span class="output">  [5/10] Performance tests... ✓ PASSED (23s)</span>
+<span class="output">  [6/10] Accessibility tests... ✓ PASSED (15s)</span>
+<span class="output">  [7/10] Load tests... ✓ PASSED (30s)</span>
+<span class="output">  [8/10] Visual tests... ✓ PASSED (12s)</span>
+<span class="output">  [9/10] API tests... ✓ PASSED (10s)</span>
+<span class="output">  [10/10] Contract tests... ✓ PASSED (8s)</span>
+
+<span class="output">All tests passed! 🎉</span>
+<span class="output">Total time: 3 minutes 21 seconds</span>
+<span class="output">Coverage: 100%</span></div>
+
+                    <p><strong>You did nothing. AROG did everything.</strong></p>
+                </div>
+
+                <h2>💡 The Impact</h2>
+
+                <p>Remember Sarah's Tuesday morning disaster? Here's what changes with AROG:</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Test Types Running</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Bugs Caught Pre-Merge</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">0</div>
+                        <div class="stat-label">Production Incidents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Team Confidence</div>
+                    </div>
+                </div>
+
+                <div class="quote-box">
+                    "AROG catches the bugs that slip through code review, the performance issues that developers don't notice, and the accessibility problems that most teams never even think about."
+                </div>
+
+                <h2>✨ Key Takeaways</h2>
+
+                <div class="highlight-box">
+                    <ul class="benefits-list">
+                        <li><strong>10 Test Types</strong> - From unit to contract tests, everything covered</li>
+                        <li><strong>100% Automated</strong> - No manual test runs, ever</li>
+                        <li><strong>5 Browsers</strong> - Cross-browser compatibility guaranteed</li>
+                        <li><strong>3 Minutes</strong> - Full test suite completes in under 4 minutes</li>
+                        <li><strong>Zero Deployment Bugs</strong> - 95% of bugs caught before production</li>
+                        <li><strong>Enforced Standards</strong> - Coverage, performance, and accessibility enforced</li>
+                        <li><strong>Always On</strong> - Tests run on every commit, PR, and merge</li>
+                    </ul>
+                </div>
+
+                <p>Next, we'll explore the 22 automated workflows that orchestrate these tests and much more...</p>
+            </section>
+
+            <nav class="chapter-navigation">
+                <a href="chapter-04-configuration.html" class="nav-button prev">Configuration Power</a>
+                <a href="chapter-06-automation.html" class="nav-button next">Automation Workflows</a>
+            </nav>
+        </article>
+    </div>
+</body>
+</html>

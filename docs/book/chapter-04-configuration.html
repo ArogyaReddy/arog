@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: The Power of Configuration | The AROG Book</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --gray: #718096;
+            --accent: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .book-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .chapter-indicator {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .toc-link {
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .toc-link:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 2rem 4rem;
+        }
+
+        .chapter {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .chapter-number {
+            font-size: 1rem;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-title {
+            font-size: 3rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .chapter-subtitle {
+            font-size: 1.3rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin: 3rem 0 1.5rem;
+            padding-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid var(--primary);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        .highlight-box {
+            background: #fbbf2415;
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+
+        .config-diagram {
+            background: #1a202c;
+            color: #00ff00;
+            padding: 2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            line-height: 1.6;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .level-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .level-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .level-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .level-icon {
+            font-size: 2rem;
+        }
+
+        .level-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .level-number {
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .code-example {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .code-example .comment {
+            color: #68d391;
+        }
+
+        .code-example .key {
+            color: #f687b3;
+        }
+
+        .code-example .value {
+            color: #fbbf24;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .benefits-list li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .chapter-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .nav-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-button.prev:before {
+            content: "← ";
+        }
+
+        .nav-button.next:after {
+            content: " →";
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 100px 1rem 2rem;
+            }
+
+            .chapter {
+                padding: 2rem 1.5rem;
+            }
+
+            .chapter-title {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .book-nav {
+                padding: 1rem;
+            }
+
+            .nav-button {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="book-nav">
+        <div class="book-title">📖 The AROG Book</div>
+        <div class="chapter-indicator">Chapter 4 of 12</div>
+        <a href="index.html" class="toc-link">📚 Table of Contents</a>
+    </nav>
+
+    <div class="container">
+        <article class="chapter">
+            <header class="chapter-header">
+                <div class="chapter-number">Chapter Four</div>
+                <h1 class="chapter-title">The Power of Configuration</h1>
+                <p class="chapter-subtitle">One System, Seven Levels, Infinite Possibilities</p>
+            </header>
+
+            <section>
+                <div class="quote-box">
+                    "The best configuration is the one you never have to think about. The second best is the one that adapts to your needs at every level."
+                </div>
+
+                <h2>🎯 The Problem with Traditional Configuration</h2>
+                
+                <p>Monday morning, 10:15 AM. Sarah's phone buzzes. It's the CTO.</p>
+
+                <p><em>"Sarah, we need to enforce 90% test coverage across all projects. Can you roll that out to all 30 repositories by end of week?"</em></p>
+
+                <p>Sarah's heart sinks. She knows what this means:</p>
+
+                <ul class="benefits-list">
+                    <li>Update 30 different jest.config.js files</li>
+                    <li>Update 30 different CI/CD configurations</li>
+                    <li>Update 30 different package.json scripts</li>
+                    <li>Write documentation for 3 different teams</li>
+                    <li>Handle merge conflicts when developers are working</li>
+                    <li>Debug 30 different variations of "it worked on my machine"</li>
+                </ul>
+
+                <p>Estimated time: <strong>3 full days of tedious, error-prone work.</strong></p>
+
+                <h3>The Real Cost</h3>
+
+                <p>But here's what hurts more than the time:</p>
+
+                <div class="highlight-box">
+                    <p><strong>Every team has different needs:</strong></p>
+                    <ul class="benefits-list">
+                        <li>Frontend team needs React-specific linting</li>
+                        <li>Backend team requires API testing frameworks</li>
+                        <li>Mobile team has platform-specific standards</li>
+                        <li>DevOps team needs infrastructure testing</li>
+                    </ul>
+                    <p>One-size-fits-all configuration <strong>breaks everything</strong>.</p>
+                </div>
+
+                <h2>🚀 The AROG Solution: 7-Level Configuration</h2>
+
+                <p>AROG solves this with a hierarchical configuration system that works like inheritance in code:</p>
+
+                <div class="config-diagram">┌─────────────────────────────────────────────────────────┐
+│  1. ORGANIZATION CONFIG                                 │  🏢 Company-wide
+│     └── Defines: Code quality, testing, security        │
+├─────────────────────────────────────────────────────────┤
+│  2. TEAM CONFIG                                         │  👥 Team-specific
+│     └── Extends: org-config.json                        │
+├─────────────────────────────────────────────────────────┤
+│  3. PROJECT CONFIG                                      │  📦 Project-level
+│     └── Extends: team-config.json                       │
+├─────────────────────────────────────────────────────────┤
+│  4. REPOSITORY CONFIG                                   │  🗂️ Git repository
+│     └── Extends: project-config.json                    │
+├─────────────────────────────────────────────────────────┤
+│  5. PLATFORM CONFIG                                     │  🚀 CI/CD platform
+│     └── Independent config                              │
+├─────────────────────────────────────────────────────────┤
+│  6. ENVIRONMENT CONFIG                                  │  🌍 Dev/Staging/Prod
+│     └── Independent config                              │
+├─────────────────────────────────────────────────────────┤
+│  7. DEVELOPER CONFIG                                    │  👨‍💻 Personal prefs
+│     └── Extends: project-config.json                    │
+└─────────────────────────────────────────────────────────┘
+
+<strong>Priority:</strong> Developer > Environment > Platform > Repository > Project > Team > Organization</div>
+
+                <p>With this system, Sarah's Monday morning task becomes:</p>
+
+                <div class="code-example"><span class="comment">// Update ONE file: org-config.json</span>
+{
+  <span class="key">"standards"</span>: {
+    <span class="key">"testing"</span>: {
+      <span class="key">"minCoverage"</span>: <span class="value">90</span>
+    }
+  }
+}
+
+<span class="comment">// That's it. All 30 projects now have 90% coverage.</span>
+<span class="comment">// Time required: 2 minutes.</span></div>
+
+                <h2>📋 The 7 Levels Explained</h2>
+
+                <div class="levels-grid">
+                    <div class="level-card">
+                        <div class="level-header">
+                            <span class="level-icon">🏢</span>
+                            <h3 class="level-title">Level 1: Organization</h3>
+                            <span class="level-number">org-config.json</span>
+                        </div>
+                        
+                        <p><strong>What It Is:</strong> Company-wide standards that apply to ALL projects.</p>
+                        
+                        <p><strong>When to Use:</strong></p>
+                        <ul class="benefits-list">
+                            <li>CTO wants consistent standards across all teams</li>
+                            <li>Security team mandates vulnerability thresholds</li>
+                            <li>Compliance requires accessibility standards (WCAG 2.1 AA)</li>
+                            <li>Finance enforces cost optimization</li>
+                        </ul>
+
+                        <div class="code-example">{
+  <span class="key">"standards"</span>: {
+    <span class="key">"codeQuality"</span>: {
+      <span class="key">"eslint"</span>: <span class="value">"airbnb"</span>,
+      <span class="key">"prettier"</span>: <span class="value">true</span>,
+      <span class="key">"typescript"</span>: <span class="value">"strict"</span>
+    },
+    <span class="key">"testing"</span>: {
+      <span class="key">"minCoverage"</span>: <span class="value">80</span>
+    },
+    <span class="key">"security"</span>: {
+      <span class="key">"vulnerabilityThreshold"</span>: <span class="value">"moderate"</span>
+    }
+  }
+}</div>
+
+                        <p><strong>AROG Benefits:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Enforces standards automatically across all 30 projects</li>
+                            <li>No manual updates needed</li>
+                            <li>Guaranteed compliance</li>
+                            <li>Single source of truth</li>
+                        </ul>
+                    </div>
+
+                    <div class="level-card">
+                        <div class="level-header">
+                            <span class="level-icon">👥</span>
+                            <h3 class="level-title">Level 2: Team</h3>
+                            <span class="level-number">team-config.json</span>
+                        </div>
+                        
+                        <p><strong>What It Is:</strong> Team-specific rules that override organization config.</p>
+                        
+                        <p><strong>When to Use:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Frontend team needs React-specific linting</li>
+                            <li>Backend team requires API testing</li>
+                            <li>Team lead wants higher coverage than org minimum</li>
+                        </ul>
+
+                        <div class="code-example">{
+  <span class="key">"extends"</span>: <span class="value">"org-config.json"</span>,
+  <span class="key">"team"</span>: {
+    <span class="key">"name"</span>: <span class="value">"Frontend Team"</span>
+  },
+  <span class="key">"overrides"</span>: {
+    <span class="key">"testing"</span>: {
+      <span class="key">"minCoverage"</span>: <span class="value">90</span> <span class="comment">// Higher than org's 80%</span>
+    }
+  },
+  <span class="key">"techStack"</span>: [<span class="value">"React"</span>, <span class="value">"TypeScript"</span>]
+}</div>
+
+                        <p><strong>AROG Benefits:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Customizes automation per team's tech stack</li>
+                            <li>Runs React-specific tests automatically</li>
+                            <li>Maintains team autonomy</li>
+                            <li>Still follows org-wide policies</li>
+                        </ul>
+                    </div>
+
+                    <div class="level-card">
+                        <div class="level-header">
+                            <span class="level-icon">📦</span>
+                            <h3 class="level-title">Level 3: Project</h3>
+                            <span class="level-number">project-config.json</span>
+                        </div>
+                        
+                        <p><strong>What It Is:</strong> Project-specific requirements. Each project can have unique needs.</p>
+                        
+                        <p><strong>When to Use:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Mission-critical project requires 100% coverage</li>
+                            <li>E-commerce app has strict performance budgets</li>
+                            <li>Public-facing site needs WCAG AAA compliance</li>
+                        </ul>
+
+                        <div class="code-example">{
+  <span class="key">"extends"</span>: <span class="value">"team-config.json"</span>,
+  <span class="key">"project"</span>: {
+    <span class="key">"name"</span>: <span class="value">"E-Commerce Platform"</span>
+  },
+  <span class="key">"overrides"</span>: {
+    <span class="key">"testing"</span>: {
+      <span class="key">"minCoverage"</span>: <span class="value">100</span> <span class="comment">// Mission critical!</span>
+    },
+    <span class="key">"performance"</span>: {
+      <span class="key">"bundleSize"</span>: <span class="value">"300KB"</span>,
+      <span class="key">"loadTime"</span>: <span class="value">"1.5s"</span>
+    }
+  }
+}</div>
+                    </div>
+
+                    <div class="level-card">
+                        <div class="level-header">
+                            <span class="level-icon">🗂️</span>
+                            <h3 class="level-title">Level 4: Repository</h3>
+                            <span class="level-number">repo-config.json</span>
+                        </div>
+                        
+                        <p><strong>What It Is:</strong> Git repository settings (branches, PR rules, workflows).</p>
+
+                        <div class="code-example">{
+  <span class="key">"branches"</span>: {
+    <span class="key">"main"</span>: {
+      <span class="key">"protected"</span>: <span class="value">true</span>,
+      <span class="key">"requiredReviewers"</span>: <span class="value">2</span>
+    }
+  },
+  <span class="key">"workflows"</span>: {
+    <span class="key">"onCommit"</span>: [<span class="value">"lint"</span>, <span class="value">"test"</span>],
+    <span class="key">"onPR"</span>: [<span class="value">"all-tests"</span>, <span class="value">"security"</span>]
+  }
+}</div>
+                    </div>
+
+                    <div class="level-card">
+                        <div class="level-header">
+                            <span class="level-icon">🚀</span>
+                            <h3 class="level-title">Level 5: Platform</h3>
+                            <span class="level-number">platform-config.json</span>
+                        </div>
+                        
+                        <p><strong>What It Is:</strong> CI/CD platform specific (GitHub Actions, GitLab CI, Jenkins).</p>
+
+                        <div class="code-example">{
+  <span class="key">"platform"</span>: <span class="value">"github-actions"</span>,
+  <span class="key">"runners"</span>: {
+    <span class="key">"ubuntu"</span>: <span class="value">"latest"</span>,
+    <span class="key">"macos"</span>: <span class="value">"latest"</span>,
+    <span class="key">"windows"</span>: <span class="value">"latest"</span>
+  },
+  <span class="key">"matrix"</span>: {
+    <span class="key">"node"</span>: [<span class="value">"18"</span>, <span class="value">"20"</span>, <span class="value">"22"</span>]
+  }
+}</div>
+                    </div>
+
+                    <div class="level-card">
+                        <div class="level-header">
+                            <span class="level-icon">🌍</span>
+                            <h3 class="level-title">Level 6: Environment</h3>
+                            <span class="level-number">env-config.json</span>
+                        </div>
+                        
+                        <p><strong>What It Is:</strong> Environment-specific settings (dev, staging, production).</p>
+
+                        <div class="code-example">{
+  <span class="key">"development"</span>: {
+    <span class="key">"testing"</span>: {
+      <span class="key">"coverage"</span>: <span class="value">70</span> <span class="comment">// Relaxed for speed</span>
+    }
+  },
+  <span class="key">"production"</span>: {
+    <span class="key">"testing"</span>: {
+      <span class="key">"coverage"</span>: <span class="value">100</span> <span class="comment">// Strict!</span>
+    },
+    <span class="key">"performance"</span>: {
+      <span class="key">"monitoring"</span>: <span class="value">true</span>
+    }
+  }
+}</div>
+                    </div>
+
+                    <div class="level-card">
+                        <div class="level-header">
+                            <span class="level-icon">👨‍💻</span>
+                            <h3 class="level-title">Level 7: Developer</h3>
+                            <span class="level-number">dev-config.json</span>
+                        </div>
+                        
+                        <p><strong>What It Is:</strong> Personal developer preferences (editor, shortcuts, local overrides).</p>
+
+                        <div class="code-example">{
+  <span class="key">"extends"</span>: <span class="value">"project-config.json"</span>,
+  <span class="key">"developer"</span>: <span class="value">"sarah"</span>,
+  <span class="key">"localOverrides"</span>: {
+    <span class="key">"testing"</span>: {
+      <span class="key">"watch"</span>: <span class="value">true</span> <span class="comment">// Auto-run tests on save</span>
+    },
+    <span class="key">"linting"</span>: {
+      <span class="key">"autoFix"</span>: <span class="value">true</span>
+    }
+  }
+}</div>
+
+                        <p><strong>AROG Benefits:</strong></p>
+                        <ul class="benefits-list">
+                            <li>Developer can customize their workflow</li>
+                            <li>Won't break team standards</li>
+                            <li>Personal productivity optimized</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>🎯 How It All Works Together</h2>
+
+                <div class="highlight-box">
+                    <h3>Real-World Scenario</h3>
+                    
+                    <p><strong>Monday 10:16 AM:</strong> CTO asks for 90% coverage across all projects.</p>
+
+                    <div class="code-example"><span class="comment">// Sarah updates org-config.json</span>
+{
+  <span class="key">"testing"</span>: { <span class="key">"minCoverage"</span>: <span class="value">90</span> }
+}
+
+<span class="comment">// Commits and pushes</span>
+git add .arog/config/org-config.json
+git commit -m "Enforce 90% coverage organization-wide"
+git push</div>
+
+                    <p><strong>What Happens Automatically:</strong></p>
+
+                    <ul class="benefits-list">
+                        <li><strong>30 projects</strong> inherit new standard instantly</li>
+                        <li><strong>Frontend team</strong> keeps their 92% (higher than org)</li>
+                        <li><strong>E-commerce project</strong> keeps their 100% (higher than org)</li>
+                        <li><strong>DevOps team</strong> upgrades from 85% to 90% automatically</li>
+                        <li><strong>All developers</strong> get the new standard on next pull</li>
+                        <li><strong>CI/CD workflows</strong> enforce it on every commit</li>
+                    </ul>
+
+                    <p><strong>Time Required:</strong> 2 minutes</p>
+                    <p><strong>Manual Work:</strong> Zero</p>
+                    <p><strong>Errors:</strong> Zero</p>
+                    <p><strong>Sarah's Mood:</strong> 😊 (instead of 😫)</p>
+                </div>
+
+                <h2>✨ The Magic of Inheritance</h2>
+
+                <p>Each level can:</p>
+
+                <ul class="benefits-list">
+                    <li><strong>Extend</strong> - Inherit settings from level above</li>
+                    <li><strong>Override</strong> - Replace specific settings</li>
+                    <li><strong>Add</strong> - Define new settings not in parent</li>
+                </ul>
+
+                <div class="code-example"><span class="comment">// Organization says: 80% coverage</span>
+org-config.json: { <span class="key">"minCoverage"</span>: <span class="value">80</span> }
+
+<span class="comment">// Team says: We want 90%</span>
+team-config.json: { 
+  <span class="key">"extends"</span>: <span class="value">"org-config.json"</span>,
+  <span class="key">"minCoverage"</span>: <span class="value">90</span> 
+}
+
+<span class="comment">// Project says: We need 100%</span>
+project-config.json: { 
+  <span class="key">"extends"</span>: <span class="value">"team-config.json"</span>,
+  <span class="key">"minCoverage"</span>: <span class="value">100</span> 
+}
+
+<span class="comment">// Result: Project gets 100%, team gets 90%, others get 80%</span>
+<span class="comment">// Everyone's happy! 🎉</span></div>
+
+                <h2>🚀 Zero Configuration Required</h2>
+
+                <p>Here's the beautiful part: <strong>You don't have to configure anything</strong>.</p>
+
+                <p>AROG comes with sensible defaults at every level:</p>
+
+                <ul class="benefits-list">
+                    <li>Clone AROG → It works immediately</li>
+                    <li>No setup required</li>
+                    <li>Production-ready defaults</li>
+                    <li>Customize only what you need</li>
+                </ul>
+
+                <div class="quote-box">
+                    "The best configuration is no configuration. The second best is configuration that works at every level of your organization."
+                </div>
+
+                <h2>💡 Key Takeaways</h2>
+
+                <div class="highlight-box">
+                    <ul class="benefits-list">
+                        <li><strong>7 Levels</strong> - From organization to individual developer</li>
+                        <li><strong>Inheritance Model</strong> - Each level extends the one above</li>
+                        <li><strong>Override Capability</strong> - Lower levels can customize</li>
+                        <li><strong>Zero Config</strong> - Works out of the box</li>
+                        <li><strong>One Change</strong> - Updates cascade to all projects</li>
+                        <li><strong>Team Autonomy</strong> - Teams can exceed org minimums</li>
+                        <li><strong>Developer Freedom</strong> - Personal preferences respected</li>
+                    </ul>
+                </div>
+
+                <p>Next, we'll explore how AROG's testing arsenal uses this configuration system to run 10 different types of tests automatically...</p>
+            </section>
+
+            <nav class="chapter-navigation">
+                <a href="chapter-03-getting-started.html" class="nav-button prev">Getting Started</a>
+                <a href="chapter-05-testing.html" class="nav-button next">The Testing Arsenal</a>
+            </nav>
+        </article>
+    </div>
+</body>
+</html>

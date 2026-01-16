@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 12: Advanced Techniques | The AROG Book</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --gray: #718096;
+            --accent: #fbbf24;
+            --success: #48bb78;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            line-height: 1.8;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .book-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .book-title { font-size: 1.1rem; color: var(--primary); font-weight: 700; }
+        .chapter-indicator { font-size: 0.9rem; color: var(--gray); }
+        .toc-link {
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .toc-link:hover { background: var(--secondary); transform: translateY(-2px); }
+        .container { max-width: 900px; margin: 0 auto; padding: 120px 2rem 4rem; }
+        .chapter {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--primary);
+        }
+        .chapter-number {
+            font-size: 1rem;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .chapter-title { font-size: 3rem; color: var(--dark); margin-bottom: 1rem; font-weight: 700; }
+        .chapter-subtitle { font-size: 1.3rem; color: var(--gray); font-style: italic; }
+        h2 { font-size: 2rem; color: var(--dark); margin: 3rem 0 1.5rem; padding-top: 2rem; }
+        h3 { font-size: 1.5rem; color: var(--primary); margin: 2rem 0 1rem; }
+        p { margin-bottom: 1.5rem; font-size: 1.1rem; }
+        .quote-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-left: 4px solid var(--primary);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+        .highlight-box {
+            background: #fbbf2415;
+            border-left: 4px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+        .command-box {
+            background: #1a202c;
+            color: #00ff00;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        .benefits-list { list-style: none; margin: 1rem 0; }
+        .benefits-list li {
+            padding: 0.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+        .benefits-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .stat-number { font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .stat-label { font-size: 1rem; opacity: 0.9; }
+        .pro-tip {
+            background: linear-gradient(135deg, #48bb7815 0%, #38a16915 100%);
+            border-left: 4px solid var(--success);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 10px;
+        }
+        .chapter-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+        }
+        .nav-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        .nav-button.prev:before { content: "← "; }
+        .nav-button.next:after { content: " →"; }
+        @media (max-width: 768px) {
+            .container { padding: 100px 1rem 2rem; }
+            .chapter { padding: 2rem 1.5rem; }
+            .chapter-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="book-nav">
+        <div class="book-title">📖 The AROG Book</div>
+        <div class="chapter-indicator">Chapter 12 of 12</div>
+        <a href="index.html" class="toc-link">📚 Table of Contents</a>
+    </nav>
+
+    <div class="container">
+        <article class="chapter">
+            <header class="chapter-header">
+                <div class="chapter-number">Chapter Twelve</div>
+                <h1 class="chapter-title">Advanced Techniques</h1>
+                <p class="chapter-subtitle">Pro Tips for AROG Masters</p>
+            </header>
+
+            <section>
+                <div class="quote-box">
+                    "Mastery is knowing not just what AROG can do, but how to make it do exactly what YOU need."
+                </div>
+
+                <h2>🎓 From User to Master</h2>
+                
+                <p>Sarah's been using AROG for three months. She's mastered the basics. Now she's ready to unlock the advanced features that separate good developers from great ones.</p>
+
+                <h2>🔧 Custom Workflow Creation</h2>
+
+                <p>Create your own automated workflows beyond the 22 included ones:</p>
+
+                <div class="command-box"># .github/workflows/custom-ml-pipeline.yml
+
+name: Custom ML Model Training
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 2 AM daily
+  workflow_dispatch:
+
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: AROG Health Check
+        run: npm run arog:health
+      
+      - name: Train ML Model
+        run: python train_model.py
+      
+      - name: AROG Performance Test
+        run: npm run arog:performance
+      
+      - name: Deploy if Improved
+        if: success()
+        run: npm run deploy:ml-model
+      
+      - name: Notify Team
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: 'ML model training complete!'</div>
+
+                <div class="pro-tip">
+                    <h3>💡 Pro Tip: Workflow Chaining</h3>
+                    <p>Trigger workflows from other workflows:</p>
+                    <div class="command-box">- name: Trigger Deployment
+  uses: actions/github-script@v6
+  with:
+    script: |
+      github.rest.actions.createWorkflowDispatch({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        workflow_id: 'deploy.yml',
+        ref: 'main'
+      })</div>
+                </div>
+
+                <h2>⚙️ Advanced Configuration Patterns</h2>
+
+                <h3>Multi-Environment Setup</h3>
+
+                <div class="command-box"># .arog/config.json (base)
+{
+  "testing": { "minCoverage": 80 },
+  "security": { "scanLevel": "standard" }
+}
+
+# .arog/config.production.json (override)
+{
+  "testing": { "minCoverage": 95 },
+  "security": { 
+    "scanLevel": "strict",
+    "blockOnVulnerabilities": true
+  },
+  "performance": {
+    "budgets": {
+      "bundle": "300KB",
+      "lighthouse": 90
+    }
+  }
+}
+
+# Load environment-specific config
+$ AROG_ENV=production npm run arog:validate</div>
+
+                <h3>Conditional Configuration</h3>
+
+                <div class="command-box"># Use different rules for different file types
+{
+  "rules": {
+    "*.test.js": {
+      "coverage": "optional",
+      "quality": "relaxed"
+    },
+    "*.prod.js": {
+      "coverage": "required",
+      "quality": "strict",
+      "security": "maximum"
+    }
+  }
+}</div>
+
+                <h2>🔄 Multi-Repo Orchestration</h2>
+
+                <p>Manage AROG across multiple repositories:</p>
+
+                <div class="command-box"># monorepo-config.json
+
+{
+  "repositories": [
+    {
+      "name": "frontend",
+      "path": "packages/web",
+      "arog_config": "web-config.json",
+      "deploy_strategy": "vercel"
+    },
+    {
+      "name": "backend",
+      "path": "packages/api",
+      "arog_config": "api-config.json",
+      "deploy_strategy": "aws-lambda"
+    },
+    {
+      "name": "mobile",
+      "path": "packages/mobile",
+      "arog_config": "mobile-config.json",
+      "deploy_strategy": "app-store"
+    }
+  ],
+  "shared_workflows": [
+    "security-scan",
+    "dependency-check"
+  ]
+}</div>
+
+                <div class="command-box"># Run AROG validation across all repos
+$ npm run arog:multi-repo-validate
+
+Validating 3 repositories...
+
+✓ frontend: All checks passed
+✓ backend: All checks passed
+✓ mobile: All checks passed
+
+Cross-repo compatibility: ✓
+Shared dependencies: ✓
+Security baseline: ✓
+
+All repositories ready for deployment!</div>
+
+                <h2>🎯 Custom Agent Creation</h2>
+
+                <p>Create specialized agents for your team's unique needs:</p>
+
+                <div class="command-box"># .github/agents/database-optimizer.agent.md
+
+---
+name: database-optimizer
+description: 'Analyzes and optimizes database queries'
+model: 'claude-sonnet-4'
+skills: ['code-analysis', 'performance-profiling']
+triggers: ['*.sql', 'database/', 'migrations/']
+---
+
+# Database Optimizer Agent
+
+I analyze SQL queries and suggest optimizations:
+
+## Capabilities
+- Detect N+1 queries
+- Suggest index additions
+- Identify slow queries
+- Optimize JOIN operations
+- Check query complexity
+
+## Usage
+@database-optimizer review this query</div>
+
+                <div class="command-box"># Use your custom agent
+@database-optimizer review this query
+
+→ Agent analyzes query
+→ Detects missing index on user_id
+→ Suggests:
+  CREATE INDEX idx_user_id ON orders(user_id);
+→ Estimates: 85% performance improvement</div>
+
+                <h2>📊 Advanced Monitoring & Analytics</h2>
+
+                <h3>Custom Metrics Collection</h3>
+
+                <div class="command-box"># scripts/custom-metrics.js
+
+const metrics = {
+  deploymentFrequency: await calculateDeployFreq(),
+  leadTime: await calculateLeadTime(),
+  mttr: await calculateMTTR(),
+  changeFailureRate: await calculateFailureRate()
+};
+
+// Export to Datadog, New Relic, etc.
+await exportMetrics(metrics);</div>
+
+                <h3>Trend Analysis</h3>
+
+                <div class="command-box">$ npm run arog:analytics
+
+AROG Analytics Report - Last 30 Days
+
+Deployment Metrics:
+├─ Frequency: 47 deployments (↑ 23% vs last month)
+├─ Success Rate: 97.8% (↑ 2.1%)
+├─ Avg Duration: 11m 42s (↓ 3m 18s)
+└─ Rollback Rate: 2.1% (↓ 1.3%)
+
+Code Quality:
+├─ Test Coverage: 98.2% avg (↑ 1.4%)
+├─ Code Reviews: 234 (100% automated first-pass)
+├─ Bug Detection: 89 bugs caught pre-merge
+└─ Security Issues: 12 vulnerabilities fixed
+
+Performance:
+├─ Bundle Size: 287KB avg (↓ 43KB)
+├─ Lighthouse Score: 94.5 avg (↑ 3.2)
+└─ Load Time: 1.8s avg (↓ 0.5s)
+
+Cost Optimization:
+├─ AI Cost: $1,847/month (↓ $8,153 vs baseline)
+└─ Savings Rate: 81.5%</div>
+
+                <h2>🚀 CI/CD Optimization</h2>
+
+                <h3>Parallel Test Execution</h3>
+
+                <div class="command-box"># .github/workflows/parallel-tests.yml
+
+jobs:
+  unit-tests:
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run test:shard --shard=${{ matrix.shard }}/4
+
+  # 4x faster than sequential!</div>
+
+                <h3>Smart Caching</h3>
+
+                <div class="command-box">- name: Cache Dependencies
+  uses: actions/cache@v3
+  with:
+    path: |
+      node_modules
+      .next/cache
+      ~/.npm
+    key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+# Reduces install time from 2m → 15s</div>
+
+                <h2>🔐 Advanced Security Patterns</h2>
+
+                <div class="highlight-box">
+                    <h3>Custom Security Rules</h3>
+                    <div class="command-box"># .arog/security-rules.json
+
+{
+  "custom_rules": [
+    {
+      "name": "no-production-logs",
+      "pattern": "console\\.log.*process\\.env",
+      "severity": "critical",
+      "message": "Never log environment variables"
+    },
+    {
+      "name": "require-auth",
+      "pattern": "app\\.(get|post).*public",
+      "severity": "high",
+      "message": "Public endpoints must have auth"
+    }
+  ]
+}</div>
+                </div>
+
+                <h2>⚡ Performance Optimization</h2>
+
+                <div class="pro-tip">
+                    <h3>💡 Pro Tip: Dynamic Imports</h3>
+                    <p>Reduce initial bundle size with code splitting:</p>
+                    <div class="command-box">// Before: 500KB bundle
+import HeavyComponent from './Heavy';
+
+// After: 150KB initial, 350KB on-demand
+const HeavyComponent = lazy(() => import('./Heavy'));
+
+# AROG detects and reports savings automatically</div>
+                </div>
+
+                <h2>🎨 Custom Dashboard Creation</h2>
+
+                <div class="command-box"># Create your own AROG dashboard
+$ npm run arog:dashboard:create
+
+→ Launches interactive builder
+→ Choose widgets: test coverage, deployments, costs
+→ Export to HTML/JSON
+→ Embed in docs or wiki
+
+Dashboard available at: docs/custom-dashboard.html</div>
+
+                <h2>🧪 Advanced Testing Strategies</h2>
+
+                <h3>Visual Regression Testing</h3>
+
+                <div class="command-box"># tests/visual/visual-regression.spec.js
+
+test('homepage matches baseline', async ({ page }) => {
+  await page.goto('/');
+  await expect(page).toHaveScreenshot('homepage.png', {
+    maxDiffPixels: 100
+  });
+});
+
+# AROG runs automatically on every PR</div>
+
+                <h3>Mutation Testing</h3>
+
+                <div class="command-box"># Check if your tests actually catch bugs
+$ npx stryker run
+
+Mutation testing: 95% mutation score
+→ Your tests catch 95% of code changes
+→ 5% of mutants survived (need better tests)</div>
+
+                <h2>✨ Key Takeaways</h2>
+
+                <ul class="benefits-list">
+                    <li><strong>Custom Workflows</strong> - Beyond the 22 included workflows</li>
+                    <li><strong>Multi-Environment Configs</strong> - Different rules for dev/staging/prod</li>
+                    <li><strong>Multi-Repo Orchestration</strong> - Manage AROG across monorepos</li>
+                    <li><strong>Custom Agents</strong> - Build specialized agents for your team</li>
+                    <li><strong>Advanced Monitoring</strong> - Detailed analytics and trend analysis</li>
+                    <li><strong>CI/CD Optimization</strong> - Parallel execution, smart caching</li>
+                    <li><strong>Security Customization</strong> - Your own security rules</li>
+                    <li><strong>Performance Tricks</strong> - Code splitting, bundle optimization</li>
+                </ul>
+
+                <p>You've mastered AROG. Now let's look at what's coming next in the Epilogue...</p>
+            </section>
+
+            <nav class="chapter-navigation">
+                <a href="chapter-11-cost-optimization.html" class="nav-button prev">Cost Optimization</a>
+                <a href="epilogue.html" class="nav-button next">Epilogue</a>
+            </nav>
+        </article>
+    </div>
+</body>
+</html>
