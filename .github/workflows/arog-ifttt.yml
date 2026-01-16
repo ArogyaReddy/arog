@@ -52,8 +52,8 @@ jobs:
             },
             {
               name: 'Deploy on PR merge',
-              if: { event: 'pull_request', action: 'closed', merged: true },
-              then: { action: 'deploy', environment: 'production' }
+              if: { event: 'pull_request', action: 'closed' },
+              then: { action: 'deploy-if-merged', environment: 'production' }
             },
             {
               name: 'Weekly dependency update',

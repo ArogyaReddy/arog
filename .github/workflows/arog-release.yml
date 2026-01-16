@@ -64,17 +64,13 @@ jobs:
             commits = execSync('git log --oneline -20', { encoding: 'utf8' });
           }
           
-          const changelog = \`# Changelog
-          
-          ## v${currentVersion} - ${new Date().toISOString().split('T')[0]}
-          
-          ### Changes
-          ${commits.split('\n').filter(l => l).map(l => '- ' + l).join('\n')}
-          
-          ### Stats
-          - Total Commits: ${commits.split('\n').filter(l => l).length}
-          - Date: ${new Date().toISOString()}
-          `;
+          const changelog = '# Changelog\n\n' +
+            '## v' + currentVersion + ' - ' + new Date().toISOString().split('T')[0] + '\n\n' +
+            '### Changes\n' +
+            commits.split('\n').filter(l => l).map(l => '- ' + l).join('\n') + '\n\n' +
+            '### Stats\n' +
+            '- Total Commits: ' + commits.split('\n').filter(l => l).length + '\n' +
+            '- Date: ' + new Date().toISOString() + '\n';
           
           fs.writeFileSync('CHANGELOG.md', changelog);
           console.log('✅ Changelog generated');
