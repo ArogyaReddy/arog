@@ -59,16 +59,16 @@ npm run arog:health
 npm run arog:test
 ```
 
-### 3. Open AROG Bible
+### 3. Open AROG Agent
 ```bash
 # macOS
-open .arog/docs/arog-bible.html
+open .arog/docs/arog-agent.html
 
 # Linux
-xdg-open .arog/docs/arog-bible.html
+xdg-open .arog/docs/arog-agent.html
 
 # Windows
-start .arog/docs/arog-bible.html
+start .arog/docs/arog-agent.html
 ```
 
 ### 4. Add GitHub Actions
@@ -202,7 +202,7 @@ chmod +x node_modules/@arogyareddy/arog/bin/arog.js
 
 ## Support
 
-- 📖 **Documentation**: See AROG Bible in `docs/arog-bible.html`
+- 📖 **Documentation**: See AROG Agent in `docs/arog-agent.html`
 - 🐛 **Issues**: https://github.com/ArogyaReddy/arog/issues
 - 💬 **Discussions**: https://github.com/ArogyaReddy/arog/discussions
 
@@ -212,7 +212,7 @@ chmod +x node_modules/@arogyareddy/arog/bin/arog.js
 
 1. ✅ Install AROG
 2. ✅ Run health check
-3. ✅ Open AROG Bible
+3. ✅ Open AROG Agent
 4. ✅ Set up GitHub Actions
 5. ✅ Share with your team!
 

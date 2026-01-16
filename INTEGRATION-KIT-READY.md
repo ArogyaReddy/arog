@@ -13,7 +13,7 @@
 - ✅ `scripts/run-tests.cjs` - Intelligent test runner
 
 ### Updated Documentation
-- ✅ `docs/arog-bible.html` - Added **Chapter 10: Integration Guide**
+- ✅ `docs/arog-agent.html` - Added **Chapter 10: Integration Guide**
   - Complete integration process (3 phases)
   - Real-world event-driven-app example
   - All CLI commands reference
@@ -70,7 +70,7 @@ From arog/arog-integration-kit/.arog/ → To event-driven-app/.arog/
 ├── config/
 │   └── (all config files)
 ├── docs/
-│   └── arog-bible.html         ← Updated with Chapter 10!
+│   └── arog-agent.html         ← Updated with Chapter 10!
 └── tests/
     └── (example tests)
 
@@ -159,7 +159,7 @@ node .arog/bin/arog.cjs test-all
 
 Open in browser:
 ```bash
-open /path/to/event-driven-app/.arog/docs/arog-bible.html
+open /path/to/event-driven-app/.arog/docs/arog-agent.html
 ```
 
 Navigate to **Chapter 10: Integrating @arog into ANY Existing Project**
@@ -172,7 +172,7 @@ After copying:
 - [ ] `.github/agents/arog.agent.md` exists
 - [ ] `node .arog/bin/arog.cjs --help` shows all commands
 - [ ] `node .arog/bin/arog.cjs analyze` works
-- [ ] Documentation opens: `open .arog/docs/arog-bible.html`
+- [ ] Documentation opens: `open .arog/docs/arog-agent.html`
 - [ ] GitHub Copilot can use @arog in chat
 
 ## 🔑 Key Features Now Available
@@ -215,7 +215,7 @@ node .arog/bin/arog.cjs test-performance
 
 1. ✅ All CLI commands implemented
 2. ✅ Integration kit updated with new scripts
-3. ✅ Chapter 10 added to arog-bible.html
+3. ✅ Chapter 10 added to arog-agent.html
 4. ✅ Complete HTML documentation
 5. ✅ All changes pushed to GitHub
 6. ✅ Ready for event-driven-app testing
@@ -233,9 +233,9 @@ node .arog/bin/arog.cjs test-performance
 
 ## 📖 Documentation Links
 
-- **Main Docs:** `.arog/docs/arog-bible.html`
+- **Main Docs:** `.arog/docs/arog-agent.html`
 - **Chapter 10:** Integration guide (newly added!)
-- **CLI Reference:** `.arog/docs/arog-bible.html` (Chapter 10, Commands table)
+- **CLI Reference:** `.arog/docs/arog-agent.html` (Chapter 10, Commands table)
 - **Agent Config:** `.github/agents/arog.agent.md`
 
 ---

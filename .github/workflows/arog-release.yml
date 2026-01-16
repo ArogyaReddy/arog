@@ -75,7 +75,7 @@ jobs:
           fs.writeFileSync('CHANGELOG.md', changelog);
           console.log('✅ Changelog generated');
           "
-          
+      
       - name: 🏷️ Create Release
         if: steps.analyze.outputs.bump != 'none'
         env:

@@ -76,7 +76,7 @@
 ### 📚 Documentation
 | Type | Status |
 |------|--------|
-| ✅ HTML Bible (arog-bible.html) | **Complete** - 10 Chapters |
+| ✅ HTML Agent Guide (arog-agent.html) | **Complete** - 10 Chapters |
 | ✅ API Reference | **Available** |
 | ✅ Setup Guide | **Available** |
 | ✅ Integration Guide | **Chapter 10** |

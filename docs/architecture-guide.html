@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AROG Architecture Guide - The Three Layers Explained</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #0f0f23;
+            --dark-card: #1a1a2e;
+            --light: #f8f9ff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: var(--dark);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-1);
+            padding: 100px 40px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(67, 233, 123, 0.2) 0%, transparent 50%);
+            animation: meshFloat 15s ease-in-out infinite;
+        }
+        
+        @keyframes meshFloat {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero-emoji {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 24px;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+        
+        .breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .breadcrumb a:hover {
+            opacity: 0.8;
+        }
+        
+        /* Navigation */
+        .nav {
+            background: rgba(15, 15, 35, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        /* Architecture Diagram */
+        .architecture-diagram {
+            background: var(--dark-card);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            text-align: center;
+        }
+        
+        .layer-box {
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .layer-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .layer-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .layer-subtitle {
+            font-size: 18px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+        
+        .layer-meta {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        .arrow {
+            font-size: 48px;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+        
+        /* Section Styling */
+        .section {
+            margin: 80px 0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--glass-border);
+        }
+        
+        .section-emoji {
+            font-size: 48px;
+        }
+        
+        .section-title {
+            font-size: 42px;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h3 {
+            font-size: 28px;
+            margin: 40px 0 20px;
+            color: var(--primary);
+        }
+        
+        h4 {
+            font-size: 22px;
+            margin: 30px 0 15px;
+            color: var(--accent);
+        }
+        
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .card {
+            background: var(--dark-card);
+            border: 2px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-emoji {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .card-description {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        /* Table Styling */
+        .table-container {
+            background: var(--dark-card);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background: var(--gradient-1);
+        }
+        
+        th {
+            padding: 20px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        
+        td {
+            padding: 20px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        tbody tr {
+            transition: background 0.3s;
+        }
+        
+        tbody tr:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        /* Code Blocks */
+        .code-block {
+            background: #1e1e2e;
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+        
+        .code-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .code-lang {
+            background: var(--primary);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        pre {
+            margin: 0;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        
+        code {
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            background: rgba(102, 126, 234, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        /* Flow Diagram */
+        .flow-diagram {
+            background: var(--dark-card);
+            border: 2px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .flow-step {
+            background: var(--glass);
+            border: 2px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px auto;
+            max-width: 600px;
+            transition: all 0.3s;
+        }
+        
+        .flow-step:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .flow-arrow {
+            font-size: 36px;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 5px;
+        }
+        
+        .badge-primary {
+            background: var(--gradient-1);
+        }
+        
+        .badge-success {
+            background: var(--success);
+        }
+        
+        .badge-warning {
+            background: var(--warning);
+        }
+        
+        .badge-danger {
+            background: var(--danger);
+        }
+        
+        .badge-info {
+            background: var(--info);
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .highlight-box strong {
+            color: var(--accent);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: var(--gradient-1);
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+            margin: 80px 0;
+        }
+        
+        .cta-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        .cta-description {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 18px 40px;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--dark-card);
+            padding: 40px;
+            text-align: center;
+            border-top: 2px solid var(--glass-border);
+        }
+        
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .footer a:hover {
+            opacity: 0.8;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-logo">🤖 AROG</div>
+            <ul class="nav-links">
+                <li><a href="arog-agent.html">📖 Home</a></li>
+                <li><a href="#agents">Agents</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#workflows">Workflows</a></li>
+                <li><a href="#integration">Integration</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="hero-emoji">🏗️</div>
+            <h1>AROG Architecture Guide</h1>
+            <p class="hero-subtitle">The Three Layers of Automation Explained</p>
+            <div class="breadcrumb">
+                <a href="arog-agent.html">🏠 AROG Agent</a>
+                <span>→</span>
+                <span>Architecture Guide</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Architecture Overview -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-emoji">🎯</span>
+                <h2 class="section-title">Architecture Overview</h2>
+            </div>
+            
+            <p style="font-size: 18px; margin-bottom: 40px;">
+                AROG uses a <strong>three-layer architecture</strong> for comprehensive automation. Each layer has a specific role, and together they create a powerful, zero-intervention automation platform.
+            </p>
+
+            <div class="architecture-diagram">
+                <div class="layer-box" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);">
+                    <div class="layer-title">WORKFLOWS</div>
+                    <div class="layer-subtitle">Orchestration Layer</div>
+                    <div class="layer-meta">
+                        <strong>When:</strong> Events, Schedule, Manual<br>
+                        <strong>Where:</strong> GitHub Actions
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="layer-box" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.3) 0%, rgba(245, 87, 108, 0.3) 100%);">
+                    <div class="layer-title">AI AGENTS</div>
+                    <div class="layer-subtitle">Intelligence Layer</div>
+                    <div class="layer-meta">
+                        <strong>What:</strong> Specialized AI assistants<br>
+                        <strong>How:</strong> Run on demand via workflows/CLI
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="layer-box" style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.3) 0%, rgba(0, 242, 254, 0.3) 100%);">
+                    <div class="layer-title">SKILLS</div>
+                    <div class="layer-subtitle">Capability Layer</div>
+                    <div class="layer-meta">
+                        <strong>What:</strong> Reusable automation modules<br>
+                        <strong>How:</strong> Invoked by agents and workflows
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AGENTS Section -->
+        <section class="section" id="agents">
+            <div class="section-header">
+                <span class="section-emoji">🤖</span>
+                <h2 class="section-title">1. Custom Agents</h2>
+            </div>
+
+            <div class="highlight-box">
+                <strong>What Are They?</strong><br>
+                AI Agents are specialized automation assistants that perform expert-level tasks. Think of them as virtual team members with specific expertise.
+            </div>
+
+            <h3>The 8 Agents</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Agent</th>
+                            <th>Expertise</th>
+                            <th>What It Does</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>code-review-agent</strong></td>
+                            <td><span class="badge badge-primary">Code Quality</span></td>
+                            <td>Reviews code for quality, security, performance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>test-generation-agent</strong></td>
+                            <td><span class="badge badge-success">Testing</span></td>
+                            <td>Generates comprehensive test suites automatically</td>
+                        </tr>
+                        <tr>
+                            <td><strong>documentation-agent</strong></td>
+                            <td><span class="badge badge-info">Documentation</span></td>
+                            <td>Creates API docs, README, architecture diagrams</td>
+                        </tr>
+                        <tr>
+                            <td><strong>performance-agent</strong></td>
+                            <td><span class="badge badge-warning">Optimization</span></td>
+                            <td>Finds bottlenecks, optimizes algorithms</td>
+                        </tr>
+                        <tr>
+                            <td><strong>security-agent</strong></td>
+                            <td><span class="badge badge-danger">Security</span></td>
+                            <td>OWASP Top 10 scanning, vulnerability detection</td>
+                        </tr>
+                        <tr>
+                            <td><strong>refactoring-agent</strong></td>
+                            <td><span class="badge badge-primary">Code Quality</span></td>
+                            <td>Refactors code, applies design patterns</td>
+                        </tr>
+                        <tr>
+                            <td><strong>api-design-agent</strong></td>
+                            <td><span class="badge badge-info">API Design</span></td>
+                            <td>Reviews REST APIs, generates OpenAPI specs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>database-agent</strong></td>
+                            <td><span class="badge badge-success">Database</span></td>
+                            <td>Optimizes queries, suggests indexes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>How Are They Used?</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-emoji">💻</div>
+                    <h4 class="card-title">Method 1: Via CLI</h4>
+                    <p class="card-description">Direct invocation from command line for on-demand analysis</p>
+                    <div class="code-block" style="margin-top: 20px;">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                        </div>
+                        <pre><code># Run specific agent
+arog-cli agent run code-review src/app.js
+
+# Run on directory
+arog-cli agent run security-agent src/
+
+# Run all agents
+arog-cli agent run-all</code></pre>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">⚙️</div>
+                    <h4 class="card-title">Method 2: Via Workflows</h4>
+                    <p class="card-description">Automatic triggers on GitHub events (PR, push, etc.)</p>
+                    <div class="code-block" style="margin-top: 20px;">
+                        <div class="code-header">
+                            <span class="code-lang">yaml</span>
+                        </div>
+                        <pre><code>on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  ai-review:
+    runs-on: ubuntu-latest
+    steps:
+      - run: arog-cli agent run code-review</code></pre>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">🧙</div>
+                    <h4 class="card-title">Method 3: Interactive Wizard</h4>
+                    <p class="card-description">Guided interface for step-by-step execution</p>
+                    <div class="code-block" style="margin-top: 20px;">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                        </div>
+                        <pre><code># Start interactive wizard
+arog-wizard
+
+# Choose: "🔍 Code Review (AI)"
+# Agent runs with interactive prompts</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>When Do They Get Triggered?</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trigger</th>
+                            <th>Agent</th>
+                            <th>Condition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Pull Request Opened</strong></td>
+                            <td>code-review-agent</td>
+                            <td>Automatically</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Push to main</strong></td>
+                            <td>security-agent</td>
+                            <td>Automatically</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Manual CLI</strong></td>
+                            <td>Any agent</td>
+                            <td>On demand</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Master Orchestrator</strong></td>
+                            <td>All agents</td>
+                            <td>When level='ultimate'</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Low test coverage</strong></td>
+                            <td>test-generation-agent</td>
+                            <td>Via workflow</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance issue</strong></td>
+                            <td>performance-agent</td>
+                            <td>On demand</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>How Do They Work?</h3>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <strong>1. Agent Activation</strong><br>
+                    <small>Triggered by CLI, workflow, or event</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>2. Code Analysis</strong><br>
+                    <small>Reads your source files</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>3. AI Processing</strong><br>
+                    <small>Uses prompts from .arog/prompts/</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>4. Generate Report</strong><br>
+                    <small>Findings + recommendations</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>5. Output</strong><br>
+                    <small>Console / File / PR comment</small>
+                </div>
+            </div>
+
+            <h4>Example: Code Review Agent in Action</h4>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">bash</span>
+                    <span>Terminal Output</span>
+                </div>
+                <pre><code>$ arog-cli agent run code-review src/app.js
+
+🤖 Running Code Review Agent...
+
+## Code Review Summary
+
+### ✅ Strengths
+- Good variable naming
+- Proper error handling
+
+### 🔴 Critical Issues
+1. SQL Injection (Line 45)
+   - Problem: Unsanitized user input
+   - Fix: Use parameterized queries
+
+### Score: 7/10</code></pre>
+            </div>
+        </section>
+
+        <!-- SKILLS Section -->
+        <section class="section" id="skills">
+            <div class="section-header">
+                <span class="section-emoji">🎯</span>
+                <h2 class="section-title">2. Skills</h2>
+            </div>
+
+            <div class="highlight-box">
+                <strong>What Are They?</strong><br>
+                Skills are reusable automation modules with specific capabilities. Think of them as tools in a toolbox that agents and workflows can use.
+            </div>
+
+            <h3>The 6 Skills</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Skill</th>
+                            <th>Category</th>
+                            <th>Level</th>
+                            <th>What It Does</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>code-complexity-analyzer</strong></td>
+                            <td>Analysis</td>
+                            <td><span class="badge badge-warning">Advanced</span></td>
+                            <td>Calculates cyclomatic/cognitive complexity</td>
+                        </tr>
+                        <tr>
+                            <td><strong>test-generator-pro</strong></td>
+                            <td>Generation</td>
+                            <td><span class="badge badge-danger">Expert</span></td>
+                            <td>AI-powered test generation (90% coverage)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>code-modernizer</strong></td>
+                            <td>Transformation</td>
+                            <td><span class="badge badge-warning">Advanced</span></td>
+                            <td>Converts to ES2023+ syntax</td>
+                        </tr>
+                        <tr>
+                            <td><strong>bundle-optimizer</strong></td>
+                            <td>Optimization</td>
+                            <td><span class="badge badge-danger">Expert</span></td>
+                            <td>Code splitting, tree shaking</td>
+                        </tr>
+                        <tr>
+                            <td><strong>vulnerability-scanner-pro</strong></td>
+                            <td>Security</td>
+                            <td><span class="badge badge-danger">Expert</span></td>
+                            <td>Multi-layer security scanning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>health-monitor-pro</strong></td>
+                            <td>Monitoring</td>
+                            <td><span class="badge badge-warning">Advanced</span></td>
+                            <td>Real-time health checks</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Skill Categories</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-emoji">📊</div>
+                    <h4 class="card-title">Analysis Skills</h4>
+                    <ul style="margin-top: 15px; padding-left: 20px;">
+                        <li>code-complexity-analyzer</li>
+                        <li>dependency-analyzer</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">🎨</div>
+                    <h4 class="card-title">Generation Skills</h4>
+                    <ul style="margin-top: 15px; padding-left: 20px;">
+                        <li>test-generator-pro</li>
+                        <li>doc-generator</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">🔄</div>
+                    <h4 class="card-title">Transformation Skills</h4>
+                    <ul style="margin-top: 15px; padding-left: 20px;">
+                        <li>code-modernizer</li>
+                        <li>refactoring-engine</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">⚡</div>
+                    <h4 class="card-title">Optimization Skills</h4>
+                    <ul style="margin-top: 15px; padding-left: 20px;">
+                        <li>bundle-optimizer</li>
+                        <li>performance-tuner</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">🔒</div>
+                    <h4 class="card-title">Security Skills</h4>
+                    <ul style="margin-top: 15px; padding-left: 20px;">
+                        <li>vulnerability-scanner-pro</li>
+                        <li>secret-detector</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">📈</div>
+                    <h4 class="card-title">Monitoring Skills</h4>
+                    <ul style="margin-top: 15px; padding-left: 20px;">
+                        <li>health-monitor-pro</li>
+                        <li>metrics-collector</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>When Do They Get Triggered?</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trigger</th>
+                            <th>Skill</th>
+                            <th>Usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Agent invocation</strong></td>
+                            <td>Any skill</td>
+                            <td>Agents call skills as needed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Workflow job</strong></td>
+                            <td>Specific skill</td>
+                            <td>Direct skill invocation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scheduled job</strong></td>
+                            <td>health-monitor-pro</td>
+                            <td>Daily at 2 AM UTC</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pre-commit</strong></td>
+                            <td>code-modernizer</td>
+                            <td>Git hook</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Build process</strong></td>
+                            <td>bundle-optimizer</td>
+                            <td>During webpack build</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Security scan</strong></td>
+                            <td>vulnerability-scanner-pro</td>
+                            <td>Daily/on PR</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Example: Test Generator Skill</h4>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">bash</span>
+                    <span>Terminal Output</span>
+                </div>
+                <pre><code>$ arog-cli skill run test-generator-pro src/calculator.js
+
+🧪 Test Generator Pro (Expert Level)
+
+Analyzing: src/calculator.js
+Functions found: 5
+
+Generating tests:
+  ✓ add() - 8 tests (happy path + edge cases)
+  ✓ subtract() - 6 tests
+  ✓ multiply() - 7 tests
+  ✓ divide() - 9 tests (includes divide-by-zero)
+  ✓ power() - 5 tests
+
+Total: 35 tests generated
+Coverage: 98%
+File: tests/unit/calculator.test.js</code></pre>
+            </div>
+        </section>
+
+        <!-- WORKFLOWS Section -->
+        <section class="section" id="workflows">
+            <div class="section-header">
+                <span class="section-emoji">🚀</span>
+                <h2 class="section-title">3. Workflows</h2>
+            </div>
+
+            <div class="highlight-box">
+                <strong>What Are They?</strong><br>
+                Workflows are automated pipelines that orchestrate agents and skills. They run on GitHub Actions and execute automatically based on events or schedules.
+            </div>
+
+            <h3>The 22 Workflows</h3>
+
+            <h4>Core Workflows (8)</h4>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Workflow</th>
+                            <th>Trigger</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>arog-build.yml</strong></td>
+                            <td>Push</td>
+                            <td>Build + type check</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-code-quality.yml</strong></td>
+                            <td>Push/PR</td>
+                            <td>ESLint + Prettier</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-e2e-tests.yml</strong></td>
+                            <td>PR</td>
+                            <td>Playwright E2E tests</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-visual-regression.yml</strong></td>
+                            <td>PR</td>
+                            <td>Visual diff testing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-load-tests.yml</strong></td>
+                            <td>Manual</td>
+                            <td>k6 load testing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-api-tests.yml</strong></td>
+                            <td>PR</td>
+                            <td>Supertest API tests</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-docker.yml</strong></td>
+                            <td>PR</td>
+                            <td>Docker build + scan</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-code-review.yml</strong></td>
+                            <td>PR</td>
+                            <td>Automated review</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Automation Workflows (5)</h4>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Workflow</th>
+                            <th>Trigger</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>arog-release.yml</strong></td>
+                            <td>Tag</td>
+                            <td>Auto-release + changelog</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-pre-commit.yml</strong></td>
+                            <td>Push</td>
+                            <td>Pre-commit validation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-code-metrics.yml</strong></td>
+                            <td>Daily</td>
+                            <td>Collect metrics</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-monitoring.yml</strong></td>
+                            <td>Schedule</td>
+                            <td>Health monitoring</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-scheduler.yml</strong></td>
+                            <td>Cron</td>
+                            <td>Time-based jobs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>Advanced Workflows (6)</h4>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Workflow</th>
+                            <th>Trigger</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>arog-orchestrator.yml</strong></td>
+                            <td>Manual</td>
+                            <td>Complex multi-step workflows</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-ifttt.yml</strong></td>
+                            <td>Events</td>
+                            <td>IF-THIS-THEN-THAT automation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-ai-analysis.yml</strong></td>
+                            <td>PR</td>
+                            <td>AI-powered code analysis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-zero-downtime-deploy.yml</strong></td>
+                            <td>Manual</td>
+                            <td>Production deployment</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-master-orchestrator.yml</strong></td>
+                            <td>Daily/Manual</td>
+                            <td>Ultimate 8-phase pipeline</td>
+                        </tr>
+                        <tr>
+                            <td><strong>arog-mutation-tests.yml</strong></td>
+                            <td>Manual</td>
+                            <td>Stryker mutation testing</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Trigger Types</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-emoji">⚡</div>
+                    <h4 class="card-title">Event-Based</h4>
+                    <p class="card-description">Triggered by GitHub events</p>
+                    <div class="code-block" style="margin-top: 15px;">
+                        <pre><code>on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main]</code></pre>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">⏰</div>
+                    <h4 class="card-title">Scheduled</h4>
+                    <p class="card-description">Runs on specific times/dates</p>
+                    <div class="code-block" style="margin-top: 15px;">
+                        <pre><code>on:
+  schedule:
+    # Daily at 2 AM UTC
+    - cron: '0 2 * * *'</code></pre>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-emoji">👆</div>
+                    <h4 class="card-title">Manual</h4>
+                    <p class="card-description">Run manually from UI</p>
+                    <div class="code-block" style="margin-top: 15px;">
+                        <pre><code>on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options: [staging, production]</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h3>How Do They Work?</h3>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <strong>1. Trigger Event</strong><br>
+                    <small>PR opened, push, schedule, manual</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>2. GitHub Actions Runner</strong><br>
+                    <small>Cloud VM starts</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>3. Checkout Code</strong><br>
+                    <small>Clone repository</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>4. Setup Environment</strong><br>
+                    <small>Node.js, dependencies, cache</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>5. Run Jobs</strong><br>
+                    <small>Sequential or parallel execution</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>6. Execute Steps</strong><br>
+                    <small>Run skills, agents, commands</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>7. Generate Artifacts</strong><br>
+                    <small>Reports, coverage, logs</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <strong>8. Post Results</strong><br>
+                    <small>PR comments, Slack, notifications</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Integration Section -->
+        <section class="section" id="integration">
+            <div class="section-header">
+                <span class="section-emoji">🔗</span>
+                <h2 class="section-title">How They Work Together</h2>
+            </div>
+
+            <h3>Example 1: Pull Request Workflow</h3>
+            <div class="flow-diagram">
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);">
+                    <strong>Developer opens PR</strong>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);">
+                    <strong>WORKFLOW:</strong> arog-ai-analysis.yml triggers
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.3) 0%, rgba(245, 87, 108, 0.3) 100%);">
+                    <strong>AGENTS:</strong> Multiple agents activated<br>
+                    <small>code-review-agent • security-agent • test-generation-agent</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.3) 0%, rgba(0, 242, 254, 0.3) 100%);">
+                    <strong>SKILLS:</strong> Agents use skills<br>
+                    <small>complexity-analyzer • vuln-scanner • test-generator</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(67, 233, 123, 0.3) 0%, rgba(56, 249, 215, 0.3) 100%);">
+                    <strong>OUTPUT:</strong> Results posted to PR<br>
+                    <small>Review comments • Security findings • Generated tests</small>
+                </div>
+            </div>
+
+            <h3>Example 2: Scheduled Maintenance</h3>
+            <div class="flow-diagram">
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);">
+                    <strong>Daily at 2 AM UTC</strong>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);">
+                    <strong>WORKFLOW:</strong> arog-scheduler.yml triggers
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(79, 172, 254, 0.3) 0%, rgba(0, 242, 254, 0.3) 100%);">
+                    <strong>SKILL:</strong> health-monitor-pro<br>
+                    <small>Check APIs • Verify DB • Monitor resources</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(240, 147, 251, 0.3) 0%, rgba(245, 87, 108, 0.3) 100%);">
+                    <strong>AGENT:</strong> If issues → monitoring-agent<br>
+                    <small>Analyze problems • Suggest fixes</small>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step" style="background: linear-gradient(135deg, rgba(67, 233, 123, 0.3) 0%, rgba(56, 249, 215, 0.3) 100%);">
+                    <strong>OUTPUT:</strong> Health report + alerts
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Reference -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-emoji">📋</span>
+                <h2 class="section-title">Quick Reference</h2>
+            </div>
+
+            <h3>When to Use Each Layer</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Need</th>
+                            <th>Use</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Expert analysis</strong></td>
+                            <td>Agent</td>
+                            <td><code>arog-cli agent run code-review</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Specific capability</strong></td>
+                            <td>Skill</td>
+                            <td><code>arog-cli skill run bundle-optimizer</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Automated pipeline</strong></td>
+                            <td>Workflow</td>
+                            <td>Push triggers build workflow</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Complex orchestration</strong></td>
+                            <td>Master Orchestrator</td>
+                            <td>Full validation before deploy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Event-driven automation</strong></td>
+                            <td>IFTTT Workflow</td>
+                            <td>PR merge → auto-deploy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scheduled tasks</strong></td>
+                            <td>Scheduler Workflow</td>
+                            <td>Daily health checks</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Access Methods</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">bash</span>
+                    <span>All Access Methods</span>
+                </div>
+                <pre><code># CLI (Command Line)
+arog-cli agent run &lt;agent-name&gt;
+arog-cli skill run &lt;skill-name&gt;
+
+# Interactive (Wizards)
+arog-wizard
+
+# GitHub Actions (Automatic)
+- Push/PR/Tag events
+- Manual workflow dispatch
+- Scheduled cron jobs</code></pre>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Explore More?</h2>
+            <p class="cta-description">
+                Workflows orchestrate everything, Agents provide intelligence, Skills provide capabilities.<br>
+                Together, they create a comprehensive automation platform that requires zero human intervention!
+            </p>
+            <a href="arog-agent.html" class="cta-btn">← Back to AROG Agent</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>
+            <strong>🤖 AROG</strong> - Autonomous Robot for Organization Growth<br>
+            <a href="arog-agent.html">AROG Agent</a> • 
+            <a href="setup-guide.html">Setup Guide</a> • 
+            <a href="configuration.html">Configuration</a> • 
+            <a href="api-reference.html">API Reference</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -440,7 +440,7 @@ Press Enter to continue...
 │                                                             │
 │  AROG documentation is available at:                       │
 │                                                             │
-│  • docs/arog-bible.html                                    │
+│  • docs/arog-agent.html                                    │
 │  • docs/setup-guide.html                                   │
 │  • docs/configuration.html                                 │
 │                                                             │

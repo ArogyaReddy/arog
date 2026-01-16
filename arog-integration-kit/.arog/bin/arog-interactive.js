@@ -534,7 +534,7 @@ async function main() {
         console.log(boxen(
           chalk.blue.bold('📚 Documentation\n\n') +
           chalk.white('AROG documentation is available at:\n\n') +
-          chalk.cyan('• docs/arog-bible.html\n') +
+          chalk.cyan('• docs/arog-agent.html\n') +
           chalk.cyan('• docs/setup-guide.html\n') +
           chalk.cyan('• docs/configuration.html\n\n') +
           chalk.gray('Run: ') + chalk.green('npm run docs:serve') + chalk.gray(' to view in browser'),

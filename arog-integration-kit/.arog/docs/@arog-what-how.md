@@ -383,7 +383,7 @@ Just commit your code - I'll automatically:
 
 ## 📚 Learn More
 
-- 📖 **Complete Guide**: arog-bible.html
+- 📖 **Complete Guide**: arog-agent.html
 - 🎯 **Setup Instructions**: setup-guide.html
 - ⚙️ **Configuration**: configuration.html
 - 🤖 **Branding Guide**: arog-branding.md

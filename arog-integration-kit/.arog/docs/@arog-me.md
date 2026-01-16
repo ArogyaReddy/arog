@@ -5,7 +5,7 @@ GitHub Copilot: I'll check the changes made to the file to see what was modified
 
 Read changed files in [](file:///Users/arog/Learn/arog)
 
-The changes shown in your editor are **CSS styling additions** and **HTML structural improvements** for Chapter 9 (@arog Agent section) of the AROG Bible documentation.
+The changes shown in your editor are **CSS styling additions** and **HTML structural improvements** for Chapter 9 (@arog Agent section) of the AROG Agent documentation.
 
 ## What Changed:
 
@@ -49,9 +49,9 @@ User: please check in and push to AROG
 
 GitHub Copilot: Ran terminal command:  git status
 
-Ran terminal command:  git add docs/arog-bible.html
+Ran terminal command:  git add docs/arog-agent.html
 
-Ran terminal command:  cd /Users/arog/Learn/arog && git commit -m "Improve AROG Bible Chapter 9: Fix navigation, styling, and structure
+Ran terminal command:  cd /Users/arog/Learn/arog && git commit -m "Improve AROG Agent Chapter 9: Fix navigation, styling, and structure
 
 - Move CSS styles to head section for better organization
 - Fix navigation link from #chapter-9 to #arogAgent
@@ -65,7 +65,7 @@ Ran terminal command:  git push
 ✅ **Changes committed and pushed successfully!**
 
 **Commit:** `cf7ad3c`
-**Message:** Improve AROG Bible Chapter 9: Fix navigation, styling, and structure
+**Message:** Improve AROG Agent Chapter 9: Fix navigation, styling, and structure
 
 **Changes included:**
 - Moved CSS to head section for better organization
@@ -207,7 +207,7 @@ Any Check Fails → Developer Notified ❌
 │   └── skills/                        # Reusable knowledge modules
 │
 ├── docs/
-│   ├── arog-bible.html               # Complete guide (just updated!)
+│   ├── arog-agent.html               # Complete guide (just updated!)
 │   ├── index.html                    # Main dashboard
 │   ├── setup-guide.html              # Installation guide
 │   ├── configuration.html            # Config reference
@@ -991,7 +991,7 @@ Just commit your code - I'll automatically:
 
 ## 📚 Learn More
 
-- 📖 **Complete Guide**: arog-bible.html
+- 📖 **Complete Guide**: arog-agent.html
 - 🎯 **Setup Instructions**: setup-guide.html
 - ⚙️ **Configuration**: configuration.html
 - 🤖 **Branding Guide**: arog-branding.md

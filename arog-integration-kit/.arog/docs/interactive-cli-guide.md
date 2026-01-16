@@ -520,7 +520,7 @@ The **AROG Interactive CLI** transforms the developer experience from:
 
 - **Complete Demo**: [COMPLETE-AROG-DEMO.md](../demo-project/team-sync/COMPLETE-AROG-DEMO.md)
 - **Setup Guide**: [setup-guide.html](./setup-guide.html)
-- **AROG Bible**: [arog-bible.html](./arog-bible.html)
+- **AROG Agent**: [arog-agent.html](./arog-agent.html)
 - **Model Routing**: [model-routing-guide.md](./model-routing-guide.md)
 
 ---

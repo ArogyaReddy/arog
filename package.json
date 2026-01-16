@@ -13,7 +13,7 @@
     "bin",
     "scripts",
     ".github/workflows",
-    "docs/arog-bible.html",
+    "docs/arog-agent.html",
     "README.md",
     "LICENSE"
   ],
@@ -50,7 +50,8 @@
     "release:major": "echo '\n🚀 @arog is preparing major release...\n' && npm version major && git push --follow-tags",
     "metrics": "echo '\n📊 @arog is calculating code metrics...\n' && node -e \"console.log('Metrics calculated - see workflow')\"",
     "validate": "echo '\n✅ @arog is running full validation...\n' && npm run lint && npm run typecheck && npm test && npm run build",
-    "docs:serve": "echo '\n📚 @arog is starting documentation server...\n' && npx http-server docs -p 8080",
+    "docs:serve": "echo '\n📚 @arog is starting documentation server...\n' && node scripts/serve-docs.js",
+    "docs:serve:simple": "echo '\n📚 @arog is starting simple HTTP server...\n' && npx http-server docs -p 8080",
     "arog:health": "node scripts/health-check.js",
     "arog:setup": "node scripts/setup.js",
     "arog:validate": "node scripts/validate-system.js"

@@ -13,7 +13,7 @@
     "bin",
     "scripts",
     ".github/workflows",
-    "docs/arog-bible.html",
+    "docs/arog-agent.html",
     "README.md",
     "LICENSE"
   ],
