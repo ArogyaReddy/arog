@@ -1,0 +1,29 @@
+{
+  "description": "AROG Smart Model Routing - Use FREE models when possible, PAID when necessary",
+  "version": "1.0.0",
+  
+  "models": {
+    "free": {
+      "primary": "gpt-4o-mini",
+      "cost": 0,
+      "useFor": ["health-check", "lint", "test-execution", "simple-queries"]
+    },
+    "paid": {
+      "primary": "claude-sonnet-4",
+      "cost": 0.003,
+      "useFor": ["code-generation", "security", "performance", "architecture"]
+    }
+  },
+  
+  "agents": {
+    "arog": {"defaultModel": "free", "escalationEnabled": true},
+    "arog-code-reviewer": {"defaultModel": "paid"},
+    "arog-test-engineer": {"defaultModel": "free"},
+    "arog-deployment-manager": {"defaultModel": "free"}
+  },
+  
+  "costTracking": {
+    "enabled": true,
+    "budgetLimits": {"daily": 10.00, "monthly": 200.00}
+  }
+}

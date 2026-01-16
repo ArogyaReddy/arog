@@ -1,0 +1,27 @@
+{
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "description": "Your project description - Powered by AROG",
+  "scripts": {
+    "arog:health": "node .arog/scripts/health-check.js",
+    "arog:validate": "node .arog/scripts/validate-system.js",
+    "arog:setup": "cd .arog && npm install",
+    "test": "echo '🧪 @arog is running all tests...' && npm run test:unit",
+    "test:unit": "jest",
+    "test:e2e": "playwright test",
+    "test:a11y": "jest --testMatch='**/*.a11y.test.js'",
+    "lint": "echo '✨ @arog is analyzing code quality...' && eslint . --ext .js,.ts,.jsx,.tsx",
+    "lint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix",
+    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,jsx,tsx,json,md}\"",
+    "build": "echo '🏗️ @arog is building production bundle...' && npm run build:prod",
+    "build:prod": "webpack --mode production",
+    "arog:security": "echo '🛡️ @arog is scanning for security issues...' && npm audit",
+    "arog:review": "echo '🔍 @arog is reviewing your code...' && npm run lint && npm test",
+    "arog:interactive": "npx arog"
+  },
+  "keywords": ["arog", "automation", "ai-powered"],
+  "devDependencies": {
+    "// NOTE": "Add your project's dependencies here"
+  }
+}
