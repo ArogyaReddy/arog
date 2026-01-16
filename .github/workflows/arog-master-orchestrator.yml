@@ -144,8 +144,8 @@ jobs:
       - run: npm run test:e2e
 
   advanced-tests:
-    needs: [unit-tests, integration-tests]
-    if: needs.orchestrator-init.outputs.automation_level != 'quick-check'
+    needs: [orchestrator-init, unit-tests, integration-tests]
+    if: always() && needs.orchestrator-init.outputs.automation_level != 'quick-check'
     runs-on: ubuntu-latest
     
     strategy:
@@ -164,8 +164,8 @@ jobs:
   # ============================================================
   
   ai-agents:
-    needs: [e2e-tests, advanced-tests]
-    if: needs.orchestrator-init.outputs.automation_level == 'ultimate'
+    needs: [orchestrator-init, e2e-tests, advanced-tests]
+    if: always() && needs.orchestrator-init.outputs.automation_level == 'ultimate'
     runs-on: ubuntu-latest
     
     strategy:
@@ -282,14 +282,14 @@ jobs:
       
       - name: Aggregate all reports
         run: |
-          cat > ultimate-automation-report.md << 'EOF'
+          cat > ultimate-automation-report.md << EOF
           # 🌟 AROG Ultimate Automation Report
           
           ## Execution Summary
-          - Run ID: ${{ needs.orchestrator-init.outputs.run_id }}
-          - Start Time: ${{ needs.orchestrator-init.outputs.start_time }}
-          - Duration: $(date -u +%H:%M:%S)
-          - Automation Level: ${{ needs.orchestrator-init.outputs.automation_level }}
+          - Run ID: \${{ needs.orchestrator-init.outputs.run_id }}
+          - Start Time: \${{ needs.orchestrator-init.outputs.start_time }}
+          - Duration: \$(date -u +%H:%M:%S)
+          - Automation Level: \${{ needs.orchestrator-init.outputs.automation_level }}
           
           ## Phase 1: Analysis ✅
           - Code Complexity: PASSED

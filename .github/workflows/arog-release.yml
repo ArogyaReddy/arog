@@ -66,15 +66,15 @@ jobs:
           
           const changelog = \`# Changelog
           
-## v\${currentVersion} - \${new Date().toISOString().split('T')[0]}
-
-### Changes
-\${commits.split('\\n').filter(l => l).map(l => '- ' + l).join('\\n')}
-
-### Stats
-- Total Commits: \${commits.split('\\n').filter(l => l).length}
-- Date: \${new Date().toISOString()}
-          \`;
+          ## v${currentVersion} - ${new Date().toISOString().split('T')[0]}
+          
+          ### Changes
+          ${commits.split('\n').filter(l => l).map(l => '- ' + l).join('\n')}
+          
+          ### Stats
+          - Total Commits: ${commits.split('\n').filter(l => l).length}
+          - Date: ${new Date().toISOString()}
+          `;
           
           fs.writeFileSync('CHANGELOG.md', changelog);
           console.log('✅ Changelog generated');
