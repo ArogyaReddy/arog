@@ -54,7 +54,12 @@
     "docs:serve:simple": "echo '\n📚 @arog is starting simple HTTP server...\n' && npx http-server docs -p 8080",
     "arog:health": "node scripts/health-check.js",
     "arog:setup": "node scripts/setup.js",
-    "arog:validate": "node scripts/validate-system.js"
+    "arog:validate": "node scripts/validate-system.js",
+    "config:validate": "echo '\n⚙️ @arog is validating configurations...\n' && node .arog/config/config-manager.js validate",
+    "config:merge": "echo '\n⚙️ @arog is merging configurations...\n' && node .arog/config/config-manager.js merge",
+    "config:summary": "echo '\n⚙️ @arog is showing configuration summary...\n' && node .arog/config/config-manager.js summary",
+    "config:find": "echo '\n⚙️ @arog is searching configuration...\n' && node .arog/config/config-manager.js find",
+    "config:check-all": "echo '\n⚙️ @arog is running full configuration check...\n' && node .arog/config/config-manager.js"
   },
   "keywords": [
     "automation",
