@@ -9,3 +9,6 @@ coverage/
 test-results/
 playwright-report/
 *.min.js
+
+# VS Code settings (user-specific)
+.vscode/

@@ -37,19 +37,24 @@ AROG is a complete automation framework that handles code review, testing, secur
 
 ```bash
 # Clone AROG
-git clone https://github.com/YourOrg/AROG.git
-cd AROG
+git clone https://github.com/ArogyaReddy/arog.git
+cd arog
 
-# Automated setup
-npm run arog:setup
+# Install dependencies
+npm install
 
-# Validate installation
+# Setup MCP server (enables browser automation) - CRITICAL!
+node .arog/scripts/setup-mcp-server.js
+
+# Restart VS Code, then validate
 npm run arog:validate
 
 # View documentation
 npm run docs:serve
 # Then open: http://localhost:8080
 ```
+
+**Integrating into YOUR project?** See [Integration Guide](docs/INTEGRATION-GUIDE.md)
 
 That's it! AROG is now protecting your codebase 24/7.
 

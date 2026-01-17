@@ -1,6 +1,6 @@
 # 🚀 AROG Integration Kit
 
-## How to Add AROG to ANY Project (2 Minutes)
+## How to Add AROG to ANY Project (5 Minutes)
 
 ### **Step 1: Copy These 2 Folders**
 
@@ -18,6 +18,24 @@ your-project/
 cd your-project/.arog
 npm install
 ```
+
+### **Step 3: Setup MCP Server (CRITICAL!)** ⭐
+
+```bash
+node .arog/scripts/setup-mcp-server.js
+```
+
+**WHY THIS MATTERS:**
+- This creates `.vscode/settings.json` with MCP server configuration
+- Enables @arog's browser automation for E2E test generation
+- WITHOUT THIS: @arog cannot control browsers or generate tests
+- Run this ONCE per project, then restart VS Code
+
+What it does:
+- ✅ Creates/updates `.vscode/settings.json`
+- ✅ Configures AROG Playwright MCP server
+- ✅ Installs Playwright browsers
+- ✅ Adds `.vscode/` to your `.gitignore`
 
 ### **Step 3: Add AROG Commands to package.json**
 
