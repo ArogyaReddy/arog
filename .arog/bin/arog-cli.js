@@ -82,44 +82,62 @@ function runCommand(command, description) {
     const env = { ...process.env };
     delete env.NODE_OPTIONS; // Remove debugger options
     
-    const child = spawn(command, { 
-      shell: true, 
-      cwd: projectRoot,
-      env: env, // Use environment without debugger
-      stdio: ['ignore', 'pipe', 'pipe'] // Explicitly set stdio
-    });
-    let output = '';
+    // For npm commands with ||, split and try sequentially
+    const commands = command.includes(' || ') ? command.split(' || ') : [command];
     
-    child.stdout.on('data', (data) => {
-      output += data.toString();
-    });
-    
-    child.stderr.on('data', (data) => {
-      const text = data.toString();
-      // Filter out debugger messages
-      if (!text.includes('Debugger listening') && 
-          !text.includes('Debugger attached') && 
-          !text.includes('Waiting for the debugger')) {
-        output += text;
+    const tryCommand = (cmdList, index = 0) => {
+      if (index >= cmdList.length) {
+        spinner.fail(`${description} - all attempts failed`);
+        reject(new Error('All command attempts failed'));
+        return;
       }
-    });
-    
-    child.on('close', (code) => {
-      if (code === 0) {
-        spinner.succeed(description);
-        resolve(output);
-      } else {
-        spinner.fail(`${description} (exit code: ${code})`);
-        
-        // Show detailed error if verbose mode
-        if (process.argv.includes('--verbose') || process.argv.includes('-v')) {
-          console.log(chalk.gray('\n[DEBUG] Command output:'));
-          console.log(chalk.gray(output.substring(0, 500))); // First 500 chars
+      
+      const cmd = cmdList[index].trim();
+      const child = spawn(cmd, { 
+        shell: true, 
+        cwd: projectRoot,
+        env: env,
+        stdio: ['ignore', 'pipe', 'pipe']
+      });
+      
+      let output = '';
+      
+      child.stdout.on('data', (data) => {
+        output += data.toString();
+      });
+      
+      child.stderr.on('data', (data) => {
+        const text = data.toString();
+        // Filter out debugger messages
+        if (!text.includes('Debugger listening') && 
+            !text.includes('Debugger attached') && 
+            !text.includes('Waiting for the debugger')) {
+          output += text;
         }
-        
-        reject(new Error(output));
-      }
-    });
+      });
+      
+      child.on('close', (code) => {
+        if (code === 0) {
+          spinner.succeed(description);
+          resolve(output);
+        } else if (index < cmdList.length - 1) {
+          // Try next command in the list
+          tryCommand(cmdList, index + 1);
+        } else {
+          spinner.fail(`${description} (exit code: ${code})`);
+          
+          // Show detailed error if verbose mode
+          if (process.argv.includes('--verbose') || process.argv.includes('-v')) {
+            console.log(chalk.gray('\n[DEBUG] Command output:'));
+            console.log(chalk.gray(output.substring(0, 500)));
+          }
+          
+          reject(new Error(output));
+        }
+      });
+    };
+    
+    tryCommand(commands);
   });
 }
 
