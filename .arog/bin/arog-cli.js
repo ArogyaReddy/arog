@@ -232,6 +232,8 @@ async function showMainMenu() {
     { name: '🧪 Run All Tests (10 types!)', value: 'test:all' },
     { name: '⚡ Run Unit Tests', value: 'test:unit' },
     { name: '🌐 Run E2E Tests', value: 'test:e2e' },
+    { name: '🤖 Generate Playwright Tests (Auto!)', value: 'playwright:generate' },
+    { name: '▶️  Run Playwright Tests', value: 'playwright:run' },
     { name: '🔒 Run Security Tests', value: 'test:security' },
     { name: '📊 View Test Coverage', value: 'test:coverage' },
     
@@ -573,6 +575,58 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
           console.log(chalk.green('\n✅ Coverage report generated!\n'));
         } catch (error) {
           console.log(chalk.yellow('\n⚠️  Coverage check failed. Check your test setup.\n'));
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'playwright:generate':
+        console.clear();
+        console.log(chalk.cyan('\n🤖 @arog Auto-Generate Playwright Tests\n'));
+        
+        const urlAnswer = await inquirer.prompt([
+          {
+            type: 'input',
+            name: 'url',
+            message: 'Enter your app URL:',
+            default: 'http://localhost:3000'
+          },
+          {
+            type: 'input',
+            name: 'testName',
+            message: 'Test file name:',
+            default: 'auto-generated'
+          }
+        ]);
+        
+        try {
+          console.log(chalk.yellow('\n🔍 Exploring your app...\n'));
+          const { execSync } = require('child_process');
+          const result = execSync(
+            `node "${path.join(__dirname, '../scripts/generate-tests.cjs')}" "${urlAnswer.url}" "${urlAnswer.testName}"`,
+            { encoding: 'utf8', cwd: projectRoot }
+          );
+          console.log(result);
+          console.log(chalk.green('\n✅ Tests generated successfully!\n'));
+        } catch (error) {
+          console.log(chalk.red(`\n❌ Error: ${error.message}\n`));
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'playwright:run':
+        console.clear();
+        console.log(chalk.cyan('\n🤖 Running: @arog run playwright tests\n'));
+        try {
+          await runCommand('npx playwright test', '🎭 Running Playwright tests');
+          console.log(chalk.green('\n✅ Playwright tests completed!\n'));
+          console.log(chalk.cyan('View report: npx playwright show-report\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Some tests failed. Review output above.\n'));
         }
         await new Promise(resolve => setTimeout(resolve, 2000));
         showBanner();

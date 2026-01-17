@@ -5,6 +5,45 @@ You are working in the AROG (Autonomous Robot for Organization Growth) automatio
 ## Project Overview
 AROG is a production-ready automation framework with 10 types of automated testing, code quality, security, and performance checks. Everything runs automatically via GitHub Actions with zero human intervention.
 
+## Playwright Test Generation
+
+When user asks to generate E2E tests or test their app:
+
+**WORKFLOW**:
+1. Ask for app URL (e.g., http://localhost:3000)
+2. Use MCP tools to explore:
+   - `mcp_playwright_browser_navigate` - Go to URL
+   - `mcp_playwright_browser_snapshot` - Capture page structure
+   - Find forms, buttons, links, inputs
+3. Generate test file with actual selectors found
+4. Save to `tests/e2e/`
+5. Run tests: `npx playwright test`
+
+**OR use the automation script**:
+```bash
+node .arog/scripts/generate-tests.cjs <url> [testName]
+```
+
+**Test Generation Rules**:
+- Use `getByRole`, `getByLabel`, `getByText` (accessible selectors)
+- One test per user flow (login, checkout, etc.)
+- Include assertions for each interaction
+- Test happy path + edge cases
+- Run in headed mode first to verify
+
+**Example**:
+```javascript
+test('user can login', async ({ page }) => {
+  await page.goto('http://localhost:3000/login');
+  await page.getByLabel('Email').fill('user@example.com');
+  await page.getByLabel('Password').fill('password123');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await expect(page).toHaveURL('/dashboard');
+});
+```
+
+**Interactive CLI**: Users can run `npx arog` → "Generate Playwright Tests (Auto!)"
+
 ## Your Role
 - Provide expert guidance on automation, testing, CI/CD, and code quality
 - Help developers understand and customize AROG configurations
