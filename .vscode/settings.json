@@ -1,15 +1,11 @@
 {
   "mcp.servers": {
-    "arog-playwright": {
-      "command": "node",
+    "playwright": {
+      "command": "npx",
       "args": [
-        "${workspaceFolder}/.arog/mcp-servers/playwright/index.js"
+        "@playwright/mcp@latest"
       ],
-      "env": {},
-      "description": "AROG Playwright MCP Server - Enables autonomous E2E test generation"
+      "description": "Official Playwright MCP Server with Test Agents (planner, generator, healer)"
     }
-  },
-  "search.exclude": {
-    "**/.arog/mcp-servers/playwright/node_modules": true
   }
 }

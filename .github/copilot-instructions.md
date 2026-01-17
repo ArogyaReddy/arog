@@ -5,44 +5,132 @@ You are working in the AROG (Autonomous Robot for Organization Growth) automatio
 ## Project Overview
 AROG is a production-ready automation framework with 10 types of automated testing, code quality, security, and performance checks. Everything runs automatically via GitHub Actions with zero human intervention.
 
-## Playwright Test Generation
+## Playwright Test Agents (Official)
 
-When user asks to generate E2E tests or test their app:
+AROG uses **official Playwright Test Agents** for autonomous test generation and healing.
 
-**WORKFLOW**:
-1. Ask for app URL (e.g., http://localhost:3000)
-2. Use MCP tools to explore:
-   - `mcp_playwright_browser_navigate` - Go to URL
-   - `mcp_playwright_browser_snapshot` - Capture page structure
-   - Find forms, buttons, links, inputs
-3. Generate test file with actual selectors found
-4. Save to `tests/e2e/`
-5. Run tests: `npx playwright test`
+### 🎭 The Three Agents
 
-**OR use the automation script**:
-```bash
-node .arog/scripts/generate-tests.cjs <url> [testName]
+**1. planner** - Explores app and produces Markdown test plan
+**2. generator** - Transforms plan into Playwright test files  
+**3. healer** - Executes tests and auto-repairs failures
+
+### Agentic Workflow
+
+```
+User Request
+     ↓
+🎭 @playwright-test-planner
+  - Explores the application
+  - Identifies user flows
+  - Creates structured test plan
+  - Saves to specs/*.md
+     ↓
+🎭 @playwright-test-generator
+  - Reads Markdown plan from specs/
+  - Generates executable Playwright tests
+  - Verifies selectors live
+  - Saves to tests/*.spec.ts
+     ↓
+🎭 @playwright-test-healer
+  - Runs failing tests
+  - Analyzes errors
+  - Updates selectors/waits
+  - Re-runs until passing
 ```
 
-**Test Generation Rules**:
-- Use `getByRole`, `getByLabel`, `getByText` (accessible selectors)
+### Directory Structure
+
+```
+repo/
+├── .github/agents/           # Agent definitions (auto-generated)
+│   ├── playwright-test-planner.agent.md
+│   ├── playwright-test-generator.agent.md
+│   └── playwright-test-healer.agent.md
+├── specs/                    # Human-readable test plans (Markdown)
+│   ├── login.md
+│   └── checkout.md
+└── tests/                    # Executable Playwright tests
+    ├── seed.spec.ts          # Bootstrap test for agents
+    ├── auth/
+    │   └── login.spec.ts
+    └── checkout/
+        └── checkout.spec.ts
+```
+
+### Using the Agents
+
+**Example 1: Generate Tests for User Login**
+```
+@playwright-test-planner create a test plan for user login at https://myapp.com/login
+```
+→ Creates `specs/login.md` with structured test plan
+
+```
+@playwright-test-generator generate tests from specs/login.md
+```
+→ Creates `tests/auth/login.spec.ts` with working Playwright tests
+
+**Example 2: Fix Failing Tests**
+```
+@playwright-test-healer fix failing tests in tests/auth/login.spec.ts
+```
+→ Debugs, updates selectors, and re-runs until passing
+
+### Seed Test
+
+The `tests/seed.spec.ts` file provides:
+- Ready-to-use `page` context for planner
+- Example test structure for generator
+- Environment setup and fixtures
+
+### Test Generation Rules
+- Use accessible selectors: `getByRole`, `getByLabel`, `getByText`
 - One test per user flow (login, checkout, etc.)
 - Include assertions for each interaction
 - Test happy path + edge cases
-- Run in headed mode first to verify
+- Plans in `specs/`, tests in `tests/`
 
-**Example**:
-```javascript
-test('user can login', async ({ page }) => {
-  await page.goto('http://localhost:3000/login');
-  await page.getByLabel('Email').fill('user@example.com');
-  await page.getByLabel('Password').fill('password123');
-  await page.getByRole('button', { name: 'Login' }).click();
-  await expect(page).toHaveURL('/dashboard');
-});
+### MCP Configuration
+
+Official Playwright MCP is configured in `.vscode/settings.json`:
+```json
+{
+  "mcp.servers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "description": "Official Playwright MCP Server with Test Agents"
+    }
+  }
+}
 ```
 
-**Interactive CLI**: Users can run `npx arog` → "Generate Playwright Tests (Auto!)"
+Auto-configured via `npm install` (postinstall hook in `.arog/package.json`)
+
+### Quick Commands
+
+```bash
+# Initialize agents (already done in .github/agents/)
+npx playwright init-agents --loop=vscode
+
+# Run all tests
+npx playwright test
+
+# Run specific test
+npx playwright test tests/auth/login.spec.ts
+
+# Debug mode
+npx playwright test --debug
+
+# UI mode
+npx playwright test --ui
+```
+
+### References
+- https://playwright.dev/docs/test-agents
+- https://github.com/microsoft/playwright-mcp
+- https://executeautomation.github.io/mcp-playwright/docs/intro
 
 ## Your Role
 - Provide expert guidance on automation, testing, CI/CD, and code quality

@@ -113,24 +113,17 @@ function setupMCPServerConfig() {
       settings['mcp.servers'] = {};
     }
     
-    settings['mcp.servers']['arog-playwright'] = {
-      "command": "node",
+    settings['mcp.servers']['playwright'] = {
+      "command": "npx",
       "args": [
-        "${workspaceFolder}/.arog/mcp-servers/playwright/index.js"
+        "@playwright/mcp@latest"
       ],
-      "env": {},
-      "description": "AROG Playwright MCP Server - Enables autonomous E2E test generation"
+      "description": "Official Playwright MCP Server with Test Agents (planner, generator, healer)"
     };
-    
-    // Add search exclude for node_modules
-    if (!settings['search.exclude']) {
-      settings['search.exclude'] = {};
-    }
-    settings['search.exclude']['**/.arog/mcp-servers/playwright/node_modules'] = true;
     
     // Write settings back
     fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
-    log('✅ Updated .vscode/settings.json with MCP server config', 'green');
+    log('✅ Updated .vscode/settings.json with official Playwright MCP', 'green');
     
     // Check if Playwright browsers are installed
     log('\n🌐 Checking Playwright browsers...', 'blue');
@@ -149,14 +142,17 @@ function setupMCPServerConfig() {
     
     // Success message (only if not in postinstall)
     if (!process.env.npm_lifecycle_event) {
-      log('\n🎉 SUCCESS! MCP Server Configuration Complete\n', 'green');
+      log('\n🎉 SUCCESS! Official Playwright MCP Configured\n', 'green');
       log('Next steps:', 'blue');
-      log('  1. ✅ MCP server configured in .vscode/settings.json', 'green');
-      log('  2. 🔄 Restart VS Code to activate the MCP server', 'yellow');
-      log('  3. 🧪 Test it: @arog navigate to https://example.com', 'yellow');
-      log('  4. 🚀 Generate tests: @arog generate E2E tests for my app\n', 'yellow');
+      log('  1. ✅ Playwright MCP configured in .vscode/settings.json', 'green');
+      log('  2. 🔄 Restart VS Code to activate Playwright Test Agents', 'yellow');
+      log('  3. 🎭 Use agents:', 'yellow');
+      log('     • @playwright-test-planner: Explore and create test plans', 'white');
+      log('     • @playwright-test-generator: Generate tests from plans', 'white');
+      log('     • @playwright-test-healer: Fix failing tests automatically', 'white');
+      log('  4. 📚 Learn more: https://playwright.dev/docs/test-agents\n', 'cyan');
     } else {
-      log('✅ MCP server configured', 'green');
+      log('✅ Official Playwright MCP configured with Test Agents', 'green');
     }
     
     // Add .vscode to .gitignore if not already there
