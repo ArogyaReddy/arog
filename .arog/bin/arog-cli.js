@@ -398,12 +398,35 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         
       case 'quick-start':
         const next = await handleQuickStart();
-        if (next === 'menu') continue;
+        if (next === 'menu') {
+          showBanner();
+          await checkProjectStatus();
+          continue;
+        }
         if (next === 'health') {
           showBanner();
           await checkProjectStatus();
+          continue;
         }
-        // Handle other next actions...
+        if (next === 'test') {
+          console.log(chalk.cyan('\n🤖 Running: @arog run tests\n'));
+          try {
+            await runCommand('npm test', '🧪 Running tests');
+            console.log(chalk.green('\n✅ Tests completed!\n'));
+          } catch (error) {
+            console.log(chalk.yellow('\n⚠️  Tests failed or command not found.\n'));
+          }
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          showBanner();
+          await checkProjectStatus();
+          continue;
+        }
+        if (next === 'commands') {
+          await showAllCommands();
+          showBanner();
+          await checkProjectStatus();
+          continue;
+        }
         break;
         
       case 'commands':
