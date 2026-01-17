@@ -241,10 +241,14 @@ ${fillActions}
   // Navigation tests
   const linkInteractions = interactions.filter(i => i.action === 'click' && i.expectedUrl);
   linkInteractions.slice(0, 3).forEach(i => {
+    // Clean up selector text - remove newlines and extra spaces
+    const cleanSelector = i.selector.replace(/\s+/g, ' ').trim();
+    const truncatedSelector = cleanSelector.length > 50 ? cleanSelector.substring(0, 50) + '...' : cleanSelector;
+    
     tests.push(`
 test('navigation to ${i.expectedUrl}', async ({ page }) => {
   await page.goto('${url}');
-  await page.click('${i.selector}');
+  await page.click('${truncatedSelector}');
   await expect(page).toHaveURL('${i.expectedUrl}');
 });`);
   });
@@ -253,10 +257,13 @@ test('navigation to ${i.expectedUrl}', async ({ page }) => {
   const btnInteractions = interactions.filter(i => i.action === 'click' && !i.expectedUrl);
   if (btnInteractions.length > 0) {
     const firstBtn = btnInteractions[0];
+    const cleanSelector = firstBtn.selector.replace(/\s+/g, ' ').trim();
+    const truncatedSelector = cleanSelector.length > 50 ? cleanSelector.substring(0, 50) + '...' : cleanSelector;
+    
     tests.push(`
 test('button interaction', async ({ page }) => {
   await page.goto('${url}');
-  await page.click('${firstBtn.selector}');
+  await page.click('${truncatedSelector}');
   // Add assertions for button click results
 });`);
   }
