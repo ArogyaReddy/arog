@@ -1,0 +1,127 @@
+{
+  "$schema": "./alerts.schema.json",
+  "alertRouting": {
+    "enabled": true,
+    "defaultRecipient": "arogya.gade@adp.com",
+    "channels": {
+      "email": {
+        "enabled": true,
+        "provider": "smtp",
+        "config": {
+          "host": "${SMTP_HOST}",
+          "port": "${SMTP_PORT}",
+          "secure": false,
+          "auth": {
+            "user": "${SMTP_USER}",
+            "pass": "${SMTP_PASSWORD}"
+          },
+          "from": "arog0507@gmail.com",
+          "recipients": [
+            "arog0507@gmail.com", "arogya.gade@adp.com"
+          ]
+        }
+      },
+      "webex": {
+        "enabled": true,
+        "provider": "webex-teams",
+        "config": {
+          "botToken": "${WEBEX_BOT_TOKEN}",
+          "roomId": "${WEBEX_ROOM_ID}",
+          "personEmail": "arogya.gade@adp.com",
+          "webhookUrl": "${WEBEX_WEBHOOK_URL}"
+        }
+      }
+    },
+    "rules": [
+      {
+        "name": "critical-failures",
+        "condition": {
+          "severity": "critical",
+          "type": ["build-failure", "deployment-failure", "security-breach"]
+        },
+        "channels": ["email", "webex"],
+        "priority": "high",
+        "notifyImmediately": true
+      },
+      {
+        "name": "test-failures",
+        "condition": {
+          "severity": "high",
+          "type": ["test-failure", "coverage-drop", "mutation-failure"]
+        },
+        "channels": ["email", "webex"],
+        "priority": "medium",
+        "throttle": {
+          "enabled": true,
+          "windowMinutes": 15,
+          "maxAlerts": 3
+        }
+      },
+      {
+        "name": "security-warnings",
+        "condition": {
+          "severity": ["high", "medium"],
+          "type": ["vulnerability-found", "secret-detected", "dependency-issue"]
+        },
+        "channels": ["email", "webex"],
+        "priority": "high",
+        "notifyImmediately": true
+      },
+      {
+        "name": "performance-degradation",
+        "condition": {
+          "severity": "medium",
+          "type": ["performance-regression", "bundle-size-increase", "lighthouse-score-drop"]
+        },
+        "channels": ["email"],
+        "priority": "medium",
+        "throttle": {
+          "enabled": true,
+          "windowMinutes": 60,
+          "maxAlerts": 1
+        }
+      },
+      {
+        "name": "successful-deployments",
+        "condition": {
+          "severity": "info",
+          "type": ["deployment-success", "release-published"]
+        },
+        "channels": ["webex"],
+        "priority": "low",
+        "notifyImmediately": false
+      },
+      {
+        "name": "daily-summary",
+        "condition": {
+          "severity": "info",
+          "type": ["daily-report", "weekly-metrics"]
+        },
+        "channels": ["email"],
+        "priority": "low",
+        "schedule": "0 9 * * *"
+      }
+    ],
+    "templates": {
+      "email": {
+        "critical": "alert-critical.html",
+        "high": "alert-high.html",
+        "medium": "alert-medium.html",
+        "info": "alert-info.html"
+      },
+      "webex": {
+        "critical": "webex-critical.md",
+        "high": "webex-high.md",
+        "medium": "webex-medium.md",
+        "info": "webex-info.md"
+      }
+    }
+  },
+  "logging": {
+    "enabled": true,
+    "level": "info",
+    "destinations": ["file", "console"],
+    "rotateDaily": true,
+    "retentionDays": 30
+  }
+}

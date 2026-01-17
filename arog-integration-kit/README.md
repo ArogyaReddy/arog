@@ -151,19 +151,31 @@ The [model-routing.json](arog-integration-kit/.arog/model-routing.json) file ena
 
 ## 🚀 **How to Use:**
 
-### **Option 1: Copy to Any Project**
+### **Option 1: Copy to Any Project (3 Steps!)**
 
 ```bash
-# Copy folders to your project
+# 1. Copy folders to your project
 cp -r arog-integration-kit/.arog /path/to/your-project/
 cp -r arog-integration-kit/.github /path/to/your-project/
 
-# Install dependencies
+# 2. Install dependencies (MCP setup happens automatically!)
 cd /path/to/your-project/.arog && npm install
 
-# Add AROG scripts to your package.json (use template)
-# See package.json-template for scripts
+# 3. Restart VS Code (you'll see CLEAR INSTRUCTIONS after install)
+# Press Cmd+Shift+P → Type "Reload Window" → Enter
+
+# That's it! Start using @arog!
 ```
+
+**What happens automatically:**
+- ✅ Installs all dependencies
+- ✅ Sets up MCP server (browser automation)
+- ✅ Creates `.vscode/settings.json`
+- ✅ Installs Playwright browsers
+- ✅ Configures all AROG tools
+- ✅ **Shows BIG YELLOW RESTART REMINDER** 📢
+
+**The restart reminder is IMPOSSIBLE to miss!** Clear, visual, step-by-step instructions.
 
 ### **Option 2: Share with Team**
 

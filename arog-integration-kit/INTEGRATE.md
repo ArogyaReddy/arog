@@ -12,30 +12,24 @@ your-project/
 └── .github/        ← Copy this folder
 ```
 
-### **Step 2: Install AROG Dependencies**
+### **Step 2: Install AROG Dependencies (Auto-Setup Included!)**
 
 ```bash
 cd your-project/.arog
 npm install
 ```
 
-### **Step 3: Setup MCP Server (CRITICAL!)** ⭐
-
-```bash
-node .arog/scripts/setup-mcp-server.js
-```
-
-**WHY THIS MATTERS:**
-- This creates `.vscode/settings.json` with MCP server configuration
-- Enables @arog's browser automation for E2E test generation
-- WITHOUT THIS: @arog cannot control browsers or generate tests
-- Run this ONCE per project, then restart VS Code
-
-What it does:
-- ✅ Creates/updates `.vscode/settings.json`
-- ✅ Configures AROG Playwright MCP server
+**This automatically:**
+- ✅ Installs all AROG dependencies
+- ✅ **Sets up MCP server** (browser automation)
+- ✅ Creates `.vscode/settings.json` with Playwright MCP config
 - ✅ Installs Playwright browsers
 - ✅ Adds `.vscode/` to your `.gitignore`
+- ✅ **Shows RESTART REMINDER** (impossible to miss!)
+
+**You'll see a BIG YELLOW BOX** with restart instructions at the end of installation.
+
+> **Note:** If MCP setup fails (rare), it will run automatically on your first `@arog` command.
 
 ### **Step 3: Add AROG Commands to package.json**
 
@@ -56,6 +50,19 @@ Add these scripts to your project's `package.json`:
 }
 ```
 
+### **Step 3: Restart VS Code (You'll See Clear Instructions!)**
+
+After `npm install` completes, you'll see a **BIG YELLOW BOX** telling you exactly how to restart:
+
+**Quick Restart:**
+- Press `Cmd+Shift+P` (Mac) or `Ctrl+Shift+P` (Windows/Linux)
+- Type: `Reload Window`
+- Press Enter
+
+**Or:** Just close and reopen VS Code
+
+> **Why?** VS Code needs to reload to activate the MCP server configuration.
+
 ### **Step 4: Done! Use @arog**
 
 ```bash
@@ -73,6 +80,8 @@ npm run arog:review
 @arog add tests for user service
 @arog check security
 ```
+
+**Forgot to restart?** Run: `npm run arog:restart-reminder`
 
 ---
 

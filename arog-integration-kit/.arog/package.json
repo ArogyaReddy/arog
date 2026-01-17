@@ -39,7 +39,9 @@
     "docs:serve": "echo '\n📚 @arog is starting documentation server...\n' && npx http-server docs -p 8080",
     "arog:health": "node scripts/health-check.js",
     "arog:setup": "node scripts/setup.js",
-    "arog:validate": "node scripts/validate-system.js"
+    "arog:validate": "node scripts/validate-system.js",
+    "arog:restart-reminder": "node scripts/restart-reminder.js",
+    "postinstall": "node scripts/setup-mcp-server.js && node scripts/restart-reminder.js || echo '⚠️  MCP setup will run on first @arog command'"
   },
   "keywords": [
     "automation",

@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AROG Quick Guide - Everything You Need to Know</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --dark: #0f0f23;
+            --dark-card: #1a1a2e;
+            --light: #f8f9ff;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: var(--dark);
+            color: #e5e7eb;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Top Navigation Bar */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 40px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .top-nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-home-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1em;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-home-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: var(--primary);
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-home-link .icon {
+            font-size: 1.3em;
+        }
+        
+        .nav-title {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            font-size: 1.2em;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: var(--gradient);
+            padding: 100px 40px;
+            padding-top: 140px; /* Add space for fixed nav */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 5em;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 800;
+        }
+        
+        .hero .tagline {
+            font-size: 2.2em;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.4em;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 30px;
+        }
+        
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        /* Section Styles */
+        section {
+            margin-bottom: 80px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-header h2 {
+            font-size: 3em;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        
+        .section-header p {
+            font-size: 1.2em;
+            color: #9ca3af;
+        }
+        
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: var(--dark-card);
+            border-radius: 20px;
+            padding: 35px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .card h3 {
+            color: var(--primary);
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        
+        .card p {
+            color: #d1d5db;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .card ul {
+            list-style: none;
+        }
+        
+        .card ul li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #e5e7eb;
+        }
+        
+        .card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        /* Code Box */
+        .code-box {
+            background: #000;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .code-box pre {
+            color: #10b981;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .code-box .comment {
+            color: #6b7280;
+        }
+        
+        .code-box .command {
+            color: #fbbf24;
+        }
+        
+        /* Step by Step */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .step {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: var(--gradient);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-content h4 {
+            color: var(--primary);
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .step-content p {
+            color: #d1d5db;
+            margin-bottom: 15px;
+        }
+        
+        /* Command List */
+        .command-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .command-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.2s ease;
+        }
+        
+        .command-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-left-color: var(--accent);
+        }
+        
+        .command-item code {
+            color: #fbbf24;
+            font-size: 1em;
+            font-weight: 600;
+        }
+        
+        .command-item .desc {
+            color: #9ca3af;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        /* Dual Command Table */
+        .dual-command-table {
+            background: var(--dark-card);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            margin: 30px 0;
+        }
+        
+        .dual-command-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .dual-command-table thead {
+            background: var(--gradient);
+        }
+        
+        .dual-command-table th {
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+        
+        .dual-command-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            vertical-align: top;
+        }
+        
+        .dual-command-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .dual-command-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .dual-command-table .category-header {
+            background: rgba(102, 126, 234, 0.1);
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1em;
+        }
+        
+        .dual-command-table code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+            color: #fbbf24;
+            font-size: 0.95em;
+            font-family: 'Courier New', monospace;
+            display: inline-block;
+            margin: 3px 0;
+        }
+        
+        .dual-command-table .arog-cmd {
+            color: #10b981;
+        }
+        
+        .dual-command-table .desc {
+            color: #9ca3af;
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* Comparison Table */
+        .comparison-table {
+            background: var(--dark-card);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .comparison-table th {
+            background: var(--gradient);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+        
+        .comparison-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .comparison-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border-left: 5px solid var(--success);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .highlight-box h4 {
+            color: var(--success);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+        
+        .highlight-box p {
+            color: #e5e7eb;
+            line-height: 1.7;
+        }
+        
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%);
+            border-left: 5px solid var(--warning);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        
+        .warning-box h4 {
+            color: var(--warning);
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+        
+        /* Footer CTA */
+        .cta-section {
+            background: var(--gradient);
+            padding: 80px 40px;
+            text-align: center;
+            border-radius: 30px;
+            margin: 60px 0;
+        }
+        
+        .cta-section h2 {
+            font-size: 3em;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 1.3em;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .top-nav {
+                padding: 10px 20px;
+            }
+            
+            .top-nav-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-home-link {
+                font-size: 0.9em;
+            }
+            
+            .nav-title {
+                font-size: 1em;
+            }
+            
+            .hero h1 {
+                font-size: 3em;
+            }
+            
+            .hero .tagline {
+                font-size: 1.5em;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .command-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="top-nav-content">
+            <a href="book/index.html" class="nav-home-link">
+                <span class="icon">🏠</span>
+                <span>Back to AROG Book</span>
+            </a>
+            <div class="nav-title">⚡ Quick Start Guide</div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>🤖 AROG & @arog</h1>
+            <div class="tagline">ONE @arog = EVERYTHING</div>
+            <div class="subtitle">Your Complete Autonomous Automation Framework</div>
+            <div class="badges">
+                <span class="badge">🚀 Zero Configuration</span>
+                <span class="badge">⚡ Full Automation</span>
+                <span class="badge">💰 70-85% Cost Savings</span>
+                <span class="badge">✅ Production Ready</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- What is AROG Section -->
+        <section id="what-is-arog">
+            <div class="section-header">
+                <h2>What is AROG?</h2>
+                <p>Autonomous Robot for Organization Growth</p>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🤖</div>
+                    <h3>AROG Framework</h3>
+                    <p>A complete automation platform that handles every aspect of your software development lifecycle with zero human intervention.</p>
+                    <ul>
+                        <li>10 types of automated testing</li>
+                        <li>24 GitHub Actions workflows</li>
+                        <li>19 specialized AI agents</li>
+                        <li>Complete CI/CD automation</li>
+                        <li>Enterprise-grade quality gates</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>@arog Agent</h3>
+                    <p>Your intelligent VS Code companion that orchestrates all AROG capabilities through natural language commands.</p>
+                    <ul>
+                        <li>AI-powered code reviews</li>
+                        <li>Automatic test generation</li>
+                        <li>Smart deployment management</li>
+                        <li>Real-time health monitoring</li>
+                        <li>Cost optimization (70-85% savings)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Key Benefits</h3>
+                    <p>Transform your development workflow with automation that actually works.</p>
+                    <ul>
+                        <li>100% test coverage enforcement</li>
+                        <li>Automated security scanning</li>
+                        <li>Performance monitoring</li>
+                        <li>Accessibility compliance (WCAG 2.1 AA)</li>
+                        <li>Zero-downtime deployments</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- What Can @arog Do Section -->
+        <section id="capabilities">
+            <div class="section-header">
+                <h2>What Can @arog Do?</h2>
+                <p>Complete SDLC automation from planning to production</p>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📝</div>
+                    <h3>Code Development</h3>
+                    <ul>
+                        <li>Generate boilerplate code</li>
+                        <li>Auto-implement features</li>
+                        <li>Refactor existing code</li>
+                        <li>Enforce coding standards</li>
+                        <li>Modernize legacy code</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h3>Code Review</h3>
+                    <ul>
+                        <li>AI-powered code analysis</li>
+                        <li>Security vulnerability detection</li>
+                        <li>Performance optimization suggestions</li>
+                        <li>Best practices enforcement</li>
+                        <li>Automated PR reviews</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🧪</div>
+                    <h3>Testing</h3>
+                    <ul>
+                        <li>Auto-generate unit tests (Jest)</li>
+                        <li>Create E2E tests (Playwright)</li>
+                        <li>API testing automation</li>
+                        <li>Accessibility testing (axe-core)</li>
+                        <li>Visual regression testing</li>
+                        <li>Load & stress testing</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🔒</div>
+                    <h3>Security</h3>
+                    <ul>
+                        <li>Dependency vulnerability scanning</li>
+                        <li>Secret detection</li>
+                        <li>Security audit automation</li>
+                        <li>CVE monitoring</li>
+                        <li>Compliance checking</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Performance</h3>
+                    <ul>
+                        <li>Lighthouse CI integration</li>
+                        <li>Bundle size optimization</li>
+                        <li>Performance budgets</li>
+                        <li>Code splitting analysis</li>
+                        <li>Runtime performance monitoring</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🚀</div>
+                    <h3>Deployment</h3>
+                    <ul>
+                        <li>Zero-downtime deployments</li>
+                        <li>Automated rollbacks</li>
+                        <li>Multi-environment management</li>
+                        <li>Release automation</li>
+                        <li>Health monitoring</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>🎭 Playwright Test Agents - Auto E2E Testing</h4>
+                <p><strong>Planner</strong> explores your app and creates test plans → <strong>Generator</strong> converts plans to executable tests → <strong>Healer</strong> automatically fixes broken tests. Fully autonomous E2E test creation with zero manual effort!</p>
+            </div>
+        </section>
+
+        <!-- Setup on New Repo/Project Section -->
+        <section id="setup">
+            <div class="section-header">
+                <h2>How to Setup @arog on Any New Repo or Project</h2>
+                <p>5-minute integration process</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Copy AROG Folders</h4>
+                        <p>Copy the complete AROG framework to your new repository:</p>
+                        <div class="code-box">
+                            <pre><span class="comment"># Copy from AROG repository</span>
+cp -r /Users/arog/Learn/arog/.arog/ /your-new-project/
+cp -r /Users/arog/Learn/arog/.github/ /your-new-project/
+
+<span class="comment"># Navigate to your project</span>
+cd /your-new-project/</pre>
+                        </div>
+                        <div class="warning-box">
+                            <h4>⚠️ Important: Use Root Folders, Not Integration Kit</h4>
+                            <p>Always copy from <code>/Users/arog/Learn/arog/.arog/</code> and <code>/Users/arog/Learn/arog/.github/</code> (root folders), as they contain the latest features including alert system, Playwright MCP, and operation logger. The integration kit is slightly outdated.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Install Dependencies</h4>
+                        <p>Install AROG dependencies and auto-configure:</p>
+                        <div class="code-box">
+                            <pre><span class="comment"># Install AROG dependencies (auto-launches interactive CLI)</span>
+cd .arog
+npm install
+
+<span class="comment"># This automatically:</span>
+<span class="comment"># ✓ Sets up Playwright MCP server</span>
+<span class="comment"># ✓ Launches interactive CLI welcome screen</span>
+<span class="comment"># ✓ Configures all automation tools</span></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Configure Environment (Optional)</h4>
+                        <p>Customize AROG for your team's specific needs:</p>
+                        <div class="code-box">
+                            <pre><span class="comment"># Edit alert configuration</span>
+nano .arog/config/alerts.config.json
+
+<span class="comment"># Add your team's email/WebEx details</span>
+<span class="comment"># Configure routing rules</span>
+<span class="comment"># Set notification preferences</span>
+
+<span class="comment"># Edit GitHub Copilot instructions</span>
+nano .github/copilot-instructions.md
+
+<span class="comment"># Customize project-specific guidance</span></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Validate Installation</h4>
+                        <p>Run health check to ensure everything works:</p>
+                        <div class="code-box">
+                            <pre><span class="comment"># From project root</span>
+npm run arog:health
+
+<span class="comment"># Should show:</span>
+<span class="comment"># ✅ Node.js Version</span>
+<span class="comment"># ✅ npm Version</span>
+<span class="comment"># ✅ Git Repository</span>
+<span class="comment"># ✅ package.json</span>
+<span class="comment"># ✅ GitHub Workflows</span>
+<span class="comment"># ✅ AROG Agent</span></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h4>Start Using @arog!</h4>
+                        <p>You're ready! Start automating everything:</p>
+                        <div class="code-box">
+                            <pre><span class="comment"># In VS Code, ask @arog:</span>
+@arog what can you do?
+@arog review this code
+@arog run tests
+@arog deploy to staging
+
+<span class="comment"># Or use interactive CLI:</span>
+npx arog
+
+<span class="comment"># Or run specific commands:</span>
+npm test              <span class="comment"># Run all tests</span>
+npm run lint          <span class="comment"># Check code quality</span>
+npm run test:e2e      <span class="comment"># E2E tests</span></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>✅ That's It! Total Time: Less than 5 Minutes</h4>
+                <p>AROG is now running in your project with full automation active. All GitHub workflows will trigger automatically on commits, PRs, and deployments.</p>
+            </div>
+        </section>
+
+        <!-- Commands & Tasks Section -->
+        <section id="commands">
+            <div class="section-header">
+                <h2>All Tasks, Executions & Commands</h2>
+                <p>Use @arog natural language OR npm scripts - your choice!</p>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>💬 Two Ways to Execute: @arog Agent OR npm Commands</h4>
+                <p><strong>@arog agent</strong> understands natural language (easier, conversational). <strong>npm commands</strong> are direct scripts (faster if you know exact command). Both do the same thing!</p>
+            </div>
+            
+            <div class="dual-command-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>🤖 @arog Agent Command</th>
+                            <th>📦 npm Command</th>
+                            <th>📝 What It Does</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Testing Commands -->
+                        <tr class="category-header">
+                            <td colspan="3">🧪 Testing Commands</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog run tests</code><br><code class="arog-cmd">@arog run all tests</code></td>
+                            <td><code>npm test</code></td>
+                            <td>Run unit tests with coverage</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog run e2e tests</code><br><code class="arog-cmd">@arog test the UI</code></td>
+                            <td><code>npm run test:e2e</code></td>
+                            <td>Run Playwright E2E tests</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog check accessibility</code><br><code class="arog-cmd">@arog test a11y</code></td>
+                            <td><code>npm run test:a11y</code></td>
+                            <td>Accessibility tests (WCAG 2.1 AA)</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog test the API</code><br><code class="arog-cmd">@arog run API tests</code></td>
+                            <td><code>npm run test:api</code></td>
+                            <td>API integration tests</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog run load tests</code><br><code class="arog-cmd">@arog stress test</code></td>
+                            <td><code>npm run test:load</code></td>
+                            <td>Load testing with k6</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog check visual changes</code><br><code class="arog-cmd">@arog visual regression</code></td>
+                            <td><code>npm run test:visual</code></td>
+                            <td>Visual regression tests</td>
+                        </tr>
+                        
+                        <!-- Code Quality -->
+                        <tr class="category-header">
+                            <td colspan="3">✨ Code Quality</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog check code quality</code><br><code class="arog-cmd">@arog lint this</code></td>
+                            <td><code>npm run lint</code></td>
+                            <td>Check code quality (ESLint)</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog fix linting issues</code><br><code class="arog-cmd">@arog clean up code</code></td>
+                            <td><code>npm run lint:fix</code></td>
+                            <td>Auto-fix linting issues</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog format the code</code><br><code class="arog-cmd">@arog prettify</code></td>
+                            <td><code>npm run format</code></td>
+                            <td>Format code (Prettier)</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog check types</code><br><code class="arog-cmd">@arog validate TypeScript</code></td>
+                            <td><code>npm run typecheck</code></td>
+                            <td>TypeScript type checking</td>
+                        </tr>
+                        
+                        <!-- Security -->
+                        <tr class="category-header">
+                            <td colspan="3">🔒 Security</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog security audit</code><br><code class="arog-cmd">@arog check for vulnerabilities</code></td>
+                            <td><code>npm run security:audit</code></td>
+                            <td>Scan for vulnerabilities</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog fix security issues</code><br><code class="arog-cmd">@arog patch vulnerabilities</code></td>
+                            <td><code>npm run security:fix</code></td>
+                            <td>Auto-fix security issues</td>
+                        </tr>
+                        
+                        <!-- Build & Deploy -->
+                        <tr class="category-header">
+                            <td colspan="3">🏗️ Build & Deploy</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog build for production</code><br><code class="arog-cmd">@arog create production build</code></td>
+                            <td><code>npm run build</code></td>
+                            <td>Production build</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog check build</code><br><code class="arog-cmd">@arog validate build</code></td>
+                            <td><code>npm run build:check</code></td>
+                            <td>Type-check without build</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog build Docker image</code><br><code class="arog-cmd">@arog containerize</code></td>
+                            <td><code>npm run docker:build</code></td>
+                            <td>Build Docker image</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog create release</code><br><code class="arog-cmd">@arog new release</code></td>
+                            <td><code>npm run release</code></td>
+                            <td>Create new release</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog deploy to staging</code><br><code class="arog-cmd">@arog deploy staging environment</code></td>
+                            <td><code>git push origin staging</code></td>
+                            <td>Deploy to staging (triggers workflow)</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog deploy to production</code><br><code class="arog-cmd">@arog go live</code></td>
+                            <td><code>git push origin main</code></td>
+                            <td>Deploy to production (triggers workflow)</td>
+                        </tr>
+                        
+                        <!-- Performance -->
+                        <tr class="category-header">
+                            <td colspan="3">⚡ Performance</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog run performance tests</code><br><code class="arog-cmd">@arog lighthouse audit</code></td>
+                            <td><code>npm run perf:lighthouse</code></td>
+                            <td>Run Lighthouse CI</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog check bundle size</code><br><code class="arog-cmd">@arog analyze bundle</code></td>
+                            <td><code>npm run build:size</code></td>
+                            <td>Check bundle size</td>
+                        </tr>
+                        
+                        <!-- AROG CLI -->
+                        <tr class="category-header">
+                            <td colspan="3">🤖 AROG Interactive CLI</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog show menu</code><br><code class="arog-cmd">@arog launch CLI</code></td>
+                            <td><code>npx arog</code></td>
+                            <td>Launch interactive CLI menu</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog health check</code><br><code class="arog-cmd">@arog system status</code></td>
+                            <td><code>npx arog --health</code></td>
+                            <td>System health check</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog help</code><br><code class="arog-cmd">@arog show commands</code></td>
+                            <td><code>npx arog --help</code></td>
+                            <td>Show help menu</td>
+                        </tr>
+                        
+                        <!-- Alerts -->
+                        <tr class="category-header">
+                            <td colspan="3">🔔 Alerts & Monitoring</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog test alerts</code><br><code class="arog-cmd">@arog check alert system</code></td>
+                            <td><code>npm run alert:test</code></td>
+                            <td>Test alert system (email/WebEx)</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog show logs</code><br><code class="arog-cmd">@arog operation logs</code></td>
+                            <td><code>npm run alert:logs</code></td>
+                            <td>View operation logs</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog daily summary</code><br><code class="arog-cmd">@arog stats</code></td>
+                            <td><code>npm run alert:summary</code></td>
+                            <td>Daily summary statistics</td>
+                        </tr>
+                        
+                        <!-- Code Review & Generation -->
+                        <tr class="category-header">
+                            <td colspan="3">🔍 Code Review & Generation</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog review this code</code><br><code class="arog-cmd">@arog code review</code></td>
+                            <td><em>AI agent only</em></td>
+                            <td>AI-powered code review with suggestions</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog generate tests for [file]</code><br><code class="arog-cmd">@arog create tests</code></td>
+                            <td><em>AI agent only</em></td>
+                            <td>Auto-generate test files</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog refactor this</code><br><code class="arog-cmd">@arog improve code</code></td>
+                            <td><em>AI agent only</em></td>
+                            <td>Suggest refactoring improvements</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@arog explain this code</code><br><code class="arog-cmd">@arog what does this do?</code></td>
+                            <td><em>AI agent only</em></td>
+                            <td>Code explanation and documentation</td>
+                        </tr>
+                        
+                        <!-- Playwright Test Generation -->
+                        <tr class="category-header">
+                            <td colspan="3">🎭 Playwright E2E Test Generation (Autonomous)</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@playwright-test-planner create test plan for [URL]</code></td>
+                            <td><em>Agent only</em></td>
+                            <td>Explore app, create human-readable test plan</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@playwright-test-generator generate tests from specs/[file]</code></td>
+                            <td><em>Agent only</em></td>
+                            <td>Convert test plan to executable Playwright tests</td>
+                        </tr>
+                        <tr>
+                            <td><code class="arog-cmd">@playwright-test-healer fix tests/[file]</code></td>
+                            <td><em>Agent only</em></td>
+                            <td>Auto-fix broken E2E tests (self-healing)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="highlight-box">
+                <h4>💡 Pro Tip: Mix & Match!</h4>
+                <p>Use <strong>@arog</strong> for complex tasks (code review, test generation, explanations) and <strong>npm</strong> for quick script execution. Both work seamlessly together!</p>
+            </div>
+        </section>
+
+        <!-- Usage & Implementation Section -->
+        <section id="usage">
+            <div class="section-header">
+                <h2>Usage & Implementation</h2>
+                <p>Real-world workflows and best practices</p>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📋</div>
+                    <h3>Daily Development Workflow</h3>
+                    <div class="code-box">
+                        <pre><span class="comment"># 1. Start your day</span>
+@arog what's the project status?
+
+<span class="comment"># 2. Work on a feature</span>
+@arog review my changes
+@arog generate tests for src/feature.js
+
+<span class="comment"># 3. Before committing</span>
+npm run lint:fix
+npm test
+
+<span class="comment"># 4. Create PR</span>
+<span class="comment"># AROG automatically:</span>
+<span class="comment"># - Reviews code</span>
+<span class="comment"># - Runs all tests</span>
+<span class="comment"># - Checks security</span>
+<span class="comment"># - Posts review comments</span></pre>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🎭</div>
+                    <h3>E2E Test Generation</h3>
+                    <div class="code-box">
+                        <pre><span class="comment"># 1. Ask planner to explore app</span>
+@playwright-test-planner create test plan for login at https://app.com/login
+
+<span class="comment"># 2. Generates specs/login.md plan</span>
+
+<span class="comment"># 3. Ask generator to create tests</span>
+@playwright-test-generator generate tests from specs/login.md
+
+<span class="comment"># 4. Creates tests/auth/login.spec.ts</span>
+
+<span class="comment"># 5. If tests fail, healer fixes them</span>
+@playwright-test-healer fix tests/auth/login.spec.ts</pre>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🚀</div>
+                    <h3>Deployment Workflow</h3>
+                    <div class="code-box">
+                        <pre><span class="comment"># 1. Deploy to staging</span>
+@arog deploy to staging
+
+<span class="comment"># 2. AROG automatically:</span>
+<span class="comment"># - Runs all tests</span>
+<span class="comment"># - Builds production bundle</span>
+<span class="comment"># - Runs security audit</span>
+<span class="comment"># - Deploys with zero downtime</span>
+<span class="comment"># - Sends alerts if issues</span>
+
+<span class="comment"># 3. Deploy to production</span>
+@arog deploy to production
+
+<span class="comment"># 4. Monitor</span>
+npm run alert:logs</pre>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h3>Code Review Workflow</h3>
+                    <div class="code-box">
+                        <pre><span class="comment"># AI-powered code review</span>
+@arog review this PR
+
+<span class="comment"># AROG analyzes:</span>
+<span class="comment"># ✓ Code quality</span>
+<span class="comment"># ✓ Security vulnerabilities</span>
+<span class="comment"># ✓ Performance issues</span>
+<span class="comment"># ✓ Best practices</span>
+<span class="comment"># ✓ Test coverage</span>
+<span class="comment"># ✓ Accessibility</span>
+
+<span class="comment"># Auto-fix suggested issues</span>
+@arog fix the issues you found</pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th>Without AROG</th>
+                            <th>With @arog</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Code Review</strong></td>
+                            <td>30-60 min manual review</td>
+                            <td>⚡ 2 min automated review</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Test Creation</strong></td>
+                            <td>2-4 hours writing tests</td>
+                            <td>⚡ 5 min auto-generation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Security Audit</strong></td>
+                            <td>Manual scanning, 1+ hour</td>
+                            <td>⚡ Automatic, runs daily</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deployment</strong></td>
+                            <td>30-90 min manual process</td>
+                            <td>⚡ 5 min automated deploy</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance Check</strong></td>
+                            <td>Manual Lighthouse run</td>
+                            <td>⚡ Automatic on every PR</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Folder Comparison Section -->
+        <section id="folders">
+            <div class="section-header">
+                <h2>📁 Which Folders to Use?</h2>
+                <p>Root vs Integration Kit comparison</p>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">✅</div>
+                    <h3>Use Root Folders (RECOMMENDED)</h3>
+                    <p><strong>Path:</strong></p>
+                    <div class="code-box">
+                        <pre>/Users/arog/Learn/arog/.arog/
+/Users/arog/Learn/arog/.github/</pre>
+                    </div>
+                    <p><strong>Contains Latest Features:</strong></p>
+                    <ul>
+                        <li>Alert system (email + WebEx + logging) ✅</li>
+                        <li>Playwright MCP server configured ✅</li>
+                        <li>Operation logger (5-state tracking) ✅</li>
+                        <li>3 Playwright test agents ✅</li>
+                        <li>Interactive CLI (latest version) ✅</li>
+                        <li>All workflows updated ✅</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">⚠️</div>
+                    <h3>Integration Kit (Slightly Outdated)</h3>
+                    <p><strong>Path:</strong></p>
+                    <div class="code-box">
+                        <pre>/Users/arog/Learn/arog/arog-integration-kit/.arog/
+/Users/arog/Learn/arog/arog-integration-kit/.github/</pre>
+                    </div>
+                    <p><strong>Missing:</strong></p>
+                    <ul>
+                        <li>Alert system ❌</li>
+                        <li>Playwright MCP server ❌</li>
+                        <li>Operation logger ❌</li>
+                        <li>Playwright test agents ❌</li>
+                        <li>Latest CLI updates ⚠️</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ Important: Always Use Root Folders</h4>
+                <p>When setting up AROG on a new project, <strong>always copy from the root folders</strong> (<code>.arog/</code> and <code>.github/</code>) in <code>/Users/arog/Learn/arog/</code>, not from <code>arog-integration-kit/</code>. The root folders are the development/production versions with all the latest features working.</p>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Ready to Transform Your Development?</h2>
+            <p>Start automating everything with @arog today!</p>
+            <a href="#setup" class="cta-button">Get Started Now →</a>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

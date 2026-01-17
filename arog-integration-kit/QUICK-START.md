@@ -31,13 +31,23 @@ cp -r arog-integration-kit/.github/ your-project/
 ### Step 2: Install Dependencies
 
 ```bash
-cd your-project
+cd your-project/.arog
 npm install
 ```
+
+**This automatically:**
+- ✅ Installs all dependencies
+- ✅ Sets up MCP server for browser automation
+- ✅ Configures Playwright for E2E testing
+- ✅ Creates VS Code settings
+- ✅ **Shows BIG YELLOW RESTART REMINDER** 📢
+
+**You'll see clear instructions** for restarting VS Code - impossible to miss!
 
 ### Step 3: Run Health Check
 
 ```bash
+cd ..  # Back to project root
 npm run arog:health
 ```
 
