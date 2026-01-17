@@ -27,19 +27,51 @@ const __dirname = dirname(__filename);
 // Find project root (where package.json is)
 const projectRoot = findProjectRoot(__dirname);
 
+// Debug: Show project root on startup (only in verbose mode)
+if (process.argv.includes('--verbose') || process.argv.includes('-v')) {
+  console.log(chalk.gray(`[DEBUG] Project Root: ${projectRoot}`));
+  console.log(chalk.gray(`[DEBUG] package.json exists: ${fs.existsSync(join(projectRoot, 'package.json'))}`));
+}
+
 // ============================================================================
 // UTILITY FUNCTIONS
 // ============================================================================
 
 function findProjectRoot(startPath) {
   let currentPath = startPath;
+  
+  // First, go up from .arog directory to find the actual project root
+  // Skip .arog/package.json and find the parent project's package.json
   while (currentPath !== '/') {
-    if (fs.existsSync(join(currentPath, 'package.json'))) {
-      return currentPath;
+    const pkgPath = join(currentPath, 'package.json');
+    
+    // Check if package.json exists and it's NOT the .arog package.json
+    if (fs.existsSync(pkgPath)) {
+      const pkgContent = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+      
+      // Skip if this is the @arog/cli package itself
+      if (pkgContent.name !== '@arog/cli') {
+        return currentPath;
+      }
+    }
+    
+    currentPath = dirname(currentPath);
+  }
+  
+  // Fallback: Go up from current working directory
+  currentPath = process.cwd();
+  while (currentPath !== '/') {
+    const pkgPath = join(currentPath, 'package.json');
+    if (fs.existsSync(pkgPath)) {
+      const pkgContent = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+      if (pkgContent.name !== '@arog/cli') {
+        return currentPath;
+      }
     }
     currentPath = dirname(currentPath);
   }
-  return process.cwd(); // Fallback to current directory
+  
+  return process.cwd(); // Last resort fallback
 }
 
 function runCommand(command, description) {
@@ -78,6 +110,13 @@ function runCommand(command, description) {
         resolve(output);
       } else {
         spinner.fail(`${description} (exit code: ${code})`);
+        
+        // Show detailed error if verbose mode
+        if (process.argv.includes('--verbose') || process.argv.includes('-v')) {
+          console.log(chalk.gray('\n[DEBUG] Command output:'));
+          console.log(chalk.gray(output.substring(0, 500))); // First 500 chars
+        }
+        
         reject(new Error(output));
       }
     });
@@ -460,7 +499,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog run all tests\n'));
         try {
-          await runCommand('npm run test:all || npm test', '🧪 Running all tests');
+          await runCommand('npm test', '🧪 Running all tests');
           console.log(chalk.green('\n✅ Tests completed!\n'));
         } catch (error) {
           console.log(chalk.yellow('\n⚠️  Some tests failed or command not found. Check your package.json.\n'));
@@ -500,7 +539,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog run security scan\n'));
         try {
-          await runCommand('npm run security:audit || npm audit', '🔒 Running security audit');
+          await runCommand('npm run security:audit', '🔒 Running security audit');
           console.log(chalk.green('\n✅ Security scan completed!\n'));
         } catch (error) {
           console.log(chalk.yellow('\n⚠️  Security issues found or command not available.\n'));
@@ -540,7 +579,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog fix code issues\n'));
         try {
-          await runCommand('npm run lint:fix || npm run lint -- --fix', '🔧 Auto-fixing issues');
+          await runCommand('npm run lint:fix', '🔧 Auto-fixing issues');
           console.log(chalk.green('\n✅ Code issues fixed!\n'));
         } catch (error) {
           console.log(chalk.yellow('\n⚠️  Auto-fix failed or command not found. Check your package.json.\n'));
