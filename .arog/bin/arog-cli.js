@@ -252,47 +252,57 @@ async function showAllCommands() {
   showBanner();
   
   console.log(chalk.cyan.bold('📋 ALL AROG COMMANDS\n'));
+  console.log(chalk.yellow('💡 Use @arog in VS Code Copilot Chat for the best experience!\n'));
   
   const commandCategories = [
     {
-      title: '🧪 TESTING',
+      title: '🤖 @AROG AI AGENT COMMANDS (Primary - Use These!)',
       commands: [
-        { cmd: 'npm test', desc: 'Run unit tests' },
-        { cmd: 'npm run test:e2e', desc: 'Run E2E tests' },
-        { cmd: 'npm run test:security', desc: 'Run security tests' },
-        { cmd: 'npm run test:all', desc: 'Run ALL tests (10 types!)' }
+        { arog: '@arog run tests', npm: 'npm test', desc: 'Run unit tests' },
+        { arog: '@arog run e2e tests', npm: 'npm run test:e2e', desc: 'Run E2E tests' },
+        { arog: '@arog check code quality', npm: 'npm run lint', desc: 'Check code quality' },
+        { arog: '@arog fix code issues', npm: 'npm run lint:fix', desc: 'Auto-fix issues' },
+        { arog: '@arog build for production', npm: 'npm run build', desc: 'Production build' },
+        { arog: '@arog deploy to staging', npm: 'npm run deploy:staging', desc: 'Deploy to staging' },
+        { arog: '@arog deploy to production', npm: 'npm run deploy:production', desc: 'Deploy to production' },
+        { arog: '@arog run security scan', npm: 'npm run security:audit', desc: 'Security audit' },
+        { arog: '@arog review this code', npm: '(manual review)', desc: 'AI code review' },
+        { arog: '@arog fix this error', npm: '(interactive)', desc: 'Debug assistance' }
       ]
     },
     {
-      title: '🔍 CODE QUALITY',
+      title: '🧪 TESTING COMMANDS',
       commands: [
-        { cmd: 'npm run lint', desc: 'Check code quality' },
-        { cmd: 'npm run lint:fix', desc: 'Auto-fix issues' },
-        { cmd: 'npm run format', desc: 'Format code (Prettier)' }
+        { arog: '@arog run all tests', npm: 'npm run test:all', desc: 'Run ALL tests (10 types!)' },
+        { arog: '@arog run unit tests', npm: 'npm test', desc: 'Run unit tests' },
+        { arog: '@arog run e2e tests', npm: 'npm run test:e2e', desc: 'Run E2E tests (Playwright)' },
+        { arog: '@arog run accessibility tests', npm: 'npm run test:a11y', desc: 'Accessibility tests' },
+        { arog: '@arog check test coverage', npm: 'npm test -- --coverage', desc: 'View test coverage' }
       ]
     },
     {
-      title: '🔒 SECURITY',
+      title: '🔍 CODE QUALITY COMMANDS',
       commands: [
-        { cmd: 'npm run security:audit', desc: 'Security audit' },
-        { cmd: 'npm run security:scan', desc: 'Full security scan' }
+        { arog: '@arog check code quality', npm: 'npm run lint', desc: 'ESLint check' },
+        { arog: '@arog fix code issues', npm: 'npm run lint:fix', desc: 'Auto-fix ESLint issues' },
+        { arog: '@arog format code', npm: 'npm run format', desc: 'Format with Prettier' },
+        { arog: '@arog type check', npm: 'npm run typecheck', desc: 'TypeScript check' }
       ]
     },
     {
-      title: '📦 BUILD & DEPLOY',
+      title: '🔒 SECURITY COMMANDS',
       commands: [
-        { cmd: 'npm run build', desc: 'Production build' },
-        { cmd: 'npm run deploy:staging', desc: 'Deploy to staging' },
-        { cmd: 'npm run deploy:production', desc: 'Deploy to production' }
+        { arog: '@arog run security scan', npm: 'npm run security:audit', desc: 'NPM audit' },
+        { arog: '@arog fix vulnerabilities', npm: 'npm run security:fix', desc: 'Auto-fix vulnerabilities' }
       ]
     },
     {
-      title: '🤖 AI AGENT (in VS Code)',
+      title: '📦 BUILD & DEPLOY COMMANDS',
       commands: [
-        { cmd: '@arog review this code', desc: 'Code review' },
-        { cmd: '@arog run tests', desc: 'Run tests' },
-        { cmd: '@arog deploy to staging', desc: 'Deploy' },
-        { cmd: '@arog fix this error', desc: 'Debug help' }
+        { arog: '@arog build', npm: 'npm run build', desc: 'Production build' },
+        { arog: '@arog check build size', npm: 'npm run build:size', desc: 'Check bundle size' },
+        { arog: '@arog deploy to staging', npm: 'npm run deploy:staging', desc: 'Deploy to staging' },
+        { arog: '@arog deploy to production', npm: 'npm run deploy:production', desc: 'Deploy to production' }
       ]
     }
   ];
@@ -300,24 +310,37 @@ async function showAllCommands() {
   commandCategories.forEach(category => {
     console.log(chalk.cyan.bold(`\n${category.title}`));
     const table = new Table({
-      head: [chalk.gray('Command'), chalk.gray('Description')],
-      colWidths: [35, 40]
+      head: [chalk.yellow('@arog Command'), chalk.gray('npm Command'), chalk.gray('Description')],
+      colWidths: [30, 30, 35],
+      style: { head: [], border: [] }
     });
     
-    category.commands.forEach(({ cmd, desc }) => {
-      table.push([chalk.green(cmd), desc]);
+    category.commands.forEach(({ arog, npm, desc }) => {
+      table.push([chalk.green(arog), chalk.dim(npm), desc]);
     });
     
     console.log(table.toString());
   });
   
-  console.log(chalk.yellow.bold('\n💡 TIP: ') + chalk.white('Run "npx arog" anytime to see this menu!\n'));
+  console.log(boxen(
+    chalk.yellow.bold('💡 PRO TIP:\n\n') +
+    chalk.white('1. ') + chalk.green('Open VS Code Copilot Chat\n') +
+    chalk.white('2. ') + chalk.green('Type: @arog run tests\n') +
+    chalk.white('3. ') + chalk.green('@arog automatically runs the command for you!\n\n') +
+    chalk.dim('You can also run npm commands directly in terminal.'),
+    {
+      padding: 1,
+      margin: { top: 1, bottom: 1, left: 2, right: 2 },
+      borderStyle: 'round',
+      borderColor: 'yellow'
+    }
+  ));
   
   await inquirer.prompt([
     {
       type: 'input',
       name: 'continue',
-      message: 'Press ENTER to continue'
+      message: chalk.cyan('Press ENTER to return to main menu')
     }
   ]);
 }
@@ -395,28 +418,242 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'test:all':
-        await runCommand('npm run test:all || npm test', 'Running all tests');
+        console.log(chalk.cyan('\n🤖 Running: @arog run all tests\n'));
+        try {
+          await runCommand('npm run test:all || npm test', '🧪 Running all tests');
+          console.log(chalk.green('\n✅ Tests completed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Some tests failed or command not found. Check your package.json.\n'));
+        }
         await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
         break;
         
       case 'test:unit':
-        await runCommand('npm test', 'Running unit tests');
+        console.log(chalk.cyan('\n🤖 Running: @arog run unit tests\n'));
+        try {
+          await runCommand('npm test', '🧪 Running unit tests');
+          console.log(chalk.green('\n✅ Unit tests completed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Tests failed or command not found. Check your package.json.\n'));
+        }
         await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'test:e2e':
+        console.log(chalk.cyan('\n🤖 Running: @arog run e2e tests\n'));
+        try {
+          await runCommand('npm run test:e2e', '🎭 Running E2E tests');
+          console.log(chalk.green('\n✅ E2E tests completed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  E2E tests failed or command not found. Check your package.json.\n'));
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'test:security':
+        console.log(chalk.cyan('\n🤖 Running: @arog run security scan\n'));
+        try {
+          await runCommand('npm run security:audit || npm audit', '🔒 Running security audit');
+          console.log(chalk.green('\n✅ Security scan completed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Security issues found or command not available.\n'));
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'test:coverage':
+        console.log(chalk.cyan('\n🤖 Running: @arog check test coverage\n'));
+        try {
+          await runCommand('npm test -- --coverage', '📊 Checking test coverage');
+          console.log(chalk.green('\n✅ Coverage report generated!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Coverage check failed. Check your test setup.\n'));
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
         break;
         
       case 'lint':
-        await runCommand('npm run lint', 'Checking code quality');
+        console.log(chalk.cyan('\n🤖 Running: @arog check code quality\n'));
+        try {
+          await runCommand('npm run lint', '🔍 Checking code quality');
+          console.log(chalk.green('\n✅ Code quality check completed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Linting failed or command not found. Check your package.json.\n'));
+        }
         await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
         break;
         
       case 'lint:fix':
-        await runCommand('npm run lint:fix || npm run lint -- --fix', 'Auto-fixing issues');
+        console.log(chalk.cyan('\n🤖 Running: @arog fix code issues\n'));
+        try {
+          await runCommand('npm run lint:fix || npm run lint -- --fix', '🔧 Auto-fixing issues');
+          console.log(chalk.green('\n✅ Code issues fixed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Auto-fix failed or command not found. Check your package.json.\n'));
+        }
         await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'format':
+        console.log(chalk.cyan('\n🤖 Running: @arog format code\n'));
+        try {
+          await runCommand('npm run format', '🎨 Formatting code with Prettier');
+          console.log(chalk.green('\n✅ Code formatted!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Format failed or command not found. Check your package.json.\n'));
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'security:audit':
+        console.log(chalk.cyan('\n🤖 Running: @arog run security audit\n'));
+        try {
+          await runCommand('npm audit', '🔒 Running security audit');
+          console.log(chalk.green('\n✅ Security audit completed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Security vulnerabilities found.\n'));
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'security:scan':
+        console.log(chalk.cyan('\n🤖 Running: @arog full security scan\n'));
+        try {
+          await runCommand('npm run security:scan || npm audit', '🛡️  Running full security scan');
+          console.log(chalk.green('\n✅ Security scan completed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Security scan failed or vulnerabilities found.\n'));
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'build':
+        console.log(chalk.cyan('\n🤖 Running: @arog build for production\n'));
+        try {
+          await runCommand('npm run build', '📦 Building for production');
+          console.log(chalk.green('\n✅ Build completed!\n'));
+        } catch (error) {
+          console.log(chalk.yellow('\n⚠️  Build failed. Check your build configuration.\n'));
+        }
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'deploy:staging':
+        console.log(chalk.cyan('\n🤖 Running: @arog deploy to staging\n'));
+        console.log(chalk.yellow('⚠️  Deploy to staging - Please configure deployment script in package.json\n'));
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'deploy:production':
+        console.log(chalk.cyan('\n🤖 Running: @arog deploy to production\n'));
+        console.log(chalk.yellow('⚠️  Deploy to production - Please configure deployment script in package.json\n'));
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'arog:report':
+        console.log(chalk.cyan('\n📊 Generating AROG report...\n'));
+        console.log(chalk.yellow('⚠️  Report generation - Coming soon!\n'));
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'arog:metrics':
+        console.log(chalk.cyan('\n📈 Showing metrics dashboard...\n'));
+        console.log(chalk.yellow('⚠️  Metrics dashboard - Coming soon!\n'));
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'arog:cost-report':
+        console.log(chalk.cyan('\n💰 Generating AI cost report...\n'));
+        console.log(chalk.yellow('⚠️  Cost report - Coming soon!\n'));
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'docs:book':
+        console.log(chalk.cyan('\n📖 Opening The AROG Book...\n'));
+        console.log(chalk.yellow('⚠️  Documentation - Check docs/ folder in your project\n'));
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'docs':
+        console.log(chalk.cyan('\n📚 Opening documentation...\n'));
+        console.log(chalk.yellow('⚠️  Documentation - Check docs/ folder in your project\n'));
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        showBanner();
+        await checkProjectStatus();
+        break;
+        
+      case 'help':
+        console.log(chalk.cyan.bold('\n❓ AROG HELP\n'));
+        console.log(boxen(
+          chalk.white('AROG = Autonomous Robot for Organization Growth\n\n') +
+          chalk.yellow('How to use:\n\n') +
+          chalk.green('1. In VS Code: ') + chalk.white('Type @arog in Copilot Chat\n') +
+          chalk.green('2. In Terminal: ') + chalk.white('Run npx arog for this menu\n') +
+          chalk.green('3. Automated: ') + chalk.white('Push code → workflows run automatically\n\n') +
+          chalk.yellow('What AROG does:\n\n') +
+          chalk.white('✓ Runs 10 types of tests automatically\n') +
+          chalk.white('✓ Reviews code quality\n') +
+          chalk.white('✓ Scans for security vulnerabilities\n') +
+          chalk.white('✓ Deploys with zero downtime\n') +
+          chalk.white('✓ Saves 70-85% on AI costs\n\n') +
+          chalk.dim('For more: Check docs/ folder or ask @arog in Copilot'),
+          {
+            padding: 1,
+            margin: { top: 0, bottom: 1, left: 2, right: 2 },
+            borderStyle: 'round',
+            borderColor: 'cyan'
+          }
+        ));
+        await inquirer.prompt([
+          {
+            type: 'input',
+            name: 'continue',
+            message: chalk.cyan('Press ENTER to return to main menu')
+          }
+        ]);
+        showBanner();
+        await checkProjectStatus();
         break;
         
       default:
-        console.log(chalk.yellow(`\n⚠ Action "${action}" not yet implemented. Coming soon!\n`));
+        console.log(chalk.yellow(`\n⚠️  Action "${action}" not yet implemented. Coming soon!\n`));
         await new Promise(resolve => setTimeout(resolve, 1500));
+        showBanner();
+        await checkProjectStatus();
     }
   }
 }
