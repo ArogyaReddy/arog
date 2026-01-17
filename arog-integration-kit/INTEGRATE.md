@@ -2,15 +2,18 @@
 
 ## How to Add AROG to ANY Project (5 Minutes)
 
-### **Step 1: Copy These 2 Folders**
+### **Step 1: Copy These 3 Folders**
 
 Copy these folders from this kit to your project root:
 
 ```
 your-project/
 ├── .arog/          ← Copy this folder
-└── .github/        ← Copy this folder
+├── .github/        ← Copy this folder
+└── .vscode/        ← Copy this folder (OPTIONAL - auto-created by npm install)
 ```
+
+**Note:** The `.vscode/` folder is OPTIONAL because `npm install` will create it automatically. But having it as a backup ensures MCP configuration is always available.
 
 ### **Step 2: Install AROG Dependencies (Auto-Setup Included!)**
 
@@ -22,14 +25,15 @@ npm install
 **This automatically:**
 - ✅ Installs all AROG dependencies
 - ✅ **Sets up MCP server** (browser automation)
-- ✅ Creates `.vscode/settings.json` with Playwright MCP config
+- ✅ Creates `.vscode/settings.json` (VS Code MCP format)
+- ✅ Creates `.vscode/mcp.json` (Standalone MCP format)
 - ✅ Installs Playwright browsers
 - ✅ Adds `.vscode/` to your `.gitignore`
 - ✅ **Shows RESTART REMINDER** (impossible to miss!)
 
 **You'll see a BIG YELLOW BOX** with restart instructions at the end of installation.
 
-> **Note:** If MCP setup fails (rare), it will run automatically on your first `@arog` command.
+> **Note:** Both MCP formats are created for maximum compatibility across different VS Code versions and MCP implementations.
 
 ### **Step 3: Add AROG Commands to package.json**
 

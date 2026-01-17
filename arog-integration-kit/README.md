@@ -29,17 +29,24 @@ arog-integration-kit/
 │   │   ├── health-monitor-pro.json
 │   │   ├── test-generator-pro.json
 │   │   └── vulnerability-scanner-pro.json
-│   ├── scripts/                    ← Automation scripts (5 scripts)
+│   ├── scripts/                    ← Automation scripts (8 scripts) ✨ UPDATED
 │   │   ├── health-check.js
 │   │   ├── validate-system.js
 │   │   ├── setup.js
 │   │   ├── preflight-check.js
-│   │   └── check-bundle-size.js
+│   │   ├── check-bundle-size.js
+│   │   ├── setup-mcp-server.js         ✨ NEW - Auto MCP setup
+│   │   ├── restart-reminder.js         ✨ NEW - Visual restart guide
+│   │   └── analyze-project.cjs
 │   ├── src/                        ← Source code
 │   ├── tests/                      ← Test files (unit, e2e, a11y)
 │   ├── model-routing.json          ← Smart FREE/PAID routing (70-85% cost savings!) ✅
-│   ├── package.json                ← All dependencies
+│   ├── package.json                ← All dependencies + postinstall automation ✨ UPDATED
 │   └── README-AROG.md              ← AROG framework README
+│
+├── .vscode/                        ← VS Code MCP configuration ✨ NEW
+│   ├── settings.json               ← Playwright MCP server config (auto-created backup)
+│   └── README.md                   ← Setup instructions
 │
 ├── .github/                        ← 40+ files - AI Intelligence
 │   ├── agents/                     ← 15 specialized agents ✨ UPDATED
@@ -154,9 +161,10 @@ The [model-routing.json](arog-integration-kit/.arog/model-routing.json) file ena
 ### **Option 1: Copy to Any Project (3 Steps!)**
 
 ```bash
-# 1. Copy folders to your project
+# 1. Copy folders to your project (including .vscode as backup)
 cp -r arog-integration-kit/.arog /path/to/your-project/
 cp -r arog-integration-kit/.github /path/to/your-project/
+cp -r arog-integration-kit/.vscode /path/to/your-project/  # Optional backup
 
 # 2. Install dependencies (MCP setup happens automatically!)
 cd /path/to/your-project/.arog && npm install
@@ -170,12 +178,14 @@ cd /path/to/your-project/.arog && npm install
 **What happens automatically:**
 - ✅ Installs all dependencies
 - ✅ Sets up MCP server (browser automation)
-- ✅ Creates `.vscode/settings.json`
+- ✅ Creates `.vscode/settings.json` (or uses the one you copied)
 - ✅ Installs Playwright browsers
 - ✅ Configures all AROG tools
 - ✅ **Shows BIG YELLOW RESTART REMINDER** 📢
 
 **The restart reminder is IMPOSSIBLE to miss!** Clear, visual, step-by-step instructions.
+
+**Backup:** If auto-setup fails, the `.vscode/` folder you copied serves as a backup template.
 
 ### **Option 2: Share with Team**
 

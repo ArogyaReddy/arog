@@ -8,15 +8,17 @@ All critical and required files are in place. You can now safely copy `.arog/` a
 
 ## 📦 What's Ready to Copy
 
-### Two Folders = Complete AROG Experience:
+### Three Folders = Complete AROG Experience:
 
 ```
 .arog/                              ← Configuration + Portable CLI
-├── package.json                    ✅ Enables 'npx arog'
+├── package.json                    ✅ Enables 'npx arog' + postinstall automation
 ├── bin/
 │   └── arog-cli.js                 ✅ Interactive CLI (350+ lines)
 ├── scripts/
-│   └── first-time-setup.js         ✅ Auto-launch on first use
+│   ├── first-time-setup.js         ✅ Auto-launch on first use
+│   ├── setup-mcp-server.js         ✅ NEW - Auto MCP configuration
+│   └── restart-reminder.js         ✅ NEW - Visual restart guide
 ├── README.md                       ✅ Documentation
 ├── config/
 │   ├── eslint/
@@ -33,6 +35,10 @@ All critical and required files are in place. You can now safely copy `.arog/` a
 ├── skills/                         ✅ AI agent skills
 └── prompts/                        ✅ AI agent prompts
 
+.vscode/                            ← MCP Server Configuration ✨ NEW
+├── settings.json                   ✅ Playwright MCP config (backup template)
+└── README.md                       ✅ Setup instructions
+
 .github/                            ← Automation Workflows
 ├── copilot-instructions.md         ✅ Workspace instructions
 └── workflows/
@@ -47,7 +53,7 @@ All critical and required files are in place. You can now safely copy `.arog/` a
     └── [18 more workflows]             ✅ Advanced automation
 ```
 
-**Total: 6 critical files + 11 required files + 22 workflows = COMPLETE! ✅**
+**Total: 6 critical files + 11 required files + 22 workflows + 3 folders = COMPLETE! ✅**
 
 ---
 

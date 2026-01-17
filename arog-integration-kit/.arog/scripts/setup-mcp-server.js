@@ -89,6 +89,23 @@ async function setupMCPServer() {
     fs.writeFileSync(settingsFile, JSON.stringify(settings, null, 2), 'utf8');
     log('   ✅ MCP server configured in settings.json', colors.green);
 
+    // Step 2b: Create mcp.json (standalone format for compatibility)
+    log('\n📝 Step 2b: Creating standalone mcp.json...', colors.cyan);
+    const mcpFile = path.join(vscodeDir, 'mcp.json');
+    const mcpConfig = {
+      servers: {
+        'playwright-test': {
+          type: 'stdio',
+          command: 'npx',
+          args: ['playwright', 'run-test-mcp-server']
+        }
+      },
+      inputs: []
+    };
+
+    fs.writeFileSync(mcpFile, JSON.stringify(mcpConfig, null, 2), 'utf8');
+    log('   ✅ mcp.json created (standalone format)', colors.green);
+
     // Step 3: Install Playwright browsers
     log('\n🌐 Step 3: Installing Playwright browsers...', colors.cyan);
     try {
