@@ -32,7 +32,10 @@ const colors = {
 };
 
 function log(message, color = 'reset') {
-  console.log(`${colors[color]}${message}${colors.reset}`);
+  // Only log if not in silent mode
+  if (!process.env.SILENT) {
+    console.log(`${colors[color]}${message}${colors.reset}`);
+  }
 }
 
 function findProjectRoot() {
@@ -56,6 +59,26 @@ function findProjectRoot() {
 }
 
 function setupMCPServerConfig() {
+  // Check if already configured
+  const projectRoot = findProjectRoot();
+  const settingsPath = path.join(projectRoot, '.vscode', 'settings.json');
+  
+  if (fs.existsSync(settingsPath)) {
+    try {
+      const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+      if (settings['mcp.servers'] && settings['mcp.servers']['arog-playwright']) {
+        // Already configured, exit silently
+        if (!process.env.VERBOSE) {
+          return;
+        }
+        log('\n✓ MCP server already configured\n', 'green');
+        return;
+      }
+    } catch (e) {
+      // Continue with setup
+    }
+  }
+  
   log('\n🤖 AROG MCP Server Setup\n', 'blue');
   
   try {
@@ -124,13 +147,17 @@ function setupMCPServerConfig() {
       log('   Please run manually: npx playwright install chromium', 'yellow');
     }
     
-    // Success message
-    log('\n🎉 SUCCESS! MCP Server Configuration Complete\n', 'green');
-    log('Next steps:', 'blue');
-    log('  1. ✅ MCP server configured in .vscode/settings.json', 'green');
-    log('  2. 🔄 Restart VS Code to activate the MCP server', 'yellow');
-    log('  3. 🧪 Test it: @arog navigate to https://example.com', 'yellow');
-    log('  4. 🚀 Generate tests: @arog generate E2E tests for my app\n', 'yellow');
+    // Success message (only if not in postinstall)
+    if (!process.env.npm_lifecycle_event) {
+      log('\n🎉 SUCCESS! MCP Server Configuration Complete\n', 'green');
+      log('Next steps:', 'blue');
+      log('  1. ✅ MCP server configured in .vscode/settings.json', 'green');
+      log('  2. 🔄 Restart VS Code to activate the MCP server', 'yellow');
+      log('  3. 🧪 Test it: @arog navigate to https://example.com', 'yellow');
+      log('  4. 🚀 Generate tests: @arog generate E2E tests for my app\n', 'yellow');
+    } else {
+      log('✅ MCP server configured', 'green');
+    }
     
     // Add .vscode to .gitignore if not already there
     const gitignorePath = path.join(projectRoot, '.gitignore');
@@ -144,8 +171,15 @@ function setupMCPServerConfig() {
     }
     
   } catch (error) {
-    log(`\n❌ Error: ${error.message}`, 'red');
-    log('\nPlease report this issue at: https://github.com/ArogyaReddy/arog/issues', 'yellow');
+    // Only show error if not in postinstall (silent mode)
+    if (!process.env.npm_lifecycle_event) {
+      log(`\n❌ Error: ${error.message}`, 'red');
+      log('\nPlease report this issue at: https://github.com/ArogyaReddy/arog/issues', 'yellow');
+    }
+    // Don't exit with error in postinstall - don't break npm install
+    if (process.env.npm_lifecycle_event === 'postinstall') {
+      return;
+    }
     process.exit(1);
   }
 }

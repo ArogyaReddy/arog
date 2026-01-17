@@ -12,7 +12,7 @@
     "help": "node bin/arog-cli.js --help",
     "demo": "node bin/arog-cli.js --demo",
     "health": "node bin/arog-cli.js --health",
-    "postinstall": "node scripts/first-time-setup.js"
+    "postinstall": "node scripts/first-time-setup.js && node scripts/setup-mcp-server.cjs || true"
   },
   "keywords": [
     "arog",
