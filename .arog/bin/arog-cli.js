@@ -424,6 +424,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
           continue;
         }
         if (next === 'test') {
+          console.clear();
           console.log(chalk.cyan('\n🤖 Running: @arog run tests\n'));
           try {
             await runCommand('npm test', '🧪 Running tests');
@@ -456,6 +457,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'test:all':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog run all tests\n'));
         try {
           await runCommand('npm run test:all || npm test', '🧪 Running all tests');
@@ -469,6 +471,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'test:unit':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog run unit tests\n'));
         try {
           await runCommand('npm test', '🧪 Running unit tests');
@@ -481,8 +484,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         await checkProjectStatus();
         break;
         
-      case 'test:e2e':
-        console.log(chalk.cyan('\n🤖 Running: @arog run e2e tests\n'));
+      case 'test:e2e':        console.clear();        console.log(chalk.cyan('\n🤖 Running: @arog run e2e tests\n'));
         try {
           await runCommand('npm run test:e2e', '🎭 Running E2E tests');
           console.log(chalk.green('\n✅ E2E tests completed!\n'));
@@ -495,6 +497,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'test:security':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog run security scan\n'));
         try {
           await runCommand('npm run security:audit || npm audit', '🔒 Running security audit');
@@ -507,8 +510,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         await checkProjectStatus();
         break;
         
-      case 'test:coverage':
-        console.log(chalk.cyan('\n🤖 Running: @arog check test coverage\n'));
+      case 'test:coverage':        console.clear();        console.log(chalk.cyan('\n🤖 Running: @arog check test coverage\n'));
         try {
           await runCommand('npm test -- --coverage', '📊 Checking test coverage');
           console.log(chalk.green('\n✅ Coverage report generated!\n'));
@@ -521,6 +523,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'lint':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog check code quality\n'));
         try {
           await runCommand('npm run lint', '🔍 Checking code quality');
@@ -534,6 +537,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'lint:fix':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog fix code issues\n'));
         try {
           await runCommand('npm run lint:fix || npm run lint -- --fix', '🔧 Auto-fixing issues');
@@ -547,6 +551,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'format':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog format code\n'));
         try {
           await runCommand('npm run format', '🎨 Formatting code with Prettier');
@@ -560,6 +565,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'security:audit':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog run security audit\n'));
         try {
           const output = await runCommand('NODE_OPTIONS= npm audit --audit-level=moderate 2>&1 || true', '🔒 Running dependency audit');
@@ -589,6 +595,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'security:scan':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog full security scan\n'));
         try {
           const output = await runCommand('NODE_OPTIONS= npm audit --audit-level=moderate 2>&1 || true', '🛡️  Running full security scan');
@@ -612,8 +619,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         await checkProjectStatus();
         break;
         
-      case 'build':
-        console.log(chalk.cyan('\n🤖 Running: @arog build for production\n'));
+      case 'build':        console.clear();        console.log(chalk.cyan('\n🤖 Running: @arog build for production\n'));
         try {
           await runCommand('npm run build', '📦 Building for production');
           console.log(chalk.green('\n✅ Build completed!\n'));
@@ -626,6 +632,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'deploy:staging':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog deploy to staging\n'));
         console.log(chalk.yellow('⚠️  Deploy to staging - Please configure deployment script in package.json\n'));
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -634,6 +641,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'deploy:production':
+        console.clear();
         console.log(chalk.cyan('\n🤖 Running: @arog deploy to production\n'));
         console.log(chalk.yellow('⚠️  Deploy to production - Please configure deployment script in package.json\n'));
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -642,6 +650,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'arog:report':
+        console.clear();
         console.log(chalk.cyan('\n📊 Generating AROG report...\n'));
         console.log(chalk.yellow('⚠️  Report generation - Coming soon!\n'));
         await new Promise(resolve => setTimeout(resolve, 1500));
@@ -650,6 +659,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'arog:metrics':
+        console.clear();
         console.log(chalk.cyan('\n📈 Showing metrics dashboard...\n'));
         console.log(chalk.yellow('⚠️  Metrics dashboard - Coming soon!\n'));
         await new Promise(resolve => setTimeout(resolve, 1500));
@@ -658,6 +668,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'arog:cost-report':
+        console.clear();
         console.log(chalk.cyan('\n💰 Generating AI cost report...\n'));
         console.log(chalk.yellow('⚠️  Cost report - Coming soon!\n'));
         await new Promise(resolve => setTimeout(resolve, 1500));
@@ -666,6 +677,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'docs:book':
+        console.clear();
         console.log(chalk.cyan('\n📖 Opening The AROG Book...\n'));
         console.log(chalk.yellow('⚠️  Documentation - Check docs/ folder in your project\n'));
         await new Promise(resolve => setTimeout(resolve, 1500));
@@ -674,6 +686,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'docs':
+        console.clear();
         console.log(chalk.cyan('\n📚 Opening documentation...\n'));
         console.log(chalk.yellow('⚠️  Documentation - Check docs/ folder in your project\n'));
         await new Promise(resolve => setTimeout(resolve, 1500));
@@ -682,6 +695,7 @@ This CLI is portable - it lives in .arog/ folder and travels with your config!
         break;
         
       case 'help':
+        console.clear();
         console.log(chalk.cyan.bold('\n❓ AROG HELP\n'));
         console.log(boxen(
           chalk.white('AROG = Autonomous Robot for Organization Growth\n\n') +
