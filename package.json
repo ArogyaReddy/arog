@@ -90,6 +90,7 @@
     "cli-table3": "^0.6.5",
     "commander": "^14.0.2",
     "eslint": "^8.56.0",
+    "express": "^5.2.1",
     "figlet": "^1.9.4",
     "gradient-string": "^2.0.2",
     "inquirer": "^9.3.8",
@@ -97,6 +98,7 @@
     "nanospinner": "^1.2.2",
     "ora": "^8.2.0",
     "prettier": "^3.1.1",
+    "supertest": "^7.2.2",
     "typescript": "^5.3.3",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
