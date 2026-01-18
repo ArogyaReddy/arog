@@ -40,10 +40,10 @@
     "arog:health": "node scripts/health-check.js",
     "arog:setup": "node scripts/setup.js",
     "arog:validate": "node scripts/validate-system.js",
-    "arog:restart-reminder": "node scripts/restart-reminder.js",
-    "arog:setup-mcp-servers": "node scripts/setup-mcp-servers.js",
-    "arog:test-mcp-setup": "node scripts/test-mcp-setup.js",
-    "postinstall": "node scripts/setup-mcp-server.js && node scripts/setup-mcp-servers.js && node scripts/restart-reminder.js || echo '⚠️  MCP setup will run on first @arog command'"
+    "arog:restart-reminder": "node scripts/restart-reminder.cjs",
+    "arog:setup-mcp-servers": "node scripts/setup-mcp-servers.cjs",
+    "arog:test-mcp-setup": "node scripts/test-mcp-setup.cjs",
+    "postinstall": "node scripts/setup-mcp-server.cjs && node scripts/setup-mcp-servers.cjs && node scripts/restart-reminder.cjs || echo '⚠️  MCP setup will run on first @arog command'"
   },
   "keywords": [
     "automation",
