@@ -172,20 +172,44 @@ async function verifyMCPServers() {
       launchInteractiveDemo();
     }, 2000);
   } else {
-    boxMessage(
-      '⚠️  MCP SETUP INCOMPLETE',
-      [
-        '',
-        'Some MCP servers are not configured properly.',
-        '',
-        '📋 To fix this, run:',
-        '   cd .arog && npm install',
-        '',
-        'Then restart VS Code and run this command again.'
-      ],
-      colors.yellow
-    );
-    process.exit(1);
+    log('\n⚠️  MCP servers not configured. Running setup now...', colors.yellow);
+    log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n', colors.yellow);
+    
+    // Auto-run MCP setup
+    try {
+      const setupScriptPath = path.join(__dirname, 'setup-mcp-servers.cjs');
+      
+      if (fs.existsSync(setupScriptPath)) {
+        log('🔧 Running MCP server setup...', colors.cyan);
+        execSync(`node "${setupScriptPath}"`, { 
+          stdio: 'inherit',
+          cwd: path.dirname(setupScriptPath)
+        });
+        
+        log('\n✅ MCP setup complete!', colors.green);
+        log('🔄 Please restart VS Code to activate MCP servers.', colors.yellow);
+        log('\n📋 After restart, run: arog verify-mcp', colors.cyan);
+      } else {
+        boxMessage(
+          '⚠️  MCP SETUP SCRIPT NOT FOUND',
+          [
+            '',
+            'Could not find setup-mcp-servers.cjs',
+            '',
+            '📋 To fix this, run:',
+            '   cd .arog && npm install',
+            '',
+            'Then restart VS Code and run this command again.'
+          ],
+          colors.yellow
+        );
+      }
+    } catch (err) {
+      log(`\n❌ Setup failed: ${err.message}`, colors.red);
+      log('💡 Try running manually: cd .arog && npm install', colors.yellow);
+    }
+    
+    process.exit(0);
   }
 }
 
