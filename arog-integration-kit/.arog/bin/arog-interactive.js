@@ -302,9 +302,10 @@ async function handleQuickStart() {
     console.log(boxen(
       chalk.green.bold('✓ Quick Start Complete!\n\n') +
       chalk.white('Your project is ready to use @arog.\n\n') +
-      chalk.yellow.bold('⚠️  Next: Install Playwright browsers\n') +
-      chalk.gray('   Run: ') + chalk.cyan('npx playwright install') + chalk.gray(' (required for E2E tests)\n') +
-      chalk.gray('   Or they auto-install on first ') + chalk.cyan('npm run test:e2e') + chalk.gray('\n\n') +
+      chalk.cyan.bold('✨ What happened:\n') +
+      chalk.gray('   ✅ MCP server configured (browser automation)\n') +
+      chalk.gray('   ✅ Playwright browsers installed\n') +
+      chalk.gray('   ✅ Tests validated\n\n') +
       chalk.gray('Launch CLI anytime: ') + chalk.cyan('arog cli'),
       { padding: 1, borderColor: 'green', borderStyle: 'round' }
     ));

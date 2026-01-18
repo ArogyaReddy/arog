@@ -25,8 +25,9 @@ export default {
     '/node_modules/',
     '/tests/e2e/',
     '/tests/accessibility/',
-    '/tests/seed.spec.ts',
+    '/tests/seed\.spec\.ts',
     '/specs/',
+    '\.spec\.js$', // Exclude all .spec.js files (Playwright convention)
   ],
   moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'node'],
   verbose: true,
