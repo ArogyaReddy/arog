@@ -21,6 +21,7 @@
   "scripts": {
     "test": "echo '\n🧪 @arog is running tests...\n' && jest --coverage",
     "test:watch": "echo '\n🧪 @arog is running tests in watch mode...\n' && jest --watch",
+    "_comment_e2e": "Auto-install chromium before E2E tests (smart: skips if already installed, ~1s check vs 2min download)",
     "test:e2e": "echo '\n🎭 @arog is running E2E tests...\n' && npx playwright install --with-deps chromium 2>/dev/null || true && playwright test",
     "test:e2e:ui": "echo '\n🎭 @arog is running E2E tests with UI...\n' && npx playwright install --with-deps chromium 2>/dev/null || true && playwright test --ui",
     "test:e2e:headed": "echo '\n🎭 @arog is running E2E tests in headed mode...\n' && npx playwright install --with-deps chromium 2>/dev/null || true && playwright test --headed",
