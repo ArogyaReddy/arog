@@ -44,9 +44,10 @@ arog-integration-kit/
 │   ├── package.json                ← All dependencies + postinstall automation ✨ UPDATED
 │   └── README-AROG.md              ← AROG framework README
 │
-├── .vscode/                        ← VS Code MCP configuration ✨ NEW
-│   ├── settings.json               ← Playwright MCP server config (auto-created backup)
-│   └── README.md                   ← Setup instructions
+├── .vscode/                        ← VS Code MCP configuration ✨ UPDATED
+│   ├── settings.json               ← 5 MCP servers (Playwright, GitHub, GitLab, Slack, PostgreSQL) 🎯
+│   ├── mcp.json                    ← Alternative MCP format (compatibility)
+│   └── README.md                   ← MCP setup instructions
 │
 ├── .github/                        ← 40+ files - AI Intelligence
 │   ├── agents/                     ← 15 specialized agents ✨ UPDATED
@@ -89,6 +90,8 @@ arog-integration-kit/
 │       └── ... (14 more workflows)
 │
 ├── INTEGRATE.md                    ← Simple integration guide
+├── MCP-SERVERS-README.md           ← Complete MCP servers guide ✨ NEW  
+├── MCP-SERVERS-QUICK-START.md      ← Quick MCP setup (3 steps) ✨ NEW
 └── package.json-template           ← Scripts template for projects
 ```
 
@@ -97,6 +100,8 @@ arog-integration-kit/
 ## 🎯 **Total Files:**
 - **.arog/**: 60+ files (includes prompts, skills, configs, docs, scripts)
 - **.github/**: 40+ files (15 agents, 11 skills, 22 workflows, copilot-instructions)
+- **.vscode/**: 3 files (MCP server configurations for Playwright, GitHub, GitLab, Slack, PostgreSQL) ✨ NEW
+- **MCP Docs**: 2 comprehensive guides ✨ NEW
 - **Documentation**: 2 files (INTEGRATE.md, package.json-template)
 - **TOTAL**: 100+ files
 

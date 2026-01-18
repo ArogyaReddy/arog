@@ -41,7 +41,9 @@
     "arog:setup": "node scripts/setup.js",
     "arog:validate": "node scripts/validate-system.js",
     "arog:restart-reminder": "node scripts/restart-reminder.js",
-    "postinstall": "node scripts/setup-mcp-server.js && node scripts/restart-reminder.js || echo '⚠️  MCP setup will run on first @arog command'"
+    "arog:setup-mcp-servers": "node scripts/setup-mcp-servers.js",
+    "arog:test-mcp-setup": "node scripts/test-mcp-setup.js",
+    "postinstall": "node scripts/setup-mcp-server.js && node scripts/setup-mcp-servers.js && node scripts/restart-reminder.js || echo '⚠️  MCP setup will run on first @arog command'"
   },
   "keywords": [
     "automation",
