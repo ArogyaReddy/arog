@@ -6,6 +6,7 @@
  */
 
 const { program } = require('commander');
+const chalk = require('chalk');
 const packageJson = require('../package.json');
 
 /**
@@ -233,7 +234,146 @@ program
   .description('Verify MCP servers setup and launch interactive demo')
   .action(() => {
     showArogBanner('MCP Servers Verification');
-    require('../scripts/verify-mcp.cjs');
+    require('../.arog/scripts/verify-mcp.cjs');
+  });
+
+// Interactive CLI Command
+program
+  .command('cli')
+  .description('Launch interactive CLI with beautiful UI')
+  .action(() => {
+    showArogBanner('Interactive CLI');
+    const { execSync } = require('child_process');
+    execSync('node ./bin/arog-interactive.js', { stdio: 'inherit' });
+  });
+
+// What is @arog?
+program
+  .command('what')
+  .description('Learn what @arog is and what it can do')
+  .action(() => {
+    showArogBanner('What is @arog?');
+    const fs = require('fs');
+    const path = require('path');
+    const docPath = path.join(__dirname, '../docs/@arog-what-how.md');
+    const content = fs.readFileSync(docPath, 'utf-8');
+    console.log(content);
+  });
+
+// Why use @arog?
+program
+  .command('why')
+  .description('Why you should use @arog for automation')
+  .action(() => {
+    showArogBanner('Why Use @arog?');
+    console.log(`
+${chalk.cyan.bold('💎 WHY USE @arog?')}
+
+${chalk.green('✅ SAVE TIME')}
+   • 70-85% reduction in manual testing
+   • Automated code reviews on every commit
+   • Zero-touch deployment pipelines
+
+${chalk.green('✅ SAVE MONEY')}
+   • Smart model routing: Use FREE models (GPT-4o-mini) for 85% of tasks
+   • Pay for Claude Sonnet only when quality matters
+   • Reduce AI costs by 70-85%
+
+${chalk.green('✅ IMPROVE QUALITY')}
+   • 100% test coverage enforcement
+   • Security scans on every commit
+   • Performance monitoring built-in
+   • Accessibility compliance (WCAG 2.1 AA)
+
+${chalk.green('✅ SHIP FASTER')}
+   • Catch bugs before they reach production
+   • Automated E2E testing across 5 browsers
+   • Deploy with confidence
+
+${chalk.yellow('🚀 TRY IT NOW: arog demo')}
+`);
+  });
+
+// How does @arog work?
+program
+  .command('how')
+  .description('How @arog automates your development workflow')
+  .action(() => {
+    showArogBanner('How @arog Works');
+    console.log(`
+${chalk.cyan.bold('⚙️ HOW @arog WORKS')}
+
+${chalk.green('1. GITHUB ACTIONS (Always Running)')}
+   • On every commit: Unit tests + Lint + Build
+   • On every PR: Full test suite + Security + Performance
+   • On merge: Deploy to staging → production
+
+${chalk.green('2. MCP SERVERS (AI-Powered)')}
+   • 8 automation servers running in VS Code
+   • Playwright, GitHub, Slack, JIRA, Confluence, etc.
+   • AI agents auto-generate and heal tests
+
+${chalk.green('3. SMART MODEL ROUTING (Cost Optimization)')}
+   • FREE models (GPT-4o-mini) for simple tasks
+   • PAID models (Claude Sonnet) for complex work
+   • Saves 70-85% on AI costs
+
+${chalk.green('4. ZERO INTERVENTION')}
+   • Everything runs automatically
+   • No manual test runs
+   • No forgotten checks
+   • Always consistent
+
+${chalk.yellow('🔧 SETUP: arog setup')}
+${chalk.yellow('🎭 VERIFY MCP: arog verify-mcp')}
+${chalk.yellow('📚 FULL DEMO: arog demo')}
+`);
+  });
+
+// Demo
+program
+  .command('demo')
+  .description('Interactive demo of @arog capabilities')
+  .action(() => {
+    showArogBanner('Interactive Demo');
+    require('../.arog/scripts/verify-mcp.cjs');
+  });
+
+// MCP Servers Info
+program
+  .command('mcp-servers')
+  .description('Show all configured MCP servers')
+  .action(() => {
+    showArogBanner('MCP Servers Configuration');
+    console.log(`
+${chalk.cyan.bold('🎭 MCP SERVERS (Model Context Protocol)')}
+
+${chalk.green('Configured Servers:')}
+
+1️⃣  ${chalk.yellow('playwright')} - Browser automation & E2E testing
+2️⃣  ${chalk.yellow('github')} - Repository operations & PR management
+3️⃣  ${chalk.yellow('gitlab')} - GitLab integration
+4️⃣  ${chalk.yellow('slack')} - Team notifications
+5️⃣  ${chalk.yellow('jira')} - Issue tracking
+6️⃣  ${chalk.yellow('confluence')} - Documentation
+7️⃣  ${chalk.yellow('postgresql')} - Database operations
+8️⃣  ${chalk.yellow('miro')} - Visual collaboration
+
+${chalk.gray('───────────────────────────────────────')}
+
+${chalk.green('✅ Verify setup:')} arog verify-mcp
+${chalk.green('🎭 See demo:')} arog mcp-servers-demo
+${chalk.green('📚 Learn more:')} arog what
+`);
+  });
+
+// MCP Servers Demo
+program
+  .command('mcp-servers-demo')
+  .description('Interactive demo of MCP servers capabilities')
+  .action(() => {
+    showArogBanner('MCP Servers Demo');
+    require('../.arog/scripts/verify-mcp.cjs');
   });
 
 // Parse arguments

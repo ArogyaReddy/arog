@@ -43,6 +43,8 @@
     "arog:restart-reminder": "node scripts/restart-reminder.cjs",
     "arog:setup-mcp-servers": "node scripts/setup-mcp-servers.cjs",
     "arog:test-mcp-setup": "node scripts/test-mcp-setup.cjs",
+    "arog:verify-mcp": "node scripts/verify-mcp.cjs",
+    "verify-mcp": "node scripts/verify-mcp.cjs",
     "postinstall": "node scripts/setup-mcp-server.cjs && node scripts/setup-mcp-servers.cjs && node scripts/restart-reminder.cjs || echo '⚠️  MCP setup will run on first @arog command'"
   },
   "keywords": [

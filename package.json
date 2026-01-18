@@ -4,7 +4,8 @@
   "description": "AROG - Autonomous Robot for Organization Growth. Complete automation framework with AI agents, workflows, and testing.",
   "main": "src/index.js",
   "bin": {
-    "arog": "./bin/arog-interactive.js",
+    "arog": "./bin/arog-main.cjs",
+    "arog-interactive": "./bin/arog-interactive.js",
     "arog-cli": "./bin/arog.cjs"
   },
   "type": "module",
@@ -90,7 +91,7 @@
     "axe-playwright": "^2.0.1",
     "babel-loader": "^9.1.3",
     "boxen": "^7.1.1",
-    "chalk": "^5.6.2",
+    "chalk": "^4.1.2",
     "cli-table3": "^0.6.5",
     "commander": "^14.0.2",
     "eslint": "^8.56.0",

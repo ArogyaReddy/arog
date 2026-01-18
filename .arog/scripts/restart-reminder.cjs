@@ -64,5 +64,19 @@ console.log('   ❌ Browser automation features disabled');
 console.log('   ❌ Playwright MCP agents won\'t work\n');
 
 console.log('━'.repeat(70));
-console.log(`${colors.cyan}${colors.bright}✨ After restart, you're all set! Just use @arog${colors.reset}`);
+console.log(`${colors.cyan}${colors.bright}✨ After restart, verify MCP setup and see the magic!${colors.reset}`);
 console.log('━'.repeat(70) + '\n');
+
+boxMessage(
+  '🎭 POST-RESTART VERIFICATION:\n\n' +
+  '   Run this command to confirm MCP servers:\n\n' +
+  '      arog verify-mcp\n\n' +
+  '   This will:\n' +
+  '   ✅ Verify all 8 MCP servers are configured\n' +
+  '   🎭 Launch interactive demo of @arog capabilities\n' +
+  '   📊 Show MCP server status\n' +
+  '   🚀 Guide you through quick start examples',
+  colors.cyan
+);
+
+console.log('');

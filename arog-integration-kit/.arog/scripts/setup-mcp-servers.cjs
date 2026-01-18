@@ -40,6 +40,11 @@ function getProjectRoot() {
     }
   }
   
+  // If running from .arog directory, go up one level to actual project root
+  if (currentDir.endsWith('.arog')) {
+    return path.dirname(currentDir);
+  }
+  
   // If running locally (development), use current directory
   return currentDir;
 }
@@ -161,6 +166,7 @@ function createVSCodeSettings(tier, selectedServers) {
   const projectRoot = getProjectRoot(); // Use helper function
   const vscodeDir = path.join(projectRoot, '.vscode');
   const settingsPath = path.join(vscodeDir, 'settings.json');
+  const mcpJsonPath = path.join(vscodeDir, 'mcp.json');
 
   log(`📂 Project root detected: ${projectRoot}`, colors.cyan);
   log(`📂 Creating VS Code settings in: ${vscodeDir}`, colors.cyan);
@@ -168,6 +174,27 @@ function createVSCodeSettings(tier, selectedServers) {
   // Create .vscode directory if it doesn't exist
   if (!fs.existsSync(vscodeDir)) {
     fs.mkdirSync(vscodeDir, { recursive: true });
+    log(`   ✅ Created .vscode/`, colors.green);
+  } else {
+    log(`   ✅ .vscode/ already exists`, colors.green);
+  }
+
+  // Read existing settings.json if it exists (SMART MERGE)
+  let settings = {};
+  if (fs.existsSync(settingsPath)) {
+    try {
+      const content = fs.readFileSync(settingsPath, 'utf8');
+      settings = JSON.parse(content);
+      log(`   ℹ️  Found existing settings.json - merging MCP servers`, colors.yellow);
+    } catch (err) {
+      log(`   ⚠️  Could not parse existing settings.json - creating new one`, colors.yellow);
+      settings = {};
+    }
+  }
+
+  // Initialize mcp.servers section if it doesn't exist
+  if (!settings['mcp.servers']) {
+    settings['mcp.servers'] = {};
   }
 
   // Build MCP servers configuration
@@ -201,13 +228,22 @@ function createVSCodeSettings(tier, selectedServers) {
     mcpServers[serverName] = serverConfig;
   });
 
-  const settings = {
-    'mcp.servers': mcpServers
+  // Merge MCP servers into existing settings (preserves existing settings!)
+  settings['mcp.servers'] = {
+    ...settings['mcp.servers'],
+    ...mcpServers
   };
 
-  // Write settings.json
-  fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
-  log(`✅ Created ${settingsPath}`, colors.green);
+  // Write merged settings.json
+  fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf8');
+  log(`   ✅ MCP servers configured in settings.json`, colors.green);
+
+  // Also create standalone mcp.json for compatibility
+  const mcpJson = {
+    mcpServers: mcpServers
+  };
+  fs.writeFileSync(mcpJsonPath, JSON.stringify(mcpJson, null, 2), 'utf8');
+  log(`   ✅ Created mcp.json for compatibility`, colors.green);
 
   return settingsPath;
 }

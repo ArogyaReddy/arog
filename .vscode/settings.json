@@ -40,7 +40,8 @@
       "env": {
         "JIRA_URL": "${env:JIRA_URL}",
         "JIRA_EMAIL": "${env:JIRA_EMAIL}",
-     ,
+        "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}"
+      },
     "miro": {
       "command": "npx",
       "args": ["-y", "miro-mcp-server"],
@@ -49,7 +50,7 @@
         "MIRO_ACCESS_TOKEN": "${env:MIRO_ACCESS_TOKEN}",
         "MIRO_TEAM_ID": "${env:MIRO_TEAM_ID}"
       }
-    }   "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}"
+       
       }
     },
     "confluence": {
