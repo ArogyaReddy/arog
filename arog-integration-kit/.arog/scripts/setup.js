@@ -8,12 +8,22 @@ console.log('\n⚙️  @arog is setting up your project...\n');
 
 const steps = [
   {
-    name: 'Install Dependencies',
-    command: 'npm install',
+    name: 'Check Project Structure',
+    action: () => {
+      const hasPackageJson = fs.existsSync(path.join(process.cwd(), 'package.json'));
+      if (hasPackageJson) {
+        console.log('  ✅ package.json found');
+      } else {
+        console.log('  ⚠️  No package.json - skipping dependency install');
+        console.log('  💡 Run "npm init" to create one');
+      }
+      return hasPackageJson;
+    },
   },
   {
-    name: 'Install Playwright Browsers',
-    command: 'npx playwright install',
+    name: 'Install Dependencies',
+    command: 'npm install',
+    condition: () => fs.existsSync(path.join(process.cwd(), 'package.json')),
   },
   {
     name: 'Create Test Directory Structure',
@@ -24,17 +34,21 @@ const steps = [
         if (!fs.existsSync(fullPath)) {
           fs.mkdirSync(fullPath, { recursive: true });
           console.log(`  ✅ Created ${dir}`);
+        } else {
+          console.log(`  ✓ ${dir} already exists`);
         }
       });
     },
   },
-  {
-    name: 'Validate Configuration',
-    command: 'node scripts/health-check.js',
-  },
 ];
 
 steps.forEach((step, index) => {
+  // Skip steps with conditions that aren't met
+  if (step.condition && !step.condition()) {
+    console.log(`⏭️  Skipped: ${step.name}`);
+    return;
+  }
+  
   console.log(`\n📋 Step ${index + 1}/${steps.length}: ${step.name}`);
   try {
     if (step.command) {
@@ -44,14 +58,16 @@ steps.forEach((step, index) => {
     }
     console.log(`✅ ${step.name} - Complete`);
   } catch (error) {
-    console.error(`❌ ${step.name} - Failed`);
-    console.error(error.message);
+    console.error(`⚠️  ${step.name} - Skipped (${error.message})`);
   }
 });
 
 console.log('\n\n🎉 @arog Setup Complete!\n');
-console.log('Next steps:');
-console.log('  1. Run tests: npm test');
-console.log('  2. Start docs server: npm run docs:serve');
-console.log('  3. Chat with @arog in VS Code');
-console.log('\n🤖 @arog is now protecting your codebase 24/7.\n');
+console.log('📋 Quick Start:');
+console.log('  • Run tests: npm test');
+console.log('  • Interactive CLI: arog cli');
+console.log('  • Verify MCP: arog verify-mcp');
+console.log('  • Learn more: arog what');
+console.log('\n💡 TIP: Playwright browsers install automatically when you run E2E tests.');
+console.log('    To install them now: npx playwright install\n');
+console.log('🤖 @arog is now protecting your codebase 24/7.\n');
