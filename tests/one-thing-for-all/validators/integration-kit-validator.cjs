@@ -122,20 +122,20 @@ class IntegrationKitValidator {
 
     try {
       const criticalScripts = [
-        'setup-mcp-servers.cjs',
-        'verify-mcp.cjs',
-        'restart-reminder.cjs',
-        'setup.js'
+        { path: '.arog/scripts/setup-mcp-servers.cjs', name: 'setup-mcp-servers.cjs' },
+        { path: '.arog/scripts/verify-mcp.cjs', name: 'verify-mcp.cjs' },
+        { path: '.arog/scripts/restart-reminder.cjs', name: 'restart-reminder.cjs' },
+        { path: 'scripts/setup.js', name: 'setup.js' }
       ];
 
       const differences = [];
 
       for (const script of criticalScripts) {
-        const mainPath = path.join(this.projectRoot, '.arog/scripts', script);
-        const kitPath = path.join(this.integrationKitPath, '.arog/scripts', script);
+        const mainPath = path.join(this.projectRoot, script.path);
+        const kitPath = path.join(this.integrationKitPath, script.path);
 
         if (!fs.existsSync(mainPath) || !fs.existsSync(kitPath)) {
-          differences.push(`${script} missing in main or kit`);
+          differences.push(`${script.name} missing in main or kit`);
           continue;
         }
 
@@ -143,7 +143,7 @@ class IntegrationKitValidator {
         const kitContent = fs.readFileSync(kitPath, 'utf8');
 
         if (mainContent !== kitContent) {
-          differences.push(`${script} differs`);
+          differences.push(`${script.name} differs`);
         }
       }
 

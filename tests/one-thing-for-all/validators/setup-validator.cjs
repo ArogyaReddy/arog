@@ -130,21 +130,22 @@ class SetupValidator {
 
       const content = fs.readFileSync(setupPath, 'utf8');
       
-      // Check for blocking operations
+      // Check for actual blocking executions (not console.log messages)
       const blockingPatterns = [
-        'npx playwright install',
-        'node scripts/setup-mcp-servers',
-        'npm install -g'
+        { pattern: /execSync\s*\(\s*['"`]npx playwright install/, name: 'npx playwright install' },
+        { pattern: /execSync\s*\(\s*['"`]node scripts\/setup-mcp-servers/, name: 'MCP server setup' },
+        { pattern: /execSync\s*\(\s*['"`]npm install -g/, name: 'global npm install' },
+        { pattern: /require\(['"`]child_process['"`]\)\.execSync.*playwright install/, name: 'playwright install execution' }
       ];
 
-      const found = blockingPatterns.filter(pattern => content.includes(pattern));
+      const found = blockingPatterns.filter(item => item.pattern.test(content));
 
       if (found.length === 0) {
         test.passed = true;
-        test.message = '✅ No blocking operations in setup.js';
+        test.message = '✅ No blocking operations in setup.js (console.log messages are OK)';
       } else {
         test.passed = false;
-        test.message = `❌ Found blocking operations: ${found.join(', ')}`;
+        test.message = `❌ Found blocking executions: ${found.map(f => f.name).join(', ')}`;
       }
     } catch (error) {
       test.passed = false;

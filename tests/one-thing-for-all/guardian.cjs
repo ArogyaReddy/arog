@@ -19,6 +19,10 @@ const { execSync } = require('child_process');
 const SetupValidator = require('./validators/setup-validator.cjs');
 const MCPValidator = require('./validators/mcp-validator.cjs');
 const IntegrationKitValidator = require('./validators/integration-kit-validator.cjs');
+const AgentValidator = require('./validators/agent-validator.cjs');
+const CLIValidator = require('./validators/cli-validator.cjs');
+const AutomationValidator = require('./validators/automation-validator.cjs');
+const ResultsPageGenerator = require('./results-page-generator.cjs');
 
 // Colors for beautiful output
 const colors = {
@@ -116,7 +120,10 @@ class Guardian {
     const validators = [
       { name: 'Quick Start Setup', validator: new SetupValidator() },
       { name: 'MCP Servers', validator: new MCPValidator() },
-      { name: 'Integration Kit', validator: new IntegrationKitValidator() }
+      { name: 'Integration Kit', validator: new IntegrationKitValidator() },
+      { name: '@arog Custom Agent', validator: new AgentValidator() },
+      { name: 'CLI Tools', validator: new CLIValidator() },
+      { name: 'Automation Toolkit', validator: new AutomationValidator() }
     ];
 
     for (const { name, validator } of validators) {
@@ -357,6 +364,16 @@ class Guardian {
 
     const color = this.results.failed === 0 ? colors.green : colors.yellow;
     console.log(color + banner + colors.reset);
+
+    // Generate HTML results page
+    try {
+      const generator = new ResultsPageGenerator(this.results);
+      const outputPath = path.join(__dirname, '../../docs/one-thing-report.html');
+      generator.save(outputPath);
+      console.log(`\n${colors.cyan}📄 HTML Report: docs/one-thing-report.html${colors.reset}\n`);
+    } catch (err) {
+      console.error(`${colors.yellow}⚠️  Could not generate HTML report: ${err.message}${colors.reset}`);
+    }
 
     // Show failed tests if any
     if (this.results.failed > 0) {
