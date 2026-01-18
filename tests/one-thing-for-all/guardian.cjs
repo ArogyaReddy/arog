@@ -15,6 +15,11 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
+// Import REAL validators
+const SetupValidator = require('./validators/setup-validator.cjs');
+const MCPValidator = require('./validators/mcp-validator.cjs');
+const IntegrationKitValidator = require('./validators/integration-kit-validator.cjs');
+
 // Colors for beautiful output
 const colors = {
   reset: '\x1b[0m',
@@ -49,6 +54,9 @@ class Guardian {
     const startTime = Date.now();
 
     try {
+      // Run REAL validators first
+      await this.runRealValidators();
+      
       // Load all chapters
       const chapters = await this.loadChapters();
       
@@ -100,6 +108,42 @@ class Guardian {
     };
 
     console.log(`\n${colors.yellow}${modes[this.mode]}${colors.reset}\n`);
+  }
+
+  async runRealValidators() {
+    console.log(`${colors.bright}${colors.blue}🔍 Running REAL Validators...${colors.reset}\n`);
+
+    const validators = [
+      { name: 'Quick Start Setup', validator: new SetupValidator() },
+      { name: 'MCP Servers', validator: new MCPValidator() },
+      { name: 'Integration Kit', validator: new IntegrationKitValidator() }
+    ];
+
+    for (const { name, validator } of validators) {
+      console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}`);
+      console.log(`\n🧪 ${name} Validator\n`);
+
+      const results = await validator.runAll();
+      
+      for (const result of results) {
+        const icon = result.passed ? '✅' : '❌';
+        const color = result.passed ? colors.green : colors.red;
+        console.log(`   ${color}${icon} ${result.name}${colors.reset}`);
+        
+        if (!result.passed && result.message) {
+          console.log(`      ${colors.yellow}${result.message}${colors.reset}`);
+        }
+
+        this.results.totalTests++;
+        if (result.passed) {
+          this.results.passed++;
+        } else {
+          this.results.failed++;
+        }
+      }
+
+      console.log('');
+    }
   }
 
   async loadChapters() {
