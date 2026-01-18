@@ -65,7 +65,11 @@
     "alert:test": "echo '\n🔔 @arog is testing alert system...\n' && node .arog/cli/alert-cli.js test",
     "alert:send": "echo '\n📧 @arog is sending alert...\n' && node .arog/cli/alert-cli.js send",
     "alert:logs": "echo '\n📝 @arog is showing logs...\n' && node .arog/cli/alert-cli.js logs",
-    "alert:summary": "echo '\n📊 @arog is showing daily summary...\n' && node .arog/cli/alert-cli.js summary"
+    "alert:summary": "echo '\n📊 @arog is showing daily summary...\n' && node .arog/cli/alert-cli.js summary",
+    "_comment_one_thing": "🛡️ THE ONE-THING-FOR-ALL Guardian - Protects AROG's core with FREE models",
+    "one-thing": "echo '\n🛡️ THE ONE-THING Guardian is validating AROG...\n' && node tests/one-thing-for-all/guardian.cjs full",
+    "one-thing:quick": "echo '\n⚡ THE ONE-THING Guardian is running quick checks...\n' && node tests/one-thing-for-all/guardian.cjs quick",
+    "one-thing:live": "echo '\n🔴 THE ONE-THING Guardian is running in live mode...\n' && node tests/one-thing-for-all/guardian.cjs live"
   },
   "keywords": [
     "automation",
