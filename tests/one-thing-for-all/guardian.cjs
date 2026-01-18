@@ -331,8 +331,20 @@ class Guardian {
   }
 
   async testCommand(test) {
-    // Test that command executes and doesn't contain certain strings
-    return true;
+    // Test that command executes successfully
+    if (!test.command) return true;
+    
+    try {
+      const projectRoot = path.join(__dirname, '../../');
+      execSync(test.command, { 
+        cwd: projectRoot, 
+        stdio: 'ignore' // Hide output unless it fails
+      });
+      return true;
+    } catch (error) {
+      if (test.allowFailure) return true;
+      throw new Error(`Command failed: ${test.command}`);
+    }
   }
 
   showFinalReport() {

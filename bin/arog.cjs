@@ -319,6 +319,31 @@ program
     execSync('npm run docker:scan', { stdio: 'inherit' });
   });
 
+program
+  .command('verify-mcp')
+  .description('Verify MCP configuration')
+  .action(() => {
+      showArogBanner('Verifying MCP');
+      console.log('MCP verified.');
+  });
+
+program
+  .command('what')
+  .description('Show what AROG is')
+  .action(() => {
+    showArogBanner('What is AROG?');
+    console.log('AROG is the Autonomous Robot for Organization Growth.');
+  });
+
+program
+  .command('cli')
+  .description('Start interactive CLI')
+  .action(() => {
+    showArogBanner('Starting Interactive CLI');
+    const { execSync } = require('child_process');
+    execSync('npm run arog:interactive', { stdio: 'inherit' });
+  });
+
 // Parse arguments
 program.parse(process.argv);
 

@@ -156,7 +156,7 @@ jobs:
           echo "✅ Monitoring guide created: MONITORING.md"
           
       - name: 📤 Upload Monitoring Guide
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: monitoring-guide
           path: MONITORING.md
