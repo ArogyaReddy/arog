@@ -293,15 +293,16 @@ async function handleQuickStart() {
   ));
   
   try {
-    await runCommand('node scripts/setup.js', 'Setting up AROG');
+    // Use arog CLI commands instead of direct script paths
+    await runCommand('arog setup', 'Setting up AROG');
     await runCommand('npm install', 'Installing dependencies');
-    await runCommand('npm test', 'Running tests');
+    await runCommand('npm test', 'Running initial tests');
     
     console.log();
     console.log(boxen(
       chalk.green.bold('✓ Quick Start Complete!\n\n') +
       chalk.white('Your project is ready to use @arog.\n') +
-      chalk.gray('Run this CLI anytime with: ') + chalk.cyan('arog'),
+      chalk.gray('Run this CLI anytime with: ') + chalk.cyan('arog cli'),
       { padding: 1, borderColor: 'green', borderStyle: 'round' }
     ));
   } catch (error) {
@@ -500,12 +501,12 @@ async function main() {
         break;
       
       case 'health':
-        await runCommand('node scripts/health-check.js', 'Running health check');
+        await runCommand('arog health', 'Running health check');
         await pause();
         break;
       
       case 'setup':
-        await runCommand('node scripts/setup.js', 'Setting up AROG');
+        await runCommand('arog setup', 'Setting up AROG');
         await pause();
         break;
       
