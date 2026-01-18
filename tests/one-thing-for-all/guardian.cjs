@@ -42,6 +42,7 @@ class Guardian {
     this.bookPath = path.join(__dirname, '../../docs/book');
     this.results = {
       chapters: [],
+      validators: [],
       totalTests: 0,
       passed: 0,
       failed: 0,
@@ -76,6 +77,9 @@ class Guardian {
 
       // Show final report
       this.showFinalReport();
+
+      // Show actionable guidance
+      this.showGuidance();
 
       // Exit with appropriate code
       process.exit(this.results.failed > 0 ? 1 : 0);
@@ -131,6 +135,12 @@ class Guardian {
       console.log(`\n🧪 ${name} Validator\n`);
 
       const results = await validator.runAll();
+      
+      // Store for HTML report
+      this.results.validators.push({
+        name,
+        tests: results
+      });
       
       for (const result of results) {
         const icon = result.passed ? '✅' : '❌';
@@ -418,6 +428,63 @@ class Guardian {
     if (score >= 80) return '(Good)    ';
     if (score >= 60) return '(Fair)    ';
     return '(Needs Work)';
+  }
+
+  showGuidance() {
+    console.log('');
+    console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}`);
+    console.log('');
+    
+    if (this.results.failed === 0) {
+      console.log(`${colors.green}${colors.bright}✅ ALL SYSTEMS GO!${colors.reset}`);
+      console.log('');
+      console.log(`${colors.green}Your code is production-ready. Safe to commit and deploy.${colors.reset}`);
+      console.log('');
+      console.log(`${colors.cyan}Next Steps:${colors.reset}`);
+      console.log(`  • Run ${colors.bright}git add .${colors.reset}`);
+      console.log(`  • Run ${colors.bright}git commit -m "your message"${colors.reset}`);
+      console.log(`  • Run ${colors.bright}git push${colors.reset}`);
+    } else {
+      console.log(`${colors.red}${colors.bright}⚠️  STOP - FAILURES DETECTED!${colors.reset}`);
+      console.log('');
+      console.log(`${colors.red}Your code has ${this.results.failed} failing test(s). DO NOT COMMIT until fixed.${colors.reset}`);
+      console.log('');
+      console.log(`${colors.yellow}What Failed:${colors.reset}`);
+      console.log('');
+      
+      // Show all failures with fixes
+      for (const chapter of this.results.chapters) {
+        if (chapter.status === 'failed' && chapter.tests) {
+          for (const test of chapter.tests) {
+            if (!test.passed) {
+              console.log(`   ${colors.red}❌ ${chapter.title}: ${test.name}${colors.reset}`);
+              if (test.error) {
+                console.log(`      ${colors.yellow}Error: ${test.error}${colors.reset}`);
+                
+                // Provide specific fix guidance
+                if (test.error.includes('npm test')) {
+                  console.log(`      ${colors.cyan}Fix: Run 'npm test' to see detailed errors${colors.reset}`);
+                } else if (test.error.includes('npm run test:e2e')) {
+                  console.log(`      ${colors.cyan}Fix: Run 'npm run test:e2e' to see detailed errors${colors.reset}`);
+                } else {
+                  console.log(`      ${colors.cyan}Fix: Check the test implementation${colors.reset}`);
+                }
+              }
+              console.log('');
+            }
+          }
+        }
+      }
+      
+      console.log(`${colors.cyan}Next Steps:${colors.reset}`);
+      console.log(`  1. Fix the errors shown above`);
+      console.log(`  2. Run ${colors.bright}npm run one-thing${colors.reset} again to verify`);
+      console.log(`  3. Only commit when you see ${colors.green}✅ ALL SYSTEMS GO${colors.reset}`);
+    }
+    
+    console.log('');
+    console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}`);
+    console.log('');
   }
 }
 

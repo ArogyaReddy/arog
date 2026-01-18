@@ -25,6 +25,8 @@ export default {
     '/node_modules/',
     '/tests/e2e/',
     '/tests/accessibility/',
+    '/tests/seed.spec.ts',
+    '/specs/',
   ],
   moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'node'],
   verbose: true,

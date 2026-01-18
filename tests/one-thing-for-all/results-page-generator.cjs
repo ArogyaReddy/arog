@@ -298,9 +298,8 @@ class ResultsPageGenerator {
 
     let html = '';
 
-    // Group results by validator (this would need to be passed from guardian)
-    // For now, generate placeholder structure
-    const validators = [
+    // Use actual validator results from guardian
+    const validators = this.results.validators || [
       { name: 'Quick Start Setup', icon: '🚀', tests: [] },
       { name: 'MCP Servers', icon: '🎭', tests: [] },
       { name: 'Integration Kit', icon: '📦', tests: [] },
@@ -309,11 +308,22 @@ class ResultsPageGenerator {
       { name: 'Automation Toolkit', icon: '🛠️', tests: [] }
     ];
 
+    // Map validator names to icons
+    const iconMap = {
+      'Quick Start Setup': '🚀',
+      'MCP Servers': '🎭',
+      'Integration Kit': '📦',
+      '@arog Custom Agent': '🤖',
+      'CLI Tools': '⚡',
+      'Automation Toolkit': '🛠️'
+    };
+
     validators.forEach(validator => {
+      const icon = validator.icon || iconMap[validator.name] || '🧪';
       html += `
             <div class="validator">
                 <div class="validator-header">
-                    <span class="validator-icon">${validator.icon}</span>
+                    <span class="validator-icon">${icon}</span>
                     <span class="validator-name">${validator.name}</span>
                 </div>
                 <div class="test-items">
@@ -327,7 +337,7 @@ class ResultsPageGenerator {
 
   generateTestItems(tests) {
     if (!tests || tests.length === 0) {
-      return '<div class="test-message">Tests will appear here after running validators</div>';
+      return '<div class="test-message">No tests found - validator may have been skipped</div>';
     }
 
     return tests.map(test => `
