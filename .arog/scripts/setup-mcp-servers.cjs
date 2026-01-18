@@ -147,7 +147,7 @@ function boxMessage(title, lines, color = colors.cyan) {
   console.log();
 }
 
-function installMCPServer(packageName) {
+function installMCPServer(packageName, optional = false) {
   log(`📦 Installing ${packageName}...`, colors.blue);
   try {
     execSync(`npm install -g ${packageName}`, { 
@@ -157,7 +157,11 @@ function installMCPServer(packageName) {
     log(`✅ Successfully installed ${packageName}`, colors.green);
     return true;
   } catch (error) {
-    log(`❌ Failed to install ${packageName}: ${error.message}`, colors.red);
+    if (optional) {
+      log(`⚠️  ${packageName} is optional and not available - skipping`, colors.yellow);
+    } else {
+      log(`❌ Failed to install ${packageName}: ${error.message}`, colors.red);
+    }
     return false;
   }
 }
@@ -461,7 +465,9 @@ async function main() {
     Object.entries(tierConfig.servers).forEach(([serverName, config]) => {
       if (!config.alreadySetup) {
         log(`  Installing ${serverName}...`, colors.blue);
-        installMCPServer(config.package);
+        // Mark tier2 and tier3 servers as optional (they often require auth or don't exist)
+        const isOptional = tierName !== 'tier1_essentials';
+        installMCPServer(config.package, isOptional);
       } else {
         log(`  ✓ ${serverName} (already configured)`, colors.green);
       }
