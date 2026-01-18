@@ -1,0 +1,26 @@
+echo ""
+echo "🛡️  Running THE ONE-THING Guardian before commit..."
+echo ""
+
+# Run THE ONE-THING
+npm run one-thing
+
+# Capture exit code
+GUARDIAN_EXIT=$?
+
+if [ $GUARDIAN_EXIT -ne 0 ]; then
+  echo ""
+  echo "❌ THE ONE-THING Guardian detected issues!"
+  echo "📄 Review: docs/one-thing-report.html"
+  echo ""
+  echo "Options:"
+  echo "  1. Fix the issues and try again"
+  echo "  2. Skip validation: git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
+echo ""
+echo "✅ THE ONE-THING Guardian passed! Proceeding with commit..."
+echo ""
+
