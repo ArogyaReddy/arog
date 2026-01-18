@@ -45,7 +45,7 @@
     "arog:test-mcp-setup": "node scripts/test-mcp-setup.cjs",
     "arog:verify-mcp": "node scripts/verify-mcp.cjs",
     "verify-mcp": "node scripts/verify-mcp.cjs",
-    "postinstall": "node scripts/setup-mcp-server.cjs && node scripts/setup-mcp-servers.cjs && node scripts/restart-reminder.cjs || echo '⚠️  MCP setup will run on first @arog command'"
+    "postinstall": "echo '✅ AROG installed! Run: arog verify-mcp to setup MCP servers'"
   },
   "keywords": [
     "automation",
