@@ -5,7 +5,71 @@
       "args": [
         "@playwright/mcp@latest"
       ],
-      "description": "Official Playwright MCP Server with Test Agents (planner, generator, healer)"
+      "description": "🎭 E2E test generation & browser automation (TIER 1 - ESSENTIAL)"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "description": "🐙 Code review & PR management (TIER 1 - ESSENTIAL)",
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "gitlab": {
+      "command": "npx",
+      "args": ["-y", "gitlab-mcp-server"],
+      "description": "🦊 GitLab CI/CD & repo management (TIER 2 - HIGH VALUE)",
+      "env": {
+        "GITLAB_PERSONAL_ACCESS_TOKEN": "${env:GITLAB_PERSONAL_ACCESS_TOKEN}",
+        "GITLAB_API_URL": "${env:GITLAB_API_URL}"
+      }
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "slack-mcp-server"],
+      "description": "💬 Team notifications & communication (TIER 2 - HIGH VALUE)",
+      "env": {
+        "SLACK_BOT_TOKEN": "${env:SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID": "${env:SLACK_TEAM_ID}"
+      }
+    },
+    "jira": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-jira"],
+      "description": "📋 Issue tracking & project management (TIER 2 - HIGH VALUE)",
+      "env": {
+        "JIRA_URL": "${env:JIRA_URL}",
+        "JIRA_EMAIL": "${env:JIRA_EMAIL}",
+     ,
+    "miro": {
+      "command": "npx",
+      "args": ["-y", "miro-mcp-server"],
+      "description": "🎨 Visual collaboration & design workflows (TIER 3 - STRATEGIC)",
+      "env": {
+        "MIRO_ACCESS_TOKEN": "${env:MIRO_ACCESS_TOKEN}",
+        "MIRO_TEAM_ID": "${env:MIRO_TEAM_ID}"
+      }
+    }   "JIRA_API_TOKEN": "${env:JIRA_API_TOKEN}"
+      }
+    },
+    "confluence": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-confluence"],
+      "description": "📚 Documentation & knowledge management (TIER 2 - HIGH VALUE)",
+      "env": {
+        "CONFLUENCE_URL": "${env:CONFLUENCE_URL}",
+        "CONFLUENCE_EMAIL": "${env:CONFLUENCE_EMAIL}",
+        "CONFLUENCE_API_TOKEN": "${env:CONFLUENCE_API_TOKEN}"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "description": "🐘 PostgreSQL database management (TIER 3 - STRATEGIC)",
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "${env:POSTGRES_CONNECTION_STRING}"
+      }
     }
   }
 }
+
